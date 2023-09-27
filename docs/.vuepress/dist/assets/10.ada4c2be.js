@@ -1,0 +1,1 @@
+import{_,o as t,c as a,I as c,J as o,e as s}from"./app.fc3686b4.js";const d={},n=e=>(c("data-v-31e2a338"),e=e(),o(),e),r={class:"g-container"},p=n(()=>s("p",null,"Magic Text",-1)),i=[p];function l(e,u){return t(),a("div",r,i)}var f=_(d,[["render",l],["__scopeId","data-v-31e2a338"],["__file","10.vue"]]);export{f as default};

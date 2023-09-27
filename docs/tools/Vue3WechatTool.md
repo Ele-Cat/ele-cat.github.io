@@ -106,7 +106,7 @@
 ### 02. 下载&安装&运行
 
 - #### 下载
-  
+
   ```
   git clone https://gitee.com/ele-cat/vue3-wechat-tool.git
   ```
@@ -133,4 +133,42 @@
 
 ### 03. 关键技术点解析
 
-未完待续、、、
+1. 异步组件
+
+   - 在加载手机窗口主体以及表情包组件时，由于相关代码加载静态文件，导致加载首页较慢，故引入异步组件。`src\App.vue`中示例：
+
+   ```vue
+   <template>
+     <Suspense>
+       <template #default>
+         <WtContent />
+       </template>
+       <template #fallback>
+         <div class="default-loading">
+           <a-spin tip="加载中..."></a-spin>
+         </div>
+       </template>
+     </Suspense>
+   </template>
+   <script setup>
+   import { defineAsyncComponent } from "vue";
+   // import WtContent from "@/components/WtContent.vue"
+   const WtContent = defineAsyncComponent(() =>
+     import("@/components/WtContent.vue")
+   );
+   </script>
+   ```
+
+2. 右键菜单
+
+   - 为方便用户操作，在聊天内容中添加右键菜单的弹出
+   - 首先添加右键菜单组件`src\components\common\ContextMenu.vue`
+   - 在`src\store\modules\contextMenu.js`中定义`pinia`
+   - 在`src\components\phone\PhoneBody.vue`中监听`contextmenu`事件，并在相应位置展示相应的菜单
+
+3. 表情包
+
+   - 表情包文件为`src\utils\emojiBase64.js`，里边都是base64格式的图片
+   - 渲染在`src\components\common\Emoji.vue`组件中
+   - 用户点击表情包，例如点击`微笑表情`会把相应的表情信息以`[微笑]`的格式添加到文本框中
+   - 最后，当发送文本到文本框是，将`[微笑]`转义为对应的表情包图片`src\utils\utils.js`中的`renderText`方法
