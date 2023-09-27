@@ -1,1 +1,0 @@
-import{_ as e,o as t,c as a,e as n,b as o}from"./app.490f44b0.js";const s={},c={id:"elementui",tabindex:"-1"},_=n("a",{class:"header-anchor",href:"#elementui","aria-hidden":"true"},"#",-1),r=o(" ElementUI"),d=[_,r];function i(l,h){return t(),a("h1",c,d)}var f=e(s,[["render",i],["__file","ElementUI.html.vue"]]);export{f as default};

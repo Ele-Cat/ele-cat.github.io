@@ -1,0 +1,1 @@
+import{_ as e,o,c as s,e as c}from"./app.19c21e35.js";const t={},n={class:"container"},_=c("h3",null,"\u5B50\u7EC4\u4EF6",-1),a=[_];function r(i,d){return o(),s("div",n,a)}var f=e(t,[["render",r],["__file","17-son.vue"]]);export{f as default};

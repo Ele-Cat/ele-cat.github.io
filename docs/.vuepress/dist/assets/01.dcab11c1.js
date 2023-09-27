@@ -1,1 +1,0 @@
-import{_,o as c,c as s,I as t,J as a,e as o}from"./app.490f44b0.js";const d={},r=e=>(t("data-v-060acd8c"),e=e(),a(),e),n={class:"bg-dark"},p=r(()=>o("div",{class:"tiktok"},null,-1)),i=[p];function l(e,u){return c(),s("div",n,i)}var f=_(d,[["render",l],["__scopeId","data-v-060acd8c"],["__file","01.vue"]]);export{f as default};

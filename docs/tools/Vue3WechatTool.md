@@ -19,12 +19,12 @@
 
 ### 1. 外观设置
 
-![外观设置效果预览](/images/vue3-wechat-tool/1695047989076.gif)
+[![外观设置效果预览](https://23img.com/i/2023/09/27/do1nam.gif)](https://23img.com/l/?i=/i/2023/09/27/do1nam.gif)
 
 <p align=center>外观设置效果预览</p>
 <br />
 
-![上传背景并截图](/images/vue3-wechat-tool/1695049426372.gif)
+[![上传背景并截图](https://23img.com/i/2023/09/27/do1tqh.gif)](https://23img.com/l/?i=/i/2023/09/27/do1tqh.gif)
 
 <p align=center>上传背景并截图</p>
 
@@ -39,7 +39,7 @@
 
 #### 2.1 用户管理
 
-![用户管理](/images/vue3-wechat-tool/1695049810386.jpg)
+[![用户管理](https://23img.com/i/2023/09/27/do0fk3.jpg)](https://23img.com/l/?i=/i/2023/09/27/do0fk3.jpg)
 
 1. 点击**用户管理**弹出用户管理界面
 2. 点击**新增用户**新增一条用户信息
@@ -50,13 +50,13 @@
 
 #### 2.2 发送对话
 
-![发送对话](/images/vue3-wechat-tool/1695050793373.gif)
+[![发送对话](https://23img.com/i/2023/09/27/do0zwt.gif)](https://23img.com/l/?i=/i/2023/09/27/do0zwt.gif)
 
 <p align=center>发送对话</p>
 
 #### 2.3 手机界面操作
 
-![右键菜单](/images/vue3-wechat-tool/1695052489383.gif)
+[![右键菜单](https://23img.com/i/2023/09/27/do1g2t.gif)](https://23img.com/l/?i=/i/2023/09/27/do1g2t.gif)
 
 #### 2.4 工具栏
 
@@ -73,7 +73,7 @@
 
 ### 3. 模板管理
 
-![模板管理](/images/vue3-wechat-tool/1695053043514.jpg)
+[![模板管理](https://23img.com/i/2023/09/27/do1f30.jpg)](https://23img.com/l/?i=/i/2023/09/27/do1f30.jpg)
 
 1. **预览**模板截图
 2. **应用**当前模板到对话【注意会覆盖右侧的对话，请提前保存】
