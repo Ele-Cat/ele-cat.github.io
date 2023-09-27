@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "serve": "vuepress dev docs",
+    "build": "vuepress build docs"
+  },
+  "devDependencies": {
+    "@vuepress/plugin-register-components": "2.0.0-beta.23",
+    "@vuepress/plugin-search": "^2.0.0-beta.38",
+    "vuepress": "^2.0.0-beta.39",
+    "vuepress-plugin-demo-container-vue3": "^1.0.0"
+  },
+  "dependencies": {
+    "ant-design-vue": "^3.2.0"
+  }
+}
