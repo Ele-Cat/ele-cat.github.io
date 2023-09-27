@@ -1,0 +1,1 @@
+import{_ as s,o,c as t,I as a,J as d,e as _}from"./app.2134a54c.js";const n={},c=e=>(a("data-v-06bde854"),e=e(),d(),e),i={class:"bg"},r=c(()=>_("div",{class:"conic"},null,-1)),l=c(()=>_("div",{class:"conic conic-demo"},null,-1)),p=[r,l];function u(e,v){return o(),t("div",i,p)}var h=s(n,[["render",u],["__scopeId","data-v-06bde854"],["__file","05.vue"]]);export{h as default};

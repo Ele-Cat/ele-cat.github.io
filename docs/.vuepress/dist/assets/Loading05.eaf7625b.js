@@ -1,0 +1,1 @@
+import{_ as o,o as c,c as a,I as t,J as d,e as s}from"./app.2134a54c.js";const n={},_=e=>(t("data-v-fef0f000"),e=e(),d(),e),i={class:"spinner"},r=_(()=>s("div",{class:"cube1"},null,-1)),l=_(()=>s("div",{class:"cube2"},null,-1)),p=[r,l];function f(e,u){return c(),a("div",i,p)}var h=o(n,[["render",f],["__scopeId","data-v-fef0f000"],["__file","Loading05.vue"]]);export{h as default};
