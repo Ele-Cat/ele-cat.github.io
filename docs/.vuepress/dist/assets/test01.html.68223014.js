@@ -1,0 +1,1 @@
+const e={key:"v-06710531",path:"/guide/vue/test01.html",title:"test01",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"\u5185\u7F6E\u7EC4\u4EF6",slug:"\u5185\u7F6E\u7EC4\u4EF6",children:[]}],filePathRelative:"guide/vue/test01.md"};export{e as data};

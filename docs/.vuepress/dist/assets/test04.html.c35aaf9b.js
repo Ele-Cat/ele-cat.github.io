@@ -1,0 +1,1 @@
+const e={key:"v-0b8f8f0e",path:"/guide/vue/test04.html",title:"",lang:"zh-CN",frontmatter:{sidebar:!1,pageClass:"full-width"},excerpt:"",headers:[],filePathRelative:"guide/vue/test04.md"};export{e as data};

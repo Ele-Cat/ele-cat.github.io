@@ -1,0 +1,1 @@
+const e={key:"v-629c0c53",path:"/share/css/effect.html",title:"",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"\u89C6\u89C9&\u52A8\u6548",slug:"\u89C6\u89C9-\u52A8\u6548",children:[{level:3,title:"\u5145\u7535",slug:"\u5145\u7535",children:[]}]}],filePathRelative:"share/css/effect.md"};export{e as data};
