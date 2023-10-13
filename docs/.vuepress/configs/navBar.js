@@ -32,43 +32,8 @@ module.exports = [
 					{ text: "Node", link: "/note/Node" },
 				],
 			},
-			// {
-			// 	text: "VuePress2",
-			// 	link: "/note/VuePress",
-			// },
-			// {
-			// 	text: "Vue@next",
-			// 	link: "/note/Vue@next",
-			// },
-			// {
-			// 	text: "React",
-			// 	link: "/note/React",
-			// },
-			// {
-			// 	text: "Node",
-			// 	link: "/note/Node",
-			// },
-			// {
-			// 	text: "TypeScript",
-			// 	link: "/note/TypeScript",
-			// },
-			// {
-			// 	text: "Sass",
-			// 	link: "/note/Sass",
-			// },
-		],
-	},
-	{
-		text: "工具类库",
-		children: [
 			{
-				text: "UI库",
-				children: [
-					{ text: "ElementUI", link: "/tools/ElementUI" },
-				],
-			},
-			{
-				text: "JS实用插件",
+				text: "实用插件",
 				children: [
 					{ text: "Moment", link: "/tools/Moment" },
 					{ text: "Vue Doc Preview", link: "/tools/VueDocPreview" },
@@ -91,14 +56,12 @@ module.exports = [
 	{
 		text: "技术分享",
 		children: [
-			{ text: "天气API", link: "https://www.qweather.com/" },
 			{
 				text: "Javascript",
 				children: [
 					{ text: "开发技巧", link: "/share/javascript/JavascriptSkill" },
 					{ text: "数据处理", link: "/share/javascript/JavascriptProcess" },
 					{ text: "工具函数", link: "/share/javascript/JavascriptTool" },
-					{ text: "B站", link: "https://www.bilibili.com/" },
 				],
 			},
 			{
@@ -109,4 +72,5 @@ module.exports = [
 			},
 		],
 	},
+	{ text: "关于我", link: "https://ele-cat.gitee.io/home/" },
 ]

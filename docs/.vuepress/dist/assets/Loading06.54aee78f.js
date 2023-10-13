@@ -1,1 +1,0 @@
-import{_ as e,o as _,c as a}from"./app.fc3686b4.js";const n={},o={class:"spinner"};function c(s,t){return _(),a("div",o)}var d=e(n,[["render",c],["__scopeId","data-v-526e4483"],["__file","Loading06.vue"]]);export{d as default};

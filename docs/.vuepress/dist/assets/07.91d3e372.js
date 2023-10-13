@@ -1,0 +1,1 @@
+import{_,o,c as s,I as t,J as c,e as a}from"./app.d9651a44.js";const d={},r=e=>(t("data-v-449c7dfe"),e=e(),c(),e),p={class:"bg padding"},n=r(()=>a("p",{"data-text":"Lorem ipsum dolor"},"Lorem ipsum dolor",-1)),i=[n];function l(e,u){return o(),s("div",p,i)}var m=_(d,[["render",l],["__scopeId","data-v-449c7dfe"],["__file","07.vue"]]);export{m as default};
