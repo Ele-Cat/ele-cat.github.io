@@ -37,6 +37,12 @@ const menu = [
         icon: "/images/logo.png",
       },
       {
+        title: "爱摸鱼",
+        tip: "一个摸鱼网站",
+        link: "https://ele-cat.gitee.io/ifish/",
+        icon: "/images/logo.png",
+      },
+      {
         title: "微信对话生成器",
         tip: "在线微信对话生成器",
         link: "https://ele-cat.gitee.io/vue3-wechat-tool/",

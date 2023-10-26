@@ -1,1 +1,0 @@
-import{_,o as c,c as t,I as a,J as d,e as s}from"./app.d9651a44.js";const n={},o=e=>(a("data-v-071847bc"),e=e(),d(),e),i={class:"spinner"},r=o(()=>s("div",{class:"dot1"},null,-1)),l=o(()=>s("div",{class:"dot2"},null,-1)),p=[r,l];function u(e,v){return c(),t("div",i,p)}var h=_(n,[["render",u],["__scopeId","data-v-071847bc"],["__file","Loading07.vue"]]);export{h as default};

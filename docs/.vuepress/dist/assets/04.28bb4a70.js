@@ -1,1 +1,0 @@
-import{_ as e,o as _,c as o}from"./app.d9651a44.js";const a={},t={"data-name":"Solid Shadow Word"};function d(r,c){return _(),o("div",t,"Solid Shadow Word")}var s=e(a,[["render",d],["__scopeId","data-v-741b8a94"],["__file","04.vue"]]);export{s as default};
