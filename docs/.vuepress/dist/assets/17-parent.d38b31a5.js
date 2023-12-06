@@ -1,0 +1,1 @@
+import{_ as t,o,c as s,d as r,b as e}from"./app.625dc6e8.js";import a from"./17-son.a65ad4d2.js";const _={class:"container"},c=e("h2",null,"\u7236\u7EC4\u4EF6",-1),n=e("hr",null,null,-1),l={setup(i){return(p,d)=>(o(),s("div",_,[c,n,r(a)]))}};var h=t(l,[["__file","17-parent.vue"]]);export{h as default};

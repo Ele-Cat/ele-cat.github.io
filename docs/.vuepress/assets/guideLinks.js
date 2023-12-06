@@ -37,6 +37,12 @@ const menu = [
         icon: "/images/logo.png",
       },
       {
+        title: "聚合盘搜",
+        tip: "整合资源盘搜",
+        link: "https://ele-cat.gitee.io/comp-pan/",
+        icon: "/images/logo.png",
+      },
+      {
         title: "爱摸鱼",
         tip: "一个摸鱼网站",
         link: "https://ele-cat.gitee.io/ifish/",

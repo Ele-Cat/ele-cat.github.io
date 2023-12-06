@@ -1,0 +1,1 @@
+import{_,o as s,c as t,I as c,J as o,b as a}from"./app.625dc6e8.js";const d={},r=e=>(c("data-v-72535868"),e=e(),o(),e),n={class:"bg-white"},p=r(()=>a("div",{class:"IE"},null,-1)),i=[p];function l(e,u){return s(),t("div",n,i)}var f=_(d,[["render",l],["__scopeId","data-v-72535868"],["__file","02.vue"]]);export{f as default};
