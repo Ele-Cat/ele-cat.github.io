@@ -1,0 +1,1 @@
+import{_ as s,o as a,c,I as o,J as t,e as _}from"./app.0b740755.js";const d={},n=e=>(o("data-v-407afe10"),e=e(),t(),e),r={class:"bg"},p=n(()=>_("div",{class:"g-container"},[_("p",null,"TEXT WAVE")],-1)),i=[p];function l(e,f){return a(),c("div",r,i)}var v=s(d,[["render",l],["__scopeId","data-v-407afe10"],["__file","09.vue"]]);export{v as default};

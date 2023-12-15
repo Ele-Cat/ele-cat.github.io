@@ -30,6 +30,7 @@ module.exports = [
 				text: "后端",
 				children: [
 					{ text: "Node", link: "/note/Node" },
+					{ text: "MongoDB", link: "/note/MongoDB" },
 				],
 			},
 			{

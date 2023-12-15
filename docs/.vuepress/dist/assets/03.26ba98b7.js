@@ -1,1 +1,0 @@
-import{_ as t,o as n,c as a,b as r,t as c}from"./app.625dc6e8.js";const i={setup(){const s="hi vue3";return{msg:s,say:()=>{console.log(s)}}}},_={class:"container"};function l(s,e,p,o,d,f){return n(),a("div",_,[r("h1",{onClick:e[0]||(e[0]=m=>o.say())},c(o.msg),1)])}var v=t(i,[["render",l],["__file","03.vue"]]);export{v as default};

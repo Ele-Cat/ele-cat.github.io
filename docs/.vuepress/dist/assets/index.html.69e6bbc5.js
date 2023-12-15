@@ -1,1 +1,0 @@
-import{_ as e,o as t,c as a,b as o,f as r}from"./app.625dc6e8.js";const s={},c={id:"\u9ED8\u8BA4readme",tabindex:"-1"},_=o("a",{class:"header-anchor",href:"#\u9ED8\u8BA4readme","aria-hidden":"true"},"#",-1),d=r(" \u9ED8\u8BA4README"),n=[_,d];function i(h,f){return t(),a("h1",c,n)}var m=e(s,[["render",i],["__file","index.html.vue"]]);export{m as default};
