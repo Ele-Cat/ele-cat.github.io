@@ -100,4 +100,39 @@
 
 ## 04.数据库连接
 
+- 安装依赖
+
+```sh
+yarn add mongoose
+npm i -S mongoose
+```
+
+- 创建连接 /db/index.js
+
+```js
+const mongoose = require("mongoose");
+
+module.exports = () => {
+  mongoose
+    .connect("mongodb://127.0.0.1:27017/learn", {
+      // useNewUrlParser: true,
+    })
+    .then(() => {
+      console.log("数据库连接成功");
+    })
+    .catch((err) => {
+      console.error("数据库连接失败", err);
+    });
+};
+```
+
+- 连接数据库 /app.js
+
+```js
+const MongoConnect = require("./db");
+MongoConnect();
+```
+
 ## 05.数据库操作
+
+### 5.1 创建数据库
