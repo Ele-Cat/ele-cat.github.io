@@ -83,7 +83,7 @@ export default {
     const searchBefore = ref<string>('https://www.baidu.com')
     const searchAfter = ref<string>('-csdn')
 
-    const iconResolveUrl = 'https://api.iowen.cn/favicon/'
+    const iconResolveUrl = 'https://icon.7udh.com/'
     // const iconResolveUrl = 'https://ico.hnysnet.com/get.php?url='
     // const iconResolveUrl = 'https://imgapi.cn/ico.php?url='
     
@@ -130,7 +130,7 @@ export default {
     }
 
     const resolveLink = (link) => {
-      let returnLink = link.replace("https://","").replace("http://","") + '.png'
+      let returnLink = link.replace("https://","").replace("http://","").split('/')[0] + '.png'
       return returnLink
     }
 
