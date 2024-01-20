@@ -60,8 +60,8 @@ export default defineConfig({
       text: "在Gitee上编辑此页",
     },
     footer: {
-      message: "MIT Licensed",
-      copyright: "Copyright © 2023-present Cola",
+      message: "<a href='https://gitee.com/ele-cat/ele-cat/blob/master/LICENSE' target='_blank'>MIT Licensed</a>",
+      copyright: "Copyright © 2023-present <a href='https://gitee.com/ele-cat' target='_blank'>Cola</a>",
     },
     outline: {
       label: "目录",
@@ -82,5 +82,6 @@ export default defineConfig({
     darkModeSwitchLabel: "主题",
     lightModeSwitchTitle: "切换到浅色模式",
     darkModeSwitchTitle: "切换到深色模式",
+    // externalLinkIcon: true, // 外部链接旁显示外部链接图标
   },
 });

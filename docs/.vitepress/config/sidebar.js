@@ -3,6 +3,7 @@ const sidebar = {
   "/views/note/": [
     {
       text: "工具",
+      collapsed: true,
       items: [
         { text: "Git", link: "/views/note/git" },
         { text: "VuePress2", link: "/views/note/vuePress" },
@@ -11,6 +12,7 @@ const sidebar = {
     },
     {
       text: "前端",
+      collapsed: true,
       items: [
         { text: "Sass", link: "/views/note/sass" },
         { text: "Vue3", link: "/views/note/vue3" },
@@ -20,6 +22,7 @@ const sidebar = {
     },
     {
       text: "后端",
+      collapsed: true,
       items: [{ text: "Node", link: "/views/note/node" }],
     },
   ],
@@ -27,11 +30,11 @@ const sidebar = {
   "/views/tools/": [
     {
       text: "实用插件",
+      collapsed: true,
       items: [
         { text: "Moment", link: "/views/tools/moment" },
         { text: "Vue Doc Preview", link: "/views/tools/vueDocPreview" },
         { text: "Ace Editor", link: "/views/tools/aceEditor" },
-        { text: "Html to Md", link: "/views/tools/html2Md" },
       ],
     },
   ],
@@ -39,6 +42,7 @@ const sidebar = {
   "/views/share/javascript/": [
     {
       text: "Javascript",
+      collapsed: true,
       items: [
         { text: "ES6-ES12", link: "/views/share/javascript/skill" },
         { text: "数据处理", link: "/views/share/javascript/process" },
@@ -50,6 +54,7 @@ const sidebar = {
   "/views/share/css/": [
     {
       text: "Css",
+      collapsed: true,
       items: [
         {
           text: "工具",
