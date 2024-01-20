@@ -7,6 +7,7 @@
 <style lang="scss" scoped>
 .bg-dark {
   padding: 100px 0 40px;
+  background-color: #22272e;
 }
 
 .tiktok {

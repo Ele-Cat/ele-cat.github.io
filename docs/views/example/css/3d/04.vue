@@ -45,6 +45,7 @@ body {
   font-family: "Anton", sans-serif;
   justify-content: center;
   align-items: center;
+  padding-bottom: 100px;
 }
 
 $wallSize: 200px;

@@ -19,13 +19,13 @@
   left: 50%;
   transform: translate(-50%, -50%) scale(2.4);
   width: 300px;
-  font-size: 36px;
+  font-size: 32px;
   font-family: Raleway, Verdana, Arial;
   color: #fff;
 }
 .white {
   position: absolute;
-  left: -10px;
+  left: -3px;
   width: 100%;
   height: 3px;
   background: #000;

@@ -93,7 +93,6 @@ const afterCarouselChange = (e) => {
   height: 25px;
   font-size: 25px;
   color: #fff;
-  background-color: rgba(31, 45, 61, 0.11);
   opacity: 0.5;
   z-index: 1;
 }
@@ -112,6 +111,14 @@ const afterCarouselChange = (e) => {
     text-align: center;
     font-size: 20px;
     color: #fff;
+  }
+}
+</style>
+
+<style lang="scss">
+.slick-dots {
+  li + li {
+    margin-top: 0;
   }
 }
 </style>

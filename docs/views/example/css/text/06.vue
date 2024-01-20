@@ -36,4 +36,8 @@ div {
   text-shadow: makelongleftshadow(hsla(231, 50%, 30%, 1));
   color: hsl(231, 50%, 60%);
 }
+
+.padding-bottom-lg {
+  padding-bottom: 30px;
+}
 </style>

@@ -1,1 +1,0 @@
-const t={key:"v-503d11fc",path:"/guide/ts/test01.html",title:"test01*ts",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"\u4E8C\u7EA7\u6807\u9898",slug:"\u4E8C\u7EA7\u6807\u9898",children:[{level:3,title:"\u4E09\u7EA7\u6807\u9898",slug:"\u4E09\u7EA7\u6807\u9898",children:[]}]}],filePathRelative:"guide/ts/test01.md"};export{t as data};

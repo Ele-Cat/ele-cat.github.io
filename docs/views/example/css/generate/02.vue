@@ -1,6 +1,6 @@
 <template>
   <a-row :gutter="10">
-    <a-col :xl="12" :sm="24">
+    <a-col :span="24">
       <div class="flex-box padding-xs">
         <div class="flex" :style="boxFormState">
           <div v-for="(item, index) in lists" :key="index" class="flex-item">
@@ -8,10 +8,9 @@
           </div>
         </div>
       </div>
-
       {{boxFormState}}
     </a-col>
-    <a-col :xl="12" :sm="24">
+    <a-col :span="24">
       <h4>flex box配置</h4>
       <div class="flex-box">
         <a-form
@@ -112,6 +111,9 @@ const lists = ref([
   .ant-form-item {
     margin-bottom: 4px;
   }
+  .flex {
+    display: flex;
+  }
   .flex-item {
     border: 1px solid #fff;
     line-height: 100%;
@@ -123,12 +125,12 @@ const lists = ref([
       background-color: var(--c-red);
     }
     &:nth-of-type(2) {
-      width: 100px;
+      width: 150px;
       height: 30px;
       background-color: var(--c-orange);
     }
     &:nth-of-type(3) {
-      width: 150px;
+      width: 250px;
       height: 100px;
       background-color: var(--c-blue);
     }

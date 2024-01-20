@@ -5,6 +5,9 @@
 </template>
 
 <style lang="scss" scoped>
+.padding {
+  padding: 15px;
+}
 .bg {
   width: 100%;
   height: 100%;
@@ -28,6 +31,7 @@ p {
   color: transparent;
   background-color: #e8a95b;
   background-clip: text;
+  -webkit-background-clip: text;
 }
 
 p::after {
@@ -58,6 +62,7 @@ p::after {
     transparent 100%
   );
   background-clip: text;
+  -webkit-background-clip: text;
   background-size: 150% 100%;
   background-repeat: no-repeat;
   animation: shine 5s infinite linear;

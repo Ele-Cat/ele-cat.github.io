@@ -9,7 +9,7 @@
 <style lang="scss" scoped>
 .bg {
   width: 100%;
-  height: 240px;
+  height: 160px;
   display: flex;
 }
 
@@ -20,6 +20,7 @@
 p {
   position: relative;
   font-size: 120px;
+  line-height: 120px;
   font-weight: bold;
   background: #fff;
   color: #000;

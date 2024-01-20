@@ -23,7 +23,7 @@ const percent = ref(60)
   border-radius: 8px;
   overflow: hidden;
   position: relative;
-  margin-right: 15px;
+  margin: 0 15px 10px 0;
 }
 .progress-enter {
   height: inherit;

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray padding-tb-lg">
+  <div class="bg-gray">
     <div class="container">
       <div class="header"></div>
       <div class="battery"></div>
@@ -13,6 +13,10 @@
 </template>
 
 <style lang="scss" scoped>
+.bg-gray {
+  background-color: #f0f0f0;
+  padding: 30px 0;
+}
 .container {
   position: relative;
   width: 140px;

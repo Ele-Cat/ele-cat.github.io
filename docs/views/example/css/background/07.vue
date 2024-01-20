@@ -24,24 +24,15 @@ for (var i = 0; i < classname.length; i++) {
 
 
 <style lang="scss" scoped>
-$fuschia: #ff0081;
-$button-bg: $fuschia;
+$button-bg: #ff0081;
 $button-text-color: #fff;
-$baby-blue: #fff;
 
-body{
-  font-size: 16px;
-  font-family: 'Helvetica', 'Arial', sans-serif;
-  text-align: center;
-  background-color: $baby-blue;
-}
 .bubbly-button{
   font-family: 'Helvetica', 'Arial', sans-serif;
-  display: inline-block;
+  display: block;
   font-size: 1em;
   padding: 1em 2em;
-  margin-top: 100px;
-  margin-bottom: 60px;
+  margin: 10px auto;
   -webkit-appearance: none;
   appearance: none;
   background-color: $button-bg;

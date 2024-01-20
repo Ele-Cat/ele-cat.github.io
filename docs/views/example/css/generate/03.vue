@@ -127,4 +127,10 @@ watch(inputTimeType, (newVal) => {
     width: 100%;
   }
 }
+.margin-top-sm {
+  margin-top: 10px;
+}
+.margin-right-sm {
+  margin-right: 10px;
+}
 </style>

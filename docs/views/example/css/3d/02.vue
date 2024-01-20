@@ -20,10 +20,11 @@ $duration: 8s;
 
 .bg {
   width: 100%;
-  height: 100%;
+  height: 200px;
   display: flex;
   background: #000;
   overflow: hidden;
+  padding: 40px 0 0;
 }
 
 .text {

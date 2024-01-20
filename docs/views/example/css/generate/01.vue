@@ -1,5 +1,5 @@
 <template>
-  <a-row :gutter="20" type="flex" align="bottom">
+  <a-row :gutter="12" type="flex" align="bottom">
     <a-col
       :xl="8"
       :md="12"
@@ -129,5 +129,9 @@ const lists = ref([
 <style lang="scss">
 .filter-box {
   margin-bottom: 20px;
+  height: 100%;
+}
+.margin-bottom-sm {
+  margin-bottom: 10px;
 }
 </style>

@@ -1,1 +1,0 @@
-const e={key:"v-cdf23fdc",path:"/share/css/loading.html",title:"",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"Loading",slug:"loading",children:[{level:3,title:"Epic Spinners",slug:"epic-spinners",children:[]}]}],filePathRelative:"share/css/loading.md"};export{e as data};

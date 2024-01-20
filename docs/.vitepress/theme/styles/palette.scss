@@ -1,0 +1,78 @@
+html {
+  // 平滑
+  scroll-behavior: smooth;
+  cursor: url(/blue.cur), auto;
+  // 详情
+  details {
+    summary {
+      font-weight: bold;
+      cursor: pointer;
+      &:hover {
+        color: var(--vp-c-brand-1);
+      }
+    }
+  }
+  // 覆盖a标签样式
+  a[target="_blank"] {
+    color: var(--vp-c-brand-1);
+    &:hover {
+      color: var(--vp-c-brand-2);
+    }
+  }
+  a {
+    &.outline-link.active {
+      color: var(--vp-c-brand-1) !important;
+    }
+  }
+  p {
+    margin: 0;
+  }
+}
+
+// 设定禁止高亮
+body {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus {
+  outline: none;
+}
+
+// 鼠标选中文字样式
+::selection {
+  background-color: #e54d42 !important;
+  color: #fbbd08 !important;
+}
+
+// 滚动条样式
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: rgba(255, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.01);
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: rgb(95, 96, 98);
+}
+
+/* 设定iframe样式 */
+iframe {
+  width: 100%;
+  height: 360px;
+  border: none;
+}
+.iframe-box {
+  overflow: hidden;
+  iframe {
+    width: calc(100% + 20px) !important;
+    height: 360px;
+    border: none;
+  }
+}

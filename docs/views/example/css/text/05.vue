@@ -29,7 +29,7 @@
   fill: none;
 }
 .main text {
-  fill: var(--c-yellow);
+  fill: var(--vp-c-brand-1);
 }
 @keyframes circular-text-rotate {
   to {

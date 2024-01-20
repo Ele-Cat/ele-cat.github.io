@@ -1,6 +1,6 @@
 <template>
   <div class="bg">
-    <div class="main">
+    <div class="main-box">
       <div class="t"></div>
       <div class="r"></div>
       <div class="b"></div>
@@ -17,7 +17,7 @@
   margin: 0;
   overflow: hidden;
 }
-.main {
+.main-box {
   /* Timing */
   --durM: 10s;
   --durD: 1s;

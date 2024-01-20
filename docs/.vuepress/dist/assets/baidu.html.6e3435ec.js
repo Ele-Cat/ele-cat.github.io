@@ -1,1 +1,0 @@
-const a={key:"v-af9dc2c8",path:"/apps/resume/baidu.html",title:"",lang:"zh-CN",frontmatter:{sidebar:!1,pageClass:"full-width hide-navbar"},excerpt:"",headers:[],filePathRelative:"apps/resume/baidu.md"};export{a as data};

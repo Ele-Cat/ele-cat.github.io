@@ -22,6 +22,8 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(#1a0f19, #16121c);
+  display: flex;
+  justify-content: center;
 }
 
 .container {
