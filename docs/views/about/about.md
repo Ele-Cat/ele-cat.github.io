@@ -9,7 +9,7 @@ pageClass: nav-layout # 自定义页面类名
 
 ## 关于本项目
 
-本项目使用 Vitepress 开发，基于 Vue3+Vite，搭建教程参考[Vitepress 官方文档](https://vitepress.dev/zh/guide/getting-started)。
+本项目使用 Vitepress 开发，基于 Vue3+Vite，搭建教程参考[本站教程](/views/note/vitePress)、[Vitepress 官方文档](https://vitepress.dev/zh/guide/getting-started)。
 
 ## 关于我
 
@@ -24,11 +24,11 @@ pageClass: nav-layout # 自定义页面类名
 - 前端
   - 基础：HTML、CSS、JS
   - 样式：BootStrap、Scss、Less
-  - 框架：JQuery、Vue3、React、Angular
+  - 框架：JQuery、Vue2、Vue3、React、Angular
   - 构建：Vite、Rollup、Webpack
   - 库：Echart、Lodash、Momentjs...
 - 后端
-  - 语言：Node、PHP
+  - 语言：Node、PHP、Python
   - 框架：Express、Koa2、Egg、ThinkPHP
   - 数据库：MySQL、MongoDB、Redis
 - 其它

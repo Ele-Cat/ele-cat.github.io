@@ -6,7 +6,7 @@ layout: doc # 布局
 navbar: true # 顶栏
 sidebar: true # 侧边栏
 aside: right # 侧边栏
-outline: 2 # 侧边栏深度
+outline: [2, 3] # 侧边栏深度
 editLink: true # 编辑链接
 footer: true # 页脚
 pageClass: custom-page-class-123 # 自定义页面类名
@@ -14,25 +14,72 @@ pageClass: custom-page-class-123 # 自定义页面类名
 
 # VitePress {#my-anchor}
 
-## 标题锚点 {#my-anchor1}
+## 01. 安装&运行
 
-### 自定义锚点
+### 1.1 初始化项目
+
+::: code-group
+
+``` [npm]
+$ npx vitepress init
+```
+``` [pnpm]
+$ pnpm vitepress init
+```
+``` [bun]
+$ bunx vitepress init
+```
+:::
+
+### 1.2 运行
+
+::: code-group
+
+``` [npm]
+$ npm run docs:dev
+```
+``` [pnpm]
+$ pnpm run docs:dev
+```
+``` [yarn]
+$ yarn docs:dev
+```
+``` [bun]
+$ bunx run docs:dev
+```
+:::
+
+### 1.3 打包
+
+```
+$ npm run docs:build
+```
+
+输出目录`docs/.vitepress/dist`
+
+## 02. Markdown 语法
+
+> 参考[官网](https://vitepress.dev/zh/guide/markdown)
+
+### 标题锚点 {#my-anchor1}
+
+#### 自定义锚点
 
 ```md
 # 使用自定义锚点 {#my-anchor}
 ```
 
-## 链接
+### 链接
 
-### 内部链接
+#### 内部链接
 
-### 外部链接
+#### 外部链接
 
-## frontmatter
+### frontmatter
 
 参见[frontmatter](https://vitepress.dev/zh/reference/frontmatter-config)
 
-## GitHub 风格的表格
+### GitHub 风格的表格
 
 输入
 
@@ -51,7 +98,7 @@ pageClass: custom-page-class-123 # 自定义页面类名
 | col 2 is | centered | $12 |
 | zebra stripes | are neat | $1 |
 
-## Emoji 🎉
+### Emoji 🎉
 
 输入
 
@@ -65,7 +112,7 @@ pageClass: custom-page-class-123 # 自定义页面类名
 
 这里可以找到[所有支持的 emoji 列表](https://github.com/markdown-it/markdown-it-emoji/blob/master/lib/data/full.mjs)。
 
-## 目录表（TOC）
+### 目录表（TOC）
 
 输入
 
@@ -77,9 +124,9 @@ pageClass: custom-page-class-123 # 自定义页面类名
 
 [[toc]]
 
-## 自定义容器
+### 自定义容器
 
-### 默认标题
+#### 默认标题
 
 输入
 
@@ -127,7 +174,7 @@ This is a dangerous warning.
 This is a details block.
 :::
 
-### 自定义标题
+#### 自定义标题
 
 输入
 
@@ -159,7 +206,7 @@ console.log("Hello, VitePress!");
 
 :::
 
-## 代码块中的语法高亮
+### 代码块中的语法高亮
 
 输入
 
@@ -199,9 +246,9 @@ export default {
 
 在 Shikiji 的代码仓库中，可以找到[合法的编程语言列表](https://github.com/antfu/shikiji/blob/main/docs/languages.md)。
 
-## 在代码块中实现行高亮
+### 在代码块中实现行高亮
 
-### 单行高亮
+#### 单行高亮
 
 输入
 
@@ -229,7 +276,7 @@ export default {
 }
 ```
 
-### 多行高亮
+#### 多行高亮
 
 除了单行之外，还可以指定多个单行、多行，或两者均指定：
 
@@ -271,7 +318,7 @@ export default { // Highlighted
 }
 ```
 
-### 注释高亮
+#### 注释高亮
 
 使用 // [!code hl] 注释实现行高亮。
 
@@ -301,7 +348,7 @@ export default {
 };
 ```
 
-## 代码块中聚焦
+### 代码块中聚焦
 
 输入
 
@@ -329,7 +376,7 @@ export default {
 };
 ```
 
-## 代码块中的颜色差异
+### 代码块中的颜色差异
 
 输入
 
@@ -359,7 +406,7 @@ export default {
 }
 ```
 
-## 高亮“错误”和“警告”
+### 高亮“错误”和“警告”
 
 输入
 
@@ -389,7 +436,7 @@ export default {
 };
 ```
 
-## 行号
+### 行号
 
 可以通过以下配置为每个代码块启用行号：
 
@@ -443,7 +490,7 @@ const line3 = 'This is line 3'
 const line4 = 'This is line 4'
 ```
 
-## 导入代码片段
+### 导入代码片段
 
 输入
 
@@ -459,7 +506,7 @@ const line4 = 'This is line 4'
 
 <<< ./snippet-with-region.js {js:line-numbers}
 
-## 代码组
+### 代码组
 
 输入
 
@@ -549,7 +596,7 @@ export default config;
 
 :::
 
-## 包含 markdown 文件
+### 包含 markdown 文件
 
 输入
 
@@ -561,11 +608,11 @@ export default config;
 
 <!--@include: ./vitePress-import.md{5,}-->
 
-## 数学方程
+### 数学方程
 
 [数学方程-参考官网](https://vitepress.dev/zh/guide/markdown#math-equations)
 
-## 图片懒加载
+### 图片懒加载
 
 ```js
 export default {
@@ -586,7 +633,7 @@ const { page } = useData()
 const count = ref(0)
 </script>
 
-## 在 Markdown 中使用 Vue
+### 在 Markdown 中使用 Vue
 
 {{ 1 + 1 }}
 <br />
