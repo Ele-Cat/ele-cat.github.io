@@ -15,6 +15,7 @@ const sidebar = {
       collapsed: true,
       items: [
         { text: "Sass", link: "/views/note/sass" },
+        { text: "UnoCSS", link: "/views/note/unocss" },
         { text: "Vue3", link: "/views/note/vue3" },
         { text: "React", link: "/views/note/react" },
         { text: "Electron", link: "/views/note/electron" },
