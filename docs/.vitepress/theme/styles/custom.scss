@@ -215,12 +215,17 @@ $menu-gap: 6px;
 .vp-doc [class*='language-'] > span.lang {
   display: none;
 }
-.vp-doc [class*='language-'] code {
-  padding: 0 12px;
-  .highlighted {
-    width: calc(100% + 2 * 18px);
-  }
-}
+// .vp-doc [class*='language-'] code {
+//   padding: 0 12px;
+//   .highlighted {
+//     width: calc(100% + 2 * 18px);
+//   }
+//   .diff {
+//     &::before {
+//       left: 3px;
+//     }
+//   }
+// }
 
 .vp-doc {
   h3 {
