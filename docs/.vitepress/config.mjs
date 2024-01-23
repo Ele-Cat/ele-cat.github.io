@@ -33,7 +33,7 @@ export default defineConfig({
   head: [
     [
       "link",
-      { rel: "icon", type: "image/png", href: "/vitepress-blog/images/logo.png" },
+      { rel: "icon", type: "image/png", href: "/images/logo.png" },
     ],
     ["meta", { name: "theme-color", content: "#f00" }],
   ],
