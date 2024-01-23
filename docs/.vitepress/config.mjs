@@ -56,7 +56,7 @@ export default defineConfig({
       },
     ],
     editLink: {
-      pattern: "https://gitee.com/ele-cat/vitepress-blog/edit/master/docs/:path",
+      pattern: "https://gitee.com/ele-cat/edit/master/docs/:path",
       text: "在Gitee上编辑此页",
     },
     footer: {
