@@ -288,6 +288,7 @@ npm install -D @iconify/json
 2. 配置
 
 ```js
+// uno.config.js
 import {
   defineConfig,
   presetUno, // [!code ++]
@@ -345,6 +346,7 @@ export default defineConfig({
 2. 配置
 
 ```js
+// uno.config.js
 import {
   defineConfig,
   presetUno,
@@ -383,12 +385,162 @@ export default defineConfig({
 </button>
 ```
 
-### 5.3 属性组的写法转换[Variant Groups](https://unocss.dev/transformers/variant-group)
-### 5.4 快捷写法[Shortcuts](https://unocss.dev/config/shortcuts)
-### 5.5 标记[Tagify](https://unocss.dev/presets/tagify)
-### 5.6 网页字体[Web fonts](https://unocss.dev/presets/web-fonts)
-### 5.7 CDN运行时[CDN Runtime](https://unocss.dev/integrations/runtime)
-### 5.8 检查[Inspector](https://unocss.dev/tools/inspector)
+### 5.3 属性组的写法转换
+
+> [Variant Groups](https://unocss.dev/transformers/variant-group)，为UnoCSS启用Windi CSS的属性组功能。
+
+1. 配置
+
+```js
+// uno.config.js
+import {
+  defineConfig,
+  presetUno,
+  presetAttributify,
+  presetIcons,
+  transformerVariantGroup, // [!code ++]
+} from "unocss";
+
+export default defineConfig({
+  // ...UnoCSS options
+  presets: [
+    presetUno(),
+    presetAttributify(),
+    presetIcons({
+      extraProperties: {
+        display: "inline-block",
+        "vertical-align": "middle",
+        // ...
+      },
+    }),
+  ],
+  transformers: [ // [!code ++]
+    transformerVariantGroup(), // [!code ++]
+  ], // [!code ++]
+});
+
+```
+
+2. 使用
+
+```html
+<div class="w-25 h-25 bg-gray-200 hover:(bg-gray-400 font-medium) font-(light mono)"></div>
+```
+
+以上代码会转换为：
+
+```html
+<div class="w-25 h-25 bg-gray-200 hover:bg-gray-400 hover:font-medium font-light font-mono"></div>
+```
+
+### 5.4 快捷写法
+
+> [Shortcuts](https://unocss.dev/config/shortcuts)
+
+1. 配置
+
+```js
+// uno.config.js
+import {
+  defineConfig,
+  presetUno,
+  presetAttributify,
+  presetIcons,
+  transformerVariantGroup,
+} from "unocss";
+
+export default defineConfig({
+  // ...UnoCSS options
+  // ...
+  shortcuts: [ // [!code ++]
+    { // [!code ++]
+      // shortcuts to multiple utilities // [!code ++]
+      'btn': 'py-2 px-4 font-semibold text-#fff rounded-lg m-4 shadow-md bg-blue-500', // [!code ++]
+      'btn-green': 'text-white m-4 px-4 py-2 rounded-lg bg-green-500 hover:bg-green-700', // [!code ++]
+      // single utility alias // [!code ++]
+      'red': 'text-red-500', // [!code ++]
+    }, // [!code ++]
+    // dynamic shortcuts // [!code ++]
+    // 除了普通映射之外，UnoCSS还允许您定义动态快捷方式。 与规则类似，动态快捷方式是匹配器正则表达式和处理函数的组合。 // [!code ++]
+    [/^btn-(.*)$/, ([, c]) => `m-4 bg-${c}-400 text-${c}-100 py-2 px-4 rounded-lg`], // [!code ++]
+  ],
+});
+
+```
+
+2. 使用
+
+```html
+<template>
+  <div class="btn">按钮</div>
+  <div class="btn-green red">按钮</div>
+  <div class="btn-red">按钮</div>
+</template>
+```
+
+### 5.5 标记
+
+> [Tagify](https://unocss.dev/presets/tagify)，这将为其他预设启用tagify模式。
+
+1. 配置
+
+```js
+// uno.config.js
+import {
+  defineConfig,
+  presetUno,
+  presetAttributify,
+  presetIcons,
+  transformerVariantGroup,
+  presetTagify, // [!code ++]
+} from "unocss";
+
+export default defineConfig({
+  // ...UnoCSS options
+  presets: [
+    // ...
+    presetTagify(), // [!code ++]
+  ],
+  // ...
+});
+```
+
+2. 使用
+
+使用tagify模式，您可以将CSS样式嵌入HTML标签:
+
+```vue
+<template>
+  <text-red> red text </text-red>
+  <flex> flexbox </flex>
+  I'm feeling <i-line-md-emoji-grin /> today!
+</template>
+```
+以上代码会转换为：
+
+```vue
+<template>
+  <span class="text-red"> red text </span>
+  <div class="flex"> flexbox </div>
+  I'm feeling <span class="i-line-md-emoji-grin"></span> today!
+</template>
+```
+
+### 5.6 网页字体
+
+> [Web fonts](https://unocss.dev/presets/web-fonts)，只需提供字体名称，即可使用Google Fonts、FontShare中的网络字体。
+
+### 5.7 CDN运行时
+
+> [CDN Runtime](https://unocss.dev/integrations/runtime)，UnoCSS运行时提供一个可在浏览器中运行UnoCSS的CDN构建。它将检测DOM的变化并动态生成样式。
+
+### 5.8 检查
+
+> [Inspector](https://unocss.dev/tools/inspector)，UnoCSS的检查器UI:@ UnoCSS/inspector。由unocss和@unocss/vite一起实现。
+
+访问Vite dev服务器中的[http://127.0.0.1:5173/__unocss](http://127.0.0.1:5173/__unocss)以查看检查器。检查器允许您检查为每个文件生成的CSS规则和应用的类。它还提供了一个REPL来测试基于您当前配置的实用程序。
+
+![检查](https://user-images.githubusercontent.com/11247099/140885990-1827f5ce-f12a-4ed4-9d63-e5145a65fb4a.png)
 
 ## 06. VsCode插件
 
