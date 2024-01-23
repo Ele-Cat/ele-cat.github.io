@@ -76,6 +76,11 @@ $menu-gap: 6px;
       padding: 10px $menu-gap 0;
     }
   }
+  .VPMenuLink {
+    .VPLink {
+      line-height: 24px;
+    }
+  }
   .title, .link {
     padding: 0 $menu-gap;
     font-weight: normal;
