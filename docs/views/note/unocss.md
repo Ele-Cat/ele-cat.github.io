@@ -100,77 +100,6 @@ import 'virtual:uno.css'; // [!code ++]
 
 ```
 
-### 2.3 其他
-
-#### 2.3.1 图标库
-
-> [Pure CSS icons](https://unocss.dev/presets/icons)，对UnoCSS使用任何带有纯CSS的图标。
-
-1. 安装
-
-::: code-group
-```sh [pnpm]
-pnpm add -D @iconify/json
-```
-```sh [yarn]
-yarn add -D @iconify/json
-```
-```sh [npm]
-npm install -D @iconify/json
-```
-:::
-
-2. 配置
-
-```js
-import {
-  defineConfig,
-  presetUno, // [!code ++]
-  presetIcons, // [!code ++]
-} from "unocss";
-
-export default defineConfig({
-  // ...UnoCSS options
-  presets: [  // [!code ++]
-    presetUno(),  // [!code ++]
-    presetIcons({ // [!code ++]
-      extraProperties: { // [!code ++]
-        display: "inline-block", // [!code ++]
-        "vertical-align": "middle", // [!code ++]
-        // ... // [!code ++]
-      }, // [!code ++]
-    }), // [!code ++]
-  ], // [!code ++]
-});
-```
-
-3. 使用
-
-```vue
-<template>
-  <div class="w-full flex items-center justify-center gap-x-4 text-4xl mt-4">
-    <div class="i-ph-anchor-simple-thin" />
-    <div class="i-mdi-alarm text-orange-400 hover:text-teal-400" />
-    <div class="w-2em h-2em i-logos:vue transform transition-800 hover:rotate-180" />
-    <button class="i-carbon:sun dark:i-carbon:moon !w-2em !h-2em" />
-    <div class="i-twemoji-grinning-face-with-smiling-eyes hover:i-twemoji-face-with-tears-of-joy" />
-    <p class="text-14px">←Hover it</p>
-  </div>
-  <div class="w-full flex items-center justify-center gap-x-4 text-4xl mt-4">
-    <div class="i-vscode-icons:file-type-light-pnpm" />
-    <div class="i-vscode-icons:file-type-light-pnpm?mask text-red-300" />
-  </div>
-</template>
-```
-
-#### 2.3.2 特有的属性模式[Attributify Mode](https://unocss.dev/presets/attributify)
-#### 2.3.3 属性组的写法转换[Variant Groups](https://unocss.dev/transformers/variant-group)
-#### 2.3.4 快捷写法[Shortcuts](https://unocss.dev/config/shortcuts)
-#### 2.3.5 标记[Tagify](https://unocss.dev/presets/tagify)
-#### 2.3.6 网页字体[Web fonts](https://unocss.dev/presets/web-fonts)
-#### 2.3.7 CDN运行时[CDN Runtime](https://unocss.dev/integrations/runtime)
-#### 2.3.8 检查[Inspector](https://unocss.dev/tools/inspector)
-
 ## 03. 常见用法
 
 ### 3.1 交互式文档
@@ -336,13 +265,138 @@ export default defineConfig({
 }
 ```
 
-## 05. VsCode插件
+## 05. 其他
 
-### 5.1 安装插件[UnoCSS](https://marketplace.visualstudio.com/items?itemName=antfu.unocss)
+### 5.1 图标库
+
+> [Pure CSS icons](https://unocss.dev/presets/icons)，对UnoCSS使用任何带有纯CSS的图标。
+
+1. 安装
+
+::: code-group
+```sh [pnpm]
+pnpm add -D @iconify/json
+```
+```sh [yarn]
+yarn add -D @iconify/json
+```
+```sh [npm]
+npm install -D @iconify/json
+```
+:::
+
+2. 配置
+
+```js
+import {
+  defineConfig,
+  presetUno, // [!code ++]
+  presetIcons, // [!code ++]
+} from "unocss";
+
+export default defineConfig({
+  // ...UnoCSS options
+  presets: [  // [!code ++]
+    presetUno(),  // [!code ++]
+    presetIcons({ // [!code ++]
+      extraProperties: { // [!code ++]
+        display: "inline-block", // [!code ++]
+        "vertical-align": "middle", // [!code ++]
+        // ... // [!code ++]
+      }, // [!code ++]
+    }), // [!code ++]
+  ], // [!code ++]
+});
+```
+
+3. 使用
+
+```vue
+<template>
+  <div class="w-full flex items-center justify-center gap-x-4 text-4xl mt-4">
+    <div class="i-ph-anchor-simple-thin" />
+    <div class="i-mdi-alarm text-orange-400 hover:text-teal-400" />
+    <div class="w-2em h-2em i-logos:vue transform transition-800 hover:rotate-180" />
+    <button class="i-carbon:sun dark:i-carbon:moon !w-2em !h-2em" />
+    <div class="i-twemoji-grinning-face-with-smiling-eyes hover:i-twemoji-face-with-tears-of-joy" />
+    <p class="text-14px">←Hover it</p>
+  </div>
+  <div class="w-full flex items-center justify-center gap-x-4 text-4xl mt-4">
+    <div class="i-vscode-icons:file-type-light-pnpm" />
+    <div class="i-vscode-icons:file-type-light-pnpm?mask text-red-300" />
+  </div>
+</template>
+```
+
+### 5.2 特有的属性模式
+
+> [Attributify Mode](https://unocss.dev/presets/attributify)，这将启用其他预设的属性模式。
+
+1. 原始
+
+假设您使用Tailwind CSS的实用程序拥有此按钮。当属性列表变长时，阅读和维护就变得非常困难。
+
+```html
+<button class="bg-blue-400 hover:bg-blue-500 text-sm text-white font-mono font-light py-2 px-4 rounded border-2 border-blue-200 dark:bg-blue-500 dark:hover:bg-blue-600">
+  Button
+</button>
+```
+
+2. 配置
+
+```js
+import {
+  defineConfig,
+  presetUno,
+  presetIcons,
+  presetAttributify, // [!code ++]
+} from "unocss";
+
+export default defineConfig({
+  // ...UnoCSS options
+  presets: [
+    presetUno(),
+    presetIcons({
+      extraProperties: {
+        display: "inline-block",
+        "vertical-align": "middle",
+        // ...
+      },
+    }),
+    presetAttributify(), // [!code ++]
+  ],
+});
+
+```
+
+3. 使用
+
+```html
+<button
+  bg="blue-400 hover:blue-500 dark:blue-500 dark:hover:blue-600"
+  text="sm white"
+  font="mono light"
+  p="y-2 x-4"
+  border="2 rounded blue-200"
+>
+  Button
+</button>
+```
+
+### 5.3 属性组的写法转换[Variant Groups](https://unocss.dev/transformers/variant-group)
+### 5.4 快捷写法[Shortcuts](https://unocss.dev/config/shortcuts)
+### 5.5 标记[Tagify](https://unocss.dev/presets/tagify)
+### 5.6 网页字体[Web fonts](https://unocss.dev/presets/web-fonts)
+### 5.7 CDN运行时[CDN Runtime](https://unocss.dev/integrations/runtime)
+### 5.8 检查[Inspector](https://unocss.dev/tools/inspector)
+
+## 06. VsCode插件
+
+### 6.1 安装插件[UnoCSS](https://marketplace.visualstudio.com/items?itemName=antfu.unocss)
 
 > 安装启用后，页面上就能看出哪些 class 使用 unocss 提供 （带有虚线），并且能显示类名对应的样式内容。
 
-### 5.2 代码提示
+### 6.2 代码提示
 
 1. `ctrl + shift + p` => 输入 `open Setting` => 选择 `首选项：打开用户设置`
 2. 添加以下配置
