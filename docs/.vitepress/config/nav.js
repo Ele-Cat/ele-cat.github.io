@@ -19,6 +19,7 @@ const nav = [
           { text: "UnoCSS", link: "/views/note/unocss" },
           { text: "Vue3", link: "/views/note/vue3" },
           { text: "React", link: "/views/note/react" },
+          { text: "Angular", link: "/views/note/angular" },
           { text: "Electron", link: "/views/note/electron" },
         ],
       },
