@@ -1,8 +1,11 @@
 ---
-outline: [2, 3] # 侧边栏深度
+outline: [2, 3, 4] # 侧边栏深度
 ---
 
 # Angular
+
+- [Angular 官网](https://angular.cn/quick-start)
+- [Material Design 组件库](https://material.angular.cn/)
 
 ## 01. Angular 简介
 
@@ -139,18 +142,20 @@ export class BindingsComponent {
 
 :::
 
-可以用[指令](https://angular.cn/guide/built-in-directives)来为模板添加额外功能。Angular 中最常用的指令是 [*ngIf](https://angular.cn/api/common/NgIf) 和 [*ngFor](https://angular.cn/api/common/NgFor)。你可以使用指令执行各种任务，比如动态修改 DOM 结构。你还可以用自定义指令来创建出色的用户体验。
+可以用[指令](https://angular.cn/guide/built-in-directives)来为模板添加额外功能。Angular 中最常用的指令是 [\*ngIf](https://angular.cn/api/common/NgIf) 和 [\*ngFor](https://angular.cn/api/common/NgFor)。你可以使用指令执行各种任务，比如动态修改 DOM 结构。你还可以用自定义指令来创建出色的用户体验。
 
 ::: details `ngIf` 指令示例
 
 :::code-group
 
 ```ts [ngif.component.ts]
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
+import { CommonModule } from "@angular/common";
 
 @Component({
-  selector: 'app-ngif',
-  templateUrl: './ngif.component.html'
+  selector: "app-ngif",
+  templateUrl: "./ngif.component.html",
+  imports: [CommonModule],
 })
 export class NgifComponent {
   message = "I'm read only!";
@@ -159,7 +164,7 @@ export class NgifComponent {
   onEditClick() {
     this.canEdit = !this.canEdit;
     if (this.canEdit) {
-      this.message = 'You can edit me!';
+      this.message = "You can edit me!";
     } else {
       this.message = "I'm read only!";
     }
@@ -186,5 +191,31 @@ export class NgifComponent {
 :::
 
 #### 1.2.3 依赖注入
+
+1. 定义依赖项：首先，需要定义要注入的依赖项。这可以是服务、组件、管道或其他可注入的对象。
+2. 提供依赖项：然后，需要在应用程序的某个地方提供这些依赖项。通常，在 Angular 中使用提供商（Provider）来提供依赖项。提供商告诉 Angular 如何创建和获取依赖项的实例。
+3. 注入依赖项：最后，在需要使用依赖项的地方，通过依赖注入将其注入到目标对象中。Angular 会自动解析依赖项并将其传递给目标对象。
+
+### 1.3 Angular CLI
+
+> Angular CLI 是开发 Angular 应用的最快、最简单和推荐的方式。Angular CLI 能简化许多任务。
+
+1. 全局安装
+
+```sh
+npm i -g @angular/cli
+# 查看脚手架版本
+ng version
+```
+
+2. 基础命令
+
+| 命令        | 详情                                                        |
+| ----------- | ----------------------------------------------------------- |
+| ng serve    | 构建你的应用并启动开发服务器，当有文件变化时就重新构建。    |
+| ng build    | 把 Angular 应用编译到一个输出目录中。                       |
+| ng generate | 基于原理图（schematic）生成或修改某些文件。                 |
+| ng test     | 在指定的项目上运行单元测试。                                |
+| ng e2e      | 构建一个 Angular 应用并启动开发服务器，然后运行端到端测试。 |
 
 <!-- <Comment /> -->
