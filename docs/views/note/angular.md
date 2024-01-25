@@ -204,12 +204,14 @@ export class NgifComponent {
 1. 全局安装
 
 ```sh
-npm i -g @angular/cli
+npm install -g @angular/cli
 # 查看脚手架版本
 ng version
 ```
 
 2. 基础命令
+
+`ng` **<命令名> <必选参数> [可选参数]** `[选项]`
 
 | 命令        | 详情                                                        |
 | ----------- | ----------------------------------------------------------- |
@@ -218,5 +220,7 @@ ng version
 | ng generate | 基于原理图（schematic）生成或修改某些文件。                 |
 | ng test     | 在指定的项目上运行单元测试。                                |
 | ng e2e      | 构建一个 Angular 应用并启动开发服务器，然后运行端到端测试。 |
+
+3. [命令概览](https://angular.cn/cli#command-overview)
 
 <!-- <Comment /> -->
