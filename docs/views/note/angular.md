@@ -223,4 +223,19 @@ ng version
 
 3. [命令概览](https://angular.cn/cli#command-overview)
 
+### 1.4 生态库
+
+| 库                                                            | 详情                                                                                              |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| [Angular 路由器 ](https://angular.cn/guide/router)            | 高级的客户侧导航功能与基于 Angular 组件的路由机制。支持惰性加载、嵌套路由、自定义路径匹配规则等。 |
+| [Angular 表单 ](https://angular.cn/guide/forms-overview)      | 统一的表单填报与验证体系。                                                                        |
+| [Angular HttpClient](https://angular.cn/guide/http)           | 健壮的 HTTP 客户端库，它可以支持更高级的客户端-服务器通讯。                                       |
+| [Angular 动画 ](https://angular.cn/guide/animations)          | 丰富的动画体系，用于驱动基于应用状态的动画。                                                      |
+| [Angular PWA ](https://angular.cn/guide/service-worker-intro) | 一些用于构建渐进式 Web 应用（PWA）的工具，包括 Service Worker 和 Web 应用清单（Manifest）。       |
+| [Angular 原理图 ](https://angular.cn/guide/schematics)        | 一些搭建脚手架、重构和升级的自动化工具。用于简化大规模应用的开发。                                |
+
+### 1.5 小练习
+
+> 跟随[Angular 入门](https://angular.cn/start)，学习基础
+
 <!-- <Comment /> -->
