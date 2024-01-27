@@ -251,6 +251,27 @@ ng version
 
 #### 2.1.1 使用 `Angular CLI` 创建组件
 
+```sh
+ng generate component <component-name>
+```
+
 #### 2.1.2 手动创建组件
+
+1. 创建目录`<component-name>`，在该目录下创建 `<component-name>.component.ts` 文件
+2. 在文件顶部添加
+
+```ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-<component-name>',
+  templateUrl: './<component-name>.component.html',
+  styleUrls: ['./<component-name>.component.css']
+})
+
+export class ComponentOverviewComponent {
+
+}
+```
 
 <!-- <Comment /> -->
