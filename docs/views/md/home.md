@@ -43,8 +43,8 @@ example/vue3/02
 
 <div class="appreciate">
 
-![微信赞赏码](/images/1651905141755.jpg)
-![支付宝收款码](/images/1651905463193.jpg)
+![微信赞赏码](/images/1651905141755.jpg){data-zoomable}
+![支付宝收款码](/images/1651905463193.jpg){data-zoomable}
 
 </div>
 </div>

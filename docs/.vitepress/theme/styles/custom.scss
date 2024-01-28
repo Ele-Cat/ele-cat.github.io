@@ -250,3 +250,10 @@ blockquote {
   padding: 6px 0;
   border-left: 4px solid var(--vp-c-brand-1) !important;
 }
+
+.medium-zoom-overlay {
+  z-index: 90;
+  & + .medium-zoom-image {
+    z-index: 91;
+  }
+}
