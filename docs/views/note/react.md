@@ -634,7 +634,7 @@ ReactDOM.render(<Life />, document.getElementById("test"));
 
 #### 2.6.3 生命周期流程图(旧)
 
-![生命周期流程图旧](/images/1676897002197.jpg)
+![生命周期流程图旧](/images/1676897002197.jpg){data-zoomable}
 
 生命周期的三个阶段（旧）
 
@@ -775,7 +775,7 @@ ReactDOM.render(<Count />, document.getElementById("test"));
 
 #### 2.6.4 生命周期流程图(新)
 
-![生命周期流程图新](/images/1676896952493.jpg)
+![生命周期流程图新](/images/1676896952493.jpg){data-zoomable}
 
 生命周期的三个阶段（新）
 

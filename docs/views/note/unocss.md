@@ -540,7 +540,7 @@ export default defineConfig({
 
 访问Vite dev服务器中的[http://127.0.0.1:5173/__unocss](http://127.0.0.1:5173/__unocss)以查看检查器。检查器允许您检查为每个文件生成的CSS规则和应用的类。它还提供了一个REPL来测试基于您当前配置的实用程序。
 
-![检查](https://user-images.githubusercontent.com/11247099/140885990-1827f5ce-f12a-4ed4-9d63-e5145a65fb4a.png)
+![检查](https://user-images.githubusercontent.com/11247099/140885990-1827f5ce-f12a-4ed4-9d63-e5145a65fb4a.png){data-zoomable}
 
 ## 06. VsCode插件
 
