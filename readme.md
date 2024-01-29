@@ -25,3 +25,7 @@ npm run serve
 ```
 npm run build
 ```
+
+## 插件
+
+- medium-zoom 图片放大插件
