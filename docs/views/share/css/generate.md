@@ -12,7 +12,7 @@ outline: 3
 
 ### 颜色转换
 
-颜色转换示例
+<Example path="example/css/generate/05" />
 
 ### 生成 Flex
 
