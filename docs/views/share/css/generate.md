@@ -22,6 +22,16 @@ outline: 3
 
 这里放置动态生成三角形代码
 
+
+### 列表样式
+
+```css
+some-ele {
+  list-style: <replace here>;
+}
+```
+<Example path="example/css/generate/04" />
+
 ### 图片滤镜 filter
 
 <Example path="example/css/generate/01" />

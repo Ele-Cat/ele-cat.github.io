@@ -8,7 +8,6 @@
           </div>
         </div>
       </div>
-      {{boxFormState}}
     </a-col>
     <a-col :span="24">
       <h4>flex box配置</h4>
@@ -27,7 +26,17 @@
           </a-form-item>
         </a-form>
       </div>
-      <h4>flex item配置</h4>
+      <div class="example-source-wrapper">
+        <div class="language-css">
+          <pre>
+    flex-direction: {{boxFormState["flex-direction"]}};
+    flex-wrap: {{boxFormState["flex-wrap"]}};
+    justify-content: {{boxFormState["justify-content"]}};
+    align-items: {{boxFormState["align-items"]}};
+    align-content: {{boxFormState["align-content"]}};</pre>
+        </div>
+      </div>
+      <!-- <h4>flex item配置</h4> -->
     </a-col>
   </a-row>
 </template>
