@@ -30,6 +30,8 @@
       <span><Loading11 /></span>
       <span><Loading12 /></span>
       <span><Loading13 /></span>
+      <span><Loading14 /></span>
+      <span><Loading15 /></span>
     </a-carousel>
     <div class="current">{{ currentLoading }}</div>
   </div>
@@ -52,6 +54,8 @@ import Loading10 from "./components/Loading10.vue";
 import Loading11 from "./components/Loading11.vue";
 import Loading12 from "./components/Loading12.vue";
 import Loading13 from "./components/Loading13.vue";
+import Loading14 from "./components/Loading14.vue";
+import Loading15 from "./components/Loading15.vue";
 
 const currentLoading = ref("01");
 

@@ -29,6 +29,8 @@ example/css/loading/Index
 <<< ../../example/css/loading/components/Loading11.vue [11]
 <<< ../../example/css/loading/components/Loading12.vue [12]
 <<< ../../example/css/loading/components/Loading13.vue [13]
+<<< ../../example/css/loading/components/Loading14.vue [14]
+<<< ../../example/css/loading/components/Loading15.vue [15]
 
 :::
 

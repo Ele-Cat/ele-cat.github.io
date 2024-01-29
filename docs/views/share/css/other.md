@@ -16,10 +16,10 @@ NES 红白机风格的 CSS 框架，主要的实现原理是通过将字体 Pres
 
 ### Shapes generated
 
-用 CSS 渐变实现的形状，[演示地址](https://yuanchuan.dev/gradient-shapes/) [项目地址](https://github.com/yuanchuan/gradient-shapes)
+用 CSS 渐变实现的形状，[演示地址](https://yuanchuan.github.io/gradient-shapes/) [项目地址](https://github.com/yuanchuan/gradient-shapes)
 
 <div class="iframe-box">
-  <iframe src="https://yuanchuan.dev/gradient-shapes/"></iframe>
+  <iframe src="https://yuanchuan.github.io/gradient-shapes/"></iframe>
 </div>
 
 ### A Single Div
