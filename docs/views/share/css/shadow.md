@@ -31,4 +31,10 @@ example/css/shadow/02
 example/css/shadow/03
 :::
 
+### 纸页效果
+
+:::demo
+example/css/shadow/04
+:::
+
 <Comment />
