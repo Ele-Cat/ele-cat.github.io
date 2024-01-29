@@ -63,6 +63,10 @@ const sidebar = {
           link: "/views/share/css/generate",
         },
         {
+          text: "样式重置",
+          link: "/views/share/css/reset",
+        },
+        {
           text: "文字",
           link: "/views/share/css/text",
         },
