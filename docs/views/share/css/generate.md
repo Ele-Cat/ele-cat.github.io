@@ -18,9 +18,13 @@ outline: 3
 
 <Example path="example/css/generate/02" />
 
+### 生成 Grid
+
+这里放置动态生成Grid示例
+
 ### 生成三角形
 
-这里放置动态生成三角形代码
+这里放置动态生成三角形示例
 
 
 ### 列表样式
