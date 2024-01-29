@@ -4,6 +4,12 @@ outline: 3
 
 ## 文字
 
+### 文字截断
+
+::: demo
+example/css/text/11
+:::
+
 ### SVG 动态文字
 
 ::: demo

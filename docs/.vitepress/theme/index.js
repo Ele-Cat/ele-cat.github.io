@@ -27,7 +27,7 @@ export default {
   setup() {
     const route = useRoute();
     const initZoom = () => {
-      mediumZoom('[data-zoomable]', { background: 'var(--vp-c-bg)' }); 
+      mediumZoom('[data-zoomable]', { background: 'var(--vp-c-bg-opacity)' }); 
       // mediumZoom('.main img', { background: 'var(--vp-c-bg)' });
     };
     onMounted(() => {

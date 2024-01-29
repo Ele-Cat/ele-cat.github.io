@@ -16,7 +16,7 @@
 .text-magic {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 58%;
   transform: translate(-50%, -50%) scale(2.4);
   width: 300px;
   font-size: 32px;
@@ -26,7 +26,7 @@
 .white {
   position: absolute;
   left: -3px;
-  width: 100%;
+  width: 88%;
   height: 3px;
   background: #000;
   z-index: 4;
