@@ -16,6 +16,9 @@ outline: 3
 
 ### 生成 Flex
 
+- [塔防游戏](http://www.flexboxdefense.com/)
+- [青蛙回家](https://flexboxfroggy.com/)
+
 <Example path="example/css/generate/02" />
 
 ### 生成 Grid
