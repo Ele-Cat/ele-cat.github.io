@@ -32,7 +32,7 @@ example/css/experience/02
 ```css
 // 在特定位置使用特定鼠标样式
 some-ele {
-  cursor: replace here;
+  cursor: <replace here>;
 }
 ```
 
@@ -40,6 +40,12 @@ some-ele {
 
 :::demo
 example/css/experience/03
+:::
+
+### 图片光影
+
+:::demo
+example/css/experience/05
 :::
 
 <Comment />
