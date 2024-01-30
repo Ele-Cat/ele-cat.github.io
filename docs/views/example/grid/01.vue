@@ -28,36 +28,36 @@
 .one {
   grid-column: 1 / 2;
   grid-row: 1;
-  background: #19CAAD;
+  background: var(--c-red);
 }
 
 .two {
   grid-column: 2 / 4;
   grid-row: 1 / 3;
-  background: #8CC7B5;
+  background: var(--c-orange);
 }
 
 .three {
   grid-row: 2 / 5;
   grid-column: 1;
-  background: #D1BA74;
+  background: var(--c-yellow);
 }
 
 .four {
   grid-column: 3;
   grid-row: 3;
-  background: #BEE7E9;
+  background: var(--c-olive);
 }
 
 .five {
   grid-column: 2;
   grid-row: 3/5;
-  background: #E6CEAC;
+  background: var(--c-cyan);
 }
 
 .six {
   grid-column: 3;
   grid-row: 4;
-  background: #ECAD9E;
+  background: var(--c-blue);
 }
 </style>

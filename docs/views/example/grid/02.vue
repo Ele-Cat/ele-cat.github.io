@@ -30,26 +30,26 @@
 }
 
 .one {
-  background: #19CAAD;
+  background: var(--c-red);
 }
 
 .two {
-  background: #8CC7B5;
+  background: var(--c-orange);
 }
 
 .three {
-  background: #D1BA74;
+  background: var(--c-yellow);
 }
 
 .four {
-  background: #BEE7E9;
+  background: var(--c-olive);
 }
 
 .five {
-  background: #E6CEAC;
+  background: var(--c-cyan);
 }
 
 .six {
-  background: #ECAD9E;
+  background: var(--c-blue);
 }
 </style>
