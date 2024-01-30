@@ -16,12 +16,13 @@ outline: 3
 
 ### 生成 Flex
 
+[Flex 详解](./flex)
+
 <Example path="example/css/generate/02" />
 
-<!--@include: ../../md/flex.md-->
-
-
 ### 生成 Grid
+
+[Grid 详解](./grid)
 
 这里放置动态生成Grid示例
 
