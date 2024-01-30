@@ -1,12 +1,5 @@
 # Markdown Import
 
-## Sub Menu
+### Sub Menu
 
-```js
-const a = 1;
-const b = 2;
-
-function sum() {
-  return a + b;
-}
-```
+> This is a test.

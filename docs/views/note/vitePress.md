@@ -598,15 +598,20 @@ export default config;
 
 ### 包含 markdown 文件
 
-输入
+::: tip
+所选行范围的格式可以是： `{3,}`、 `{,10}`、`{1,10}`
+:::
 
+输入： `<!--` `@include: ./vitePress-import.md{3,}` `-->`
+
+./vitePress-import.md 3-结尾 内容：
 ```md
-<!--@include: ./vitePress-import.md-->
+<!--@include: ./vitePress-import.md{3,}-->
 ```
 
-输出
+输出：
 
-<!--@include: ./vitePress-import.md{5,}-->
+<!--@include: ./vitePress-import.md{3,}-->
 
 ### 数学方程
 
@@ -654,7 +659,5 @@ The count is: {{ count }}
   border-radius: 8px;
 }
 </style>
-
-<Comment />
 
 <Comment />
