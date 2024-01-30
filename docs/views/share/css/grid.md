@@ -39,5 +39,6 @@ example/grid/02
 ## 参考资料
 
 - [最强大的 CSS 布局 —— Grid 布局](https://juejin.cn/post/6854573220306255880)
+- [CSS gap属性进化史](https://www.zhangxinxu.com/wordpress/2020/06/css-gap-history/)
 
 <!-- <Comment /> -->
