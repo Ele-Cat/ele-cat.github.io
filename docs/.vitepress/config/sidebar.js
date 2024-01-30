@@ -55,7 +55,7 @@ const sidebar = {
   // 当用户位于 `share/css` 目录时，会显示此侧边栏
   "/views/share/css/": [
     {
-      text: "知识点",
+      text: "Css知识点",
       collapsed: true,
       items: [
         {
@@ -69,7 +69,7 @@ const sidebar = {
       ]
     },
     {
-      text: "效果",
+      text: "Css效果",
       collapsed: true,
       items: [
         {
