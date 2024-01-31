@@ -23,7 +23,7 @@ Grid 布局远比 Flex 布局强大！
 1. 容器和项目：我们通过在元素上声明 `display：grid` 或 `display：inline-grid` 来创建一个网格容器。一旦我们这样做，这个元素的所有**直系子元素**将成为网格项目。比如上面 `.wrapper` 所在的元素为一个网格容器，其直系子元素将成为网格项目。
 2. 网格轨道：`grid-template-columns` 和 `grid-template-rows` 属性来定义网格中的行和列。容器内部的水平区域称为行，垂直区域称为列。下图中 `One`、`Two`、`Three` 组成了一行，`One`、`Four` 则是一列网格单元：一个网格单元是在一个网格元素中最小的单位， 从概念上来讲其实它和表格的一个单元格很像。下图中 `One`、`Two`、`Three`、`Four`...都是一个个的网格单元
 3. 网格线：划分网格的线，称为"网格线"。应该注意的是，当我们定义网格时，我们定义的是**网格轨道**，而不是网格线。Grid 会为我们创建编号的网格线来让我们来定位每一个网格元素。m 列有 m + 1 根垂直的网格线，n 行有 n + 1 跟水平网格线。比如下图示例中就有 4 根垂直网格线。一般而言，是从左到右，从上到下，1，2，3 进行编号排序。当然也可以从右到左，从下到上，按照 -1，-2，-3...顺序进行编号排序
-![网格线](/images/1706605565118.jpg){data-zoomable}
+![网格线](/images/1706661514641.jpg){data-zoomable}
 4. 示例&代码
 
 ::: demo
@@ -32,6 +32,77 @@ example/grid/02
 
 ## 容器属性
 
+### display
+
+我们通过在元素上声明 `display：grid` 或 `display：inline-grid` 来创建一个网格容器。声明 `display：grid` 则该容器是一个块级元素，设置成 `display: inline-grid` 则容器元素为行内元素。
+
+```css
+.wrapper {
+  display: grid;
+}
+.inline-wrapper {
+  display: inline-grid;
+}
+```
+
+::: demo
+example/grid/03
+:::
+
+### grid-template-columns 和 grid-template-rows
+
+`grid-template-columns` 属性设置列宽，`grid-template-rows` 属性设置行高。
+
+1. 固定列宽和行高
+
+```css
+.wrapper {
+  display: grid;
+  /*  声明了三列，宽度分别为 200px 100px 200px */
+  grid-template-columns: 200px 100px 200px;
+  grid-gap: 10px;
+  /*  声明了两行，行高分别为 50px 50px  */
+  grid-template-rows: 50px 50px;
+}
+```
+
+::: demo
+example/grid/04
+:::
+
+2. repeat() 函数
+
+repeat() 函数可以简化重复的值。该函数接受两个参数，第一个参数是重复的次数，第二个参数是所要重复的值。比如上面行高都是一样的，我们可以这么去实现，实际效果是一模一样的。
+
+```css
+.wrapper {
+  display: grid;
+  grid-template-columns: 200px 100px 200px;
+  grid-gap: 10px;
+  /*  2行，而且行高都为 50px  */
+  grid-template-rows: repeat(2, 50);
+}
+```
+
+::: demo
+example/grid/05
+:::
+
+> auto-fill 关键字：表示自动填充，让一行（或者一列）中尽可能的容纳更多的单元格。grid-template-columns: repeat(auto-fill, 200px) 表示列宽是 200 px，但列的数量是不固定的，只要浏览器能够容纳得下，就可以放置元素，代码以及效果如下所示【拖动缩放浏览器查看效果】：
+> ```css
+> .wrapper {
+>   display: grid;
+>   grid-template-columns: repeat(auto-fill, 200px);
+>   grid-gap: 5px;
+>   grid-auto-rows: 50px;
+> }
+> ```
+
+::: demo
+example/grid/06
+:::
+
+
 ## 项目属性
 
 ## 实战示例
@@ -39,6 +110,5 @@ example/grid/02
 ## 参考资料
 
 - [最强大的 CSS 布局 —— Grid 布局](https://juejin.cn/post/6854573220306255880)
-- [CSS gap属性进化史](https://www.zhangxinxu.com/wordpress/2020/06/css-gap-history/)
 
 <!-- <Comment /> -->
