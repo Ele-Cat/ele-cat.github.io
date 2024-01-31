@@ -1,5 +1,5 @@
 <template>
-  <h4>grid-auto-rows; -- 横向时生效</h4>
+  <h4>grid-auto-rows: xxx; -- 横向时生效</h4>
   <div class="wrapper">
     <div class="one item">One</div>
     <div class="two item">Two</div>
@@ -12,7 +12,7 @@
     <div class="nine item">Nine</div>
   </div>
 
-  <h4>grid-auto-columns; -- 纵向时生效</h4>
+  <h4>grid-auto-columns: xxx; -- 纵向时生效</h4>
   <div class="wrapper-1">
     <div class="one item">One</div>
     <div class="two item">Two</div>
