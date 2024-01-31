@@ -153,7 +153,7 @@ example/grid/09
 grid-row-gap 属性、grid-column-gap 属性分别设置行间距和列间距。 grid-gap 属性是两者的简写形式。
 
 ::: warning
-`grid-row-gap`、`grid-column-gap`、`grid-gap`都已被废弃，现在改成`row-gap`、`column-gap`和`gap`，当然之前的还能用。
+`grid-row-gap`、`grid-column-gap`、`grid-gap`都已被废弃，现在改成`row-gap`、`column-gap`和`gap`，当然之前的还能用【并且 grid-\*更加清晰】。
 :::
 
 ```css
@@ -164,9 +164,11 @@ grid-row-gap 属性、grid-column-gap 属性分别设置行间距和列间距。
   gap: 10px 20px;
 }
 ```
+
 等同于
+
 ```css
-.wrapper-1 {
+.wrapper {
   display: grid;
   grid-template-columns: 200px 100px 100px;
   grid-auto-rows: 50px;
@@ -177,6 +179,74 @@ grid-row-gap 属性、grid-column-gap 属性分别设置行间距和列间距。
 
 ::: demo
 example/grid/10
+:::
+
+### grid-template-areas
+
+`grid-template-areas` 属性用于定义区域，一个区域由一个或者多个单元格组成，一般这个属性跟网格元素的 `grid-area` 一起使用，指定项目放在哪一个区域。
+
+上面代码表示划分出 6 个单元格，其中值得注意的是 `.` 符号代表空的单元格，也就是没有用到该单元格。并将类 `.sidebar` `.content` `.header`所在的元素放在上面 `grid-template-areas` 中定义的 `sidebar` `content` `header` 区域中。
+
+::: demo
+example/grid/11
+:::
+
+### grid-auto-flow
+
+`grid-auto-flow` 属性控制着自动布局算法怎样运作，精确指定在网格中被自动布局的元素怎样排列。默认的放置顺序是"先行后列"，即先填满第一行，再开始放入第二行，即下图英文数字的顺序 `one`,`two`,`three`...。这个顺序由 `grid-auto-flow` 属性决定，默认值是 `row`。
+
+```css
+.wrapper {
+  grid-auto-flow: row | column | dense | row dense | column dense;
+}
+```
+
+::: demo
+example/grid/12
+:::
+
+### justify-items 、align-items 以及 place-items
+
+`justify-items` 属性设置单元格内容的水平位置（左中右），`align-items` 属性设置单元格的垂直位置（上中下）。默认值 `stretch`。
+
+```css
+.wrapper {
+  justify-items: start | end | center | stretch;
+  align-items: start | end | center | stretch;
+}
+```
+
+::: demo
+example/grid/13
+:::
+
+### justify-content 、align-content 以及 place-content
+
+`justify-content` 属性是整个内容区域在容器里面的水平位置（左中右），`align-content` 属性是整个内容区域的垂直位置（上中下）。它们都有如下的属性值。
+
+```css
+.container {
+  justify-content: start | end | center | stretch | space-around | space-between | space-evenly;
+  align-content: start | end | center | stretch | space-around | space-between | space-evenly;  
+}
+```
+
+::: demo
+example/grid/14
+:::
+
+### grid-auto-columns 和 grid-auto-rows
+
+:::info 概念解读
+在讲 `grid-auto-columns` 属性和 `grid-auto-rows` 属性之前，先来看看隐式和显示网格的概念。
+
+隐式和显示网格：显式网格包含了你在 `grid-template-columns` 和 `grid-template-rows` 属性中定义的行和列。如果你在网格定义之外又放了一些东西，或者因为内容的数量而需要的更多网格轨道的时候，网格将会在隐式网格中创建行和列。
+
+假如有多余的网格（也就是上面提到的隐式网格），那么它的行高和列宽可以根据 `grid-auto-columns` 属性和 `grid-auto-rows` 属性设置。它们的写法和 `grid-template-columns` 和 `grid-template-rows` 完全相同。如果不指定这两个属性，浏览器完全根据单元格内容的大小，决定新增网格的列宽和行高。
+:::
+
+::: demo
+example/grid/15
 :::
 
 ## 项目属性
