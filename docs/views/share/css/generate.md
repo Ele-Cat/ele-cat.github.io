@@ -24,20 +24,16 @@ outline: 3
 
 [Grid 详解](./grid)
 
-这里放置动态生成Grid示例
+<!-- 这里放置动态生成Grid示例 -->
 
 ### 生成三角形
 
-这里放置动态生成三角形示例
-
+<Example path="example/css/generate/06" />
 
 ### 列表样式
 
-```css
-some-ele {
-  list-style: <replace here>;
-}
-```
+> `list-style` 属性是设置 `list-style-position`、`list-style-image`和`list-style-type` 的简写属性。
+
 <Example path="example/css/generate/04" />
 
 ### 图片滤镜 filter

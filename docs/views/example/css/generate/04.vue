@@ -1,19 +1,56 @@
 <template>
+  <div class="example-source-wrapper">
+    <div class="language-css">
+      <pre v-if="imageValue">
+  .list {
+    list-style-type: {{ typeValue }};
+    list-style-position: {{ positionValue }};
+    list-style-image: url("{{ imageValue }}");
+  }</pre>
+      <pre v-else>
+  .list {
+    list-style-type: {{ typeValue }};
+    list-style-position: {{ positionValue }};
+  }</pre>
+    </div>
+  </div>
+  同：
+  <div class="example-source-wrapper">
+    <div class="language-css">
+      <pre v-if="imageValue">
+  .list {
+    list-style: {{ positionValue }} url("{{ imageValue }}") {{ typeValue }};
+  }</pre>
+      <pre v-else>
+  .list {
+    list-style: {{ positionValue }} {{ typeValue }};
+  }</pre>
+    </div>
+  </div>
   <div class="flex">
-    <ul :style="{listStyle: typeValue}">
+    <ul :style="{ listStyleType: typeValue, listStylePosition: positionValue, listStyleImage: imageValue && `url(${imageValue})` }">
       <li v-for="item in list" :key="item">{{ item }}</li>
     </ul>
 
-    <a-radio-group v-model:value="typeValue" @change="handleRadioChange">
-      <a-radio v-for="item in types" :key="item.value" :value="item.value">{{ item.value }} - {{ item.label }}</a-radio>
-    </a-radio-group>
+    <div class="radio-group">
+      <h4>list-style-type 配置：</h4>
+      <a-radio-group v-model:value="typeValue">
+        <a-radio v-for="item in types" :key="item.value" :value="item.value">{{ item.value }} - {{ item.label }}</a-radio>
+      </a-radio-group>
+      <h4>list-style-position 配置：</h4>
+      <a-radio-group v-model:value="positionValue">
+        <a-radio v-for="item in positions" :key="item.value" :value="item.value">{{ item.label }}</a-radio>
+      </a-radio-group>
+      <h4>list-style-image 配置：</h4>
+      <a-radio-group v-model:value="imageValue">
+        <a-radio v-for="item in yesOrNo" :key="item.value" :value="item.value">{{ item.label }}</a-radio>
+      </a-radio-group>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { useClipboard } from '@vueuse/core'
-import { message } from 'ant-design-vue';
 
 const list = [
   "HTML5",
@@ -159,37 +196,59 @@ const types = [
   },
 ]
 
-const typeValue = ref("disc");
-const handleRadioChange = async (e) => {
-  const { copy, isSupported } = useClipboard({
-    source: `list-style: ${e.target.value};`,
-    read: false,
-  })
+const positions = [
+  {
+    value: "inside",
+    label: "inside"
+  },
+  {
+    value: "outside",
+    label: "outside"
+  },
+]
 
-  if (!isSupported) {
-    message.error('复制失败')
-  }
-  try {
-    await copy()
-    message.success('已复制')
-  } catch (e) {
-    message.error(e.message)
-  }
-}
+const yesOrNo = [
+  {
+    value: "",
+    label: "不使用图片"
+  },
+  {
+    value: "https://qishaoxuan.github.io/css_tricks/assets/img/arrow.0ad29aea.svg",
+    label: "使用图片"
+  },
+]
+
+const typeValue = ref("disc");
+const positionValue = ref("inside");
+const imageValue = ref("");
 </script>
 
 <style lang="scss">
 .flex {
   display: flex;
+
   ul {
     width: 140px;
+    padding: 0;
+
     li {
       margin-top: 0;
+      background-color: var(--c-gray);
     }
   }
-  .ant-radio-group {
+
+  .radio-group {
     flex: 1;
+    margin-left: 12px;
+    .ant-radio-group {
+      width: 100%;
+      padding: 4px;
+    }
+    h4 {
+      margin: 6px 0 4px;
+    }
   }
+
   .ant-radio-wrapper {
     width: 48.5%;
   }
