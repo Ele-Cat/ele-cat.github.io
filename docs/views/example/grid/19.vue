@@ -6,15 +6,20 @@
     <div class="four item">Four</div>
     <div class="five item">Five</div>
     <div class="six item">Six</div>
+    <div class="seven item">Seven</div>
+    <div class="eight item">eight</div>
+    <div class="nine item">Nine</div>
   </div>
 </template>
 
 <style scoped>
 .wrapper {
+  margin: 20px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
-  grid-auto-rows: minmax(50px, auto);
+  grid-template-columns: repeat(auto-fit, 100px);
+  grid-gap: 10px 20px;
+  grid-auto-rows: 50px;
+  background-color: var(--vp-c-bg);
 }
 
 .item {
@@ -26,38 +31,38 @@
 }
 
 .one {
-  grid-column: 1 / 2;
-  grid-row: 1;
   background: var(--c-red);
 }
 
 .two {
-  grid-column: 2 / 4;
-  grid-row: 1 / 3;
   background: var(--c-orange);
 }
 
 .three {
-  grid-row: 2 / 5;
-  grid-column: 1;
   background: var(--c-yellow);
 }
 
 .four {
-  grid-column: 3;
-  grid-row: 3;
   background: var(--c-olive);
 }
 
 .five {
-  grid-column: 2;
-  grid-row: 3/5;
   background: var(--c-cyan);
 }
 
 .six {
-  grid-column: 3;
-  grid-row: 4;
   background: var(--c-blue);
+}
+
+.seven {
+  background: var(--c-purple);
+}
+
+.eight {
+  background: var(--c-mauve);
+}
+
+.nine {
+  background: var(--c-pink);
 }
 </style>

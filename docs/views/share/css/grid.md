@@ -14,7 +14,7 @@ example/grid/01
 
 ## Grid VS Flex
 
-讲到布局，我们就会想到 Flex 布局，甚至有人认为竟然有 Flex 布局了，似乎没有必要去了解 Grid 布局。但 Flex 布局和 Grid 布局有实质的区别，那就是 Flex 布局是一维布局，Grid 布局是二维布局。Flex 布局一次只能处理一个维度上的元素布局，一行或者一列。Grid 布局是将容器划分成了“行”和“列”，产生了一个个的网格，我们可以将网格元素放在与这些行和列相关的位置上，从而达到我们布局的目的。
+讲到布局，我们就会想到 Flex 布局，甚至有人认为既然有 Flex 布局了，似乎没有必要去了解 Grid 布局。但 Flex 布局和 Grid 布局有实质的区别，那就是 Flex 布局是一维布局，Grid 布局是二维布局。Flex 布局一次只能处理一个维度上的元素布局，一行或者一列。Grid 布局是将容器划分成了“行”和“列”，产生了一个个的网格，我们可以将网格元素放在与这些行和列相关的位置上，从而达到我们布局的目的。
 
 Grid 布局远比 Flex 布局强大！
 
@@ -257,10 +257,10 @@ example/grid/15
 
 可以指定网格项目所在的四个边框，分别定位在哪根网格线，从而指定项目的位置
 
-- grid-column-start 属性：左边框所在的垂直网格线
-- grid-column-end 属性：右边框所在的垂直网格线
-- grid-row-start 属性：上边框所在的水平网格线
-- grid-row-end 属性：下边框所在的水平网格线
+- `grid-column-start` 属性：左边框所在的垂直网格线
+- `grid-column-end` 属性：右边框所在的垂直网格线
+- `grid-row-start` 属性：上边框所在的水平网格线
+- `grid-row-end` 属性：下边框所在的水平网格线
 
 ::: demo
 example/grid/16
@@ -268,13 +268,12 @@ example/grid/16
 
 ### grid-area
 
-`grid-area` 属性指定项目放在哪一个区域，在上面介绍 [grid-template-areas](#grid-template-areas) 时有讲。
+`grid-area` 属性指定项目放在哪一个区域，在上面介绍 [`grid-template-areas`](#grid-template-areas) 时有讲。
 
 ### justify-self 、align-self 以及 place-self
 
-- justify-self 属性设置单元格内容的水平位置（左中右），跟 justify-items 属性的用法完全一致，但只作用于单个项目
-- align-self 属性设置单元格内容的垂直位置（上中下），跟align-items属性的用法完全一致，也是只作用于单个项目
-两者很相像。
+- `justify-self` 属性设置单元格内容的水平位置（左中右），跟 `justify-items` 属性的用法完全一致，但只作用于单个项目。
+- `align-self` 属性设置单元格内容的垂直位置（上中下），跟 `align-items` 属性的用法完全一致，也是只作用于单个项目。
 
 ```css
 .item {
@@ -287,11 +286,55 @@ example/grid/16
 example/grid/17
 :::
 
-
 ## 实战示例
+
+### 等分响应式
+
+> 解析：`fr` 等分单位，可以将容器的可用空间分成想要的多个等分空间。利用这个特性，我们能够轻易实现一个等分响应式。`grid-template-columns: 1fr 1fr 1fr` 表示容器分为三等分。代码以及效果如下所示【拖动缩放浏览器宽度查看效果】
+
+::: demo
+example/grid/18
+:::
+
+### 固定列宽，列数量变化
+
+> 解析：网格能够固定列宽，并根据容器的宽度来改变列的数量。这个时候，我们可以用到上面提到 `repeat()` 函数以及 `auto-fit` 关键字。`grid-template-columns: repeat(auto-fit, 200px)` 表示固定列宽为 200px，数量是自适应的，只要容纳得下，就会往上排列，代码以及效果如下所示【拖动缩放浏览器宽度查看效果】
+
+::: demo
+example/grid/19
+:::
+
+### 最小宽度，去掉右侧空白
+
+::: warning 提示
+上例中，右侧通常会留下空白，这是我们不希望看到的。
+:::
+
+> 如果列的宽度也能在某个范围内自适应就好了。`minmax()` 函数就帮助我们做到了这点。将 `grid-template-columns: repeat(auto-fit, 200px)` 改成 `grid-template-columns: repeat(auto-fit, minmax(100px, 1fr))` 表示列宽至少 `100px`，如果还有空余则一起等分，代码以及效果如下所示【拖动缩放浏览器宽度查看效果】
+
+::: demo
+example/grid/20
+:::
+
+### 解决空缺问题
+
+> 实现[爱摸鱼主页](https://ele-cat.gitee.io/ifish/)，让不同宽高的App，自动填充
+
+```css
+/* 关键代码 */
+.wrapper {
+  grid-auto-flow: row dense;
+}
+```
+
+## Grid 布局兼容性
+
+[caniuse](https://link.juejin.cn/?target=https%3A%2F%2Fcaniuse.com%2F%23search%3Dgrid)
 
 ## 参考资料
 
 - [最强大的 CSS 布局 —— Grid 布局](https://juejin.cn/post/6854573220306255880)
+- [常见的 Grid 布局用例](https://gridbyexample.com/examples/)
+- [MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)
 
 <!-- <Comment /> -->
