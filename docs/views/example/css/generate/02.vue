@@ -1,6 +1,7 @@
 <template>
   <a-row :gutter="10">
     <a-col :span="24">
+      <h4>演示：</h4>
       <div class="flex-box padding-xs">
         <div class="flex" :style="boxFormState">
           <div v-for="(item, index) in lists" :key="index" class="flex-item">
@@ -10,7 +11,7 @@
       </div>
     </a-col>
     <a-col :span="24">
-      <h4>flex box配置</h4>
+      <h4>flex box配置：</h4>
       <div class="flex-box">
         <a-form
           v-for="(item, index) in flexBoxOptions"
