@@ -327,7 +327,7 @@ example/grid/20
 }
 ```
 
-## Grid 布局兼容性
+## Grid 兼容性
 
 [caniuse](https://link.juejin.cn/?target=https%3A%2F%2Fcaniuse.com%2F%23search%3Dgrid)
 
