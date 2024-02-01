@@ -30,11 +30,14 @@
       <div class="example-source-wrapper">
         <div class="language-css">
           <pre>
-  flex-direction: {{boxFormState["flex-direction"]}};
-  flex-wrap: {{boxFormState["flex-wrap"]}};
-  justify-content: {{boxFormState["justify-content"]}};
-  align-items: {{boxFormState["align-items"]}};
-  align-content: {{boxFormState["align-content"]}};</pre>
+  .flex-box {
+    display: flex;
+    flex-direction: {{boxFormState["flex-direction"]}};
+    flex-wrap: {{boxFormState["flex-wrap"]}};
+    justify-content: {{boxFormState["justify-content"]}};
+    align-items: {{boxFormState["align-items"]}};
+    align-content: {{boxFormState["align-content"]}};
+  }</pre>
         </div>
       </div>
       <!-- <h4>flex item配置</h4> -->
