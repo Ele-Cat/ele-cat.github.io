@@ -226,8 +226,10 @@ example/grid/13
 
 ```css
 .container {
-  justify-content: start | end | center | stretch | space-around | space-between | space-evenly;
-  align-content: start | end | center | stretch | space-around | space-between | space-evenly;  
+  justify-content: start | end | center | stretch | space-around | space-between
+    | space-evenly;
+  align-content: start | end | center | stretch | space-around | space-between |
+    space-evenly;
 }
 ```
 
@@ -250,6 +252,41 @@ example/grid/15
 :::
 
 ## 项目属性
+
+### grid-column-start 、grid-column-end 、grid-row-start 以及 grid-row-end
+
+可以指定网格项目所在的四个边框，分别定位在哪根网格线，从而指定项目的位置
+
+- grid-column-start 属性：左边框所在的垂直网格线
+- grid-column-end 属性：右边框所在的垂直网格线
+- grid-row-start 属性：上边框所在的水平网格线
+- grid-row-end 属性：下边框所在的水平网格线
+
+::: demo
+example/grid/16
+:::
+
+### grid-area
+
+`grid-area` 属性指定项目放在哪一个区域，在上面介绍 [grid-template-areas](#grid-template-areas) 时有讲。
+
+### justify-self 、align-self 以及 place-self
+
+- justify-self 属性设置单元格内容的水平位置（左中右），跟 justify-items 属性的用法完全一致，但只作用于单个项目
+- align-self 属性设置单元格内容的垂直位置（上中下），跟align-items属性的用法完全一致，也是只作用于单个项目
+两者很相像。
+
+```css
+.item {
+  justify-self: start | end | center | stretch;
+  align-self: start | end | center | stretch;
+}
+```
+
+::: demo
+example/grid/17
+:::
+
 
 ## 实战示例
 
