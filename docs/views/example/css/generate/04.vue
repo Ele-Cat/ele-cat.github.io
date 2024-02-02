@@ -3,14 +3,14 @@
     <div class="language-css">
       <pre v-if="imageValue">
   .list {
-    list-style-type: {{ typeValue }};
     list-style-position: {{ positionValue }};
     list-style-image: url("{{ imageValue }}");
+    list-style-type: {{ typeValue }};
   }</pre>
       <pre v-else>
   .list {
-    list-style-type: {{ typeValue }};
     list-style-position: {{ positionValue }};
+    list-style-type: {{ typeValue }};
   }</pre>
     </div>
   </div>
