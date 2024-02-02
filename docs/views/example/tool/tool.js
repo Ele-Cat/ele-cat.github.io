@@ -325,9 +325,10 @@ export const scrollToTop = () => {
 };
 
 /**
- * el是否在视口范围内
- * @param {*} el
- * @param {*} partiallyVisible
+  判断元素是否在可视范围内
+ * @param {*} el 传入dom
+ * @param {Boolean} partiallyVisible 是否为完全可见
+ * @returns true/false
  */
 export const elementIsVisibleInViewport = (el, partiallyVisible = false) => {
   const { top, left, bottom, right } = el.getBoundingClientRect();
@@ -1124,3 +1125,44 @@ export const generateUUID = () => {
   );
   return uuid;
 };
+
+/**
+ * 判断当前位置是否为页面底部
+ * @returns true/false
+ */
+export const bottomVisible = () => {
+  return document.documentElement.clientHeight + window.scrollY >= (document.documentElement.scrollHeight || document.documentElement.clientHeight)
+}
+
+/**
+ * 进入全屏
+ * @param {*} element 
+ */
+export const launchFullscreen = (element) => {
+  if (element.requestFullscreen) {
+    element.requestFullscreen()
+  } else if (element.mozRequestFullScreen) {
+    element.mozRequestFullScreen()
+  } else if (element.msRequestFullscreen) {
+    element.msRequestFullscreen()
+  } else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullScreen()
+  }
+}
+// launchFullscreen(document.documentElement)
+// launchFullscreen(document.getElementById("id")) //某个元素进入全屏
+
+/**
+ * 退出全屏
+ */
+export const exitFullscreen = () => {
+  if (document.exitFullscreen) {
+    document.exitFullscreen()
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen()
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen()
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen()
+  }
+}
