@@ -4,73 +4,84 @@
       <div class="tool-box">
         <section class="tool-flex">
           <div>
-            <h4>方向</h4>
+            <h4>方向<span>【点击选择】</span></h4>
             <div class="direction-contianer">
               <div class="placeholder"></div>
               <div class="square rotate">
-                <label for="top" class="direction-label" :class="setActive('top')"><input type="radio" v-model="direction"
-                    name="direction" id="top" value="top" /></label>
-                <label for="right" class="direction-label" :class="setActive('right')"><input type="radio"
-                    v-model="direction" name="direction" id="right" value="right" /></label>
-                <label for="left" class="direction-label" :class="setActive('left')"><input type="radio"
-                    v-model="direction" name="direction" id="left" value="left" /></label>
-                <label for="bottom" class="direction-label" :class="setActive('bottom')"><input type="radio"
-                    v-model="direction" name="direction" id="bottom" value="bottom" /></label>
+                <label for="top" class="direction-label" :class="setActive('top')">
+                  <input type="radio" v-model="direction" name="direction" id="top" value="top" />
+                </label>
+                <label for="right" class="direction-label" :class="setActive('right')">
+                  <input type="radio" v-model="direction" name="direction" id="right" value="right" />
+                </label>
+                <label for="left" class="direction-label" :class="setActive('left')">
+                  <input type="radio" v-model="direction" name="direction" id="left" value="left" />
+                </label>
+                <label for="bottom" class="direction-label" :class="setActive('bottom')">
+                  <input type="radio" v-model="direction" name="direction" id="bottom" value="bottom" />
+                </label>
               </div>
 
               <div class="square">
-                <label for="topLeft" class="direction-label" :class="setActive('topLeft')"><input type="radio"
-                    v-model="direction" name="direction" id="topLeft" value="topLeft" /></label>
-                <label for="topRight" class="direction-label" :class="setActive('topRight')"><input type="radio"
-                    v-model="direction" name="direction" id="topRight" value="topRight" /></label>
-
-                <label for="bottomLeft" class="direction-label" :class="setActive('bottomLeft')"><input type="radio"
-                    v-model="direction" name="direction" id="bottomLeft" value="bottomLeft" /></label>
-                <label for="bottomRight" class="direction-label" :class="setActive('bottomRight')"><input type="radio"
-                    v-model="direction" name="direction" id="bottomRight" value="bottomRight" /></label>
+                <label for="topLeft" class="direction-label" :class="setActive('topLeft')">
+                  <input type="radio" v-model="direction" name="direction" id="topLeft" value="topLeft" />
+                </label>
+                <label for="topRight" class="direction-label" :class="setActive('topRight')">
+                  <input type="radio" v-model="direction" name="direction" id="topRight" value="topRight" />
+                </label>
+                <label for="bottomLeft" class="direction-label" :class="setActive('bottomLeft')">
+                  <input type="radio" v-model="direction" name="direction" id="bottomLeft" value="bottomLeft" />
+                </label>
+                <label for="bottomRight" class="direction-label" :class="setActive('bottomRight')">
+                  <input type="radio" v-model="direction" name="direction" id="bottomRight" value="bottomRight" />
+                </label>
               </div>
             </div>
           </div>
           <div>
             <h4>颜色</h4>
-            <el-color-picker @change="update" v-model="choosenColor"></el-color-picker>
+            <a-input @change="update" type="color" style="width:42px;" v-model:value="choosenColor"></a-input>
+            <h4>类型</h4>
+            <a-radio-group v-model:value="type">
+              <a-radio v-if="showEqu" value="equ">等边</a-radio>
+              <a-radio value="iso">等腰</a-radio>
+              <a-radio value="sca">不等边</a-radio>
+            </a-radio-group>
           </div>
         </section>
-        <section>
-          <h4>类型</h4>
-          <a-radio v-model="type" v-if="showEqu" label="equ">等边</a-radio>
-          <a-radio v-model="type" label="iso">等腰</a-radio>
-          <a-radio v-model="type" label="sca">不等边</a-radio>
-        </section>
         <section class="size-section">
-          <h4>大小<span>（更改值后请敲回车）</span></h4>
-          <p>宽度</p>
-          <a-input-number @change="update" v-model="width" :disabled="widthDisable" :min="0" :max="300"
-            size="mini"></a-input-number>
+          <h4>大小</h4>
           <div class="tool-flex">
             <div>
+              <p>宽度</p>
+              <a-input-number @change="update" v-model:value="width" :disabled="inputDisabled.width" :min="0" :max="300"
+                size="mini"></a-input-number>
+            </div>
+            <div>
               <p>左</p>
-              <a-input-number @change="update" v-model="left" :disabled="leftDisable" :min="0" :max="150"
+              <a-input-number @change="update" v-model:value="left" :disabled="inputDisabled.left" :min="0" :max="150"
+                size="mini"></a-input-number>
+            </div>
+            <div>
+              <p>上</p>
+              <a-input-number @change="update" v-model:value="top" :disabled="inputDisabled.top" :min="0" :max="150"
+                size="mini"></a-input-number>
+            </div>
+          </div>
+          <div class="tool-flex">
+            <div>
+              <p>高度</p>
+              <a-input-number @change="update" v-model:value="height" :disabled="inputDisabled.height" :min="0" :max="300"
                 size="mini"></a-input-number>
             </div>
             <div>
               <p>右</p>
-              <a-input-number @change="update" v-model="right" :disabled="rightDisable" :min="0" :max="150"
-                size="mini"></a-input-number>
-            </div>
-          </div>
-          <p>高度</p>
-          <a-input-number @change="update" v-model="height" :disabled="heightDisable" :min="0" :max="300"
-            size="mini"></a-input-number>
-          <div class="tool-flex">
-            <div>
-              <p>上</p>
-              <a-input-number @change="update" v-model="top" :disabled="topDisable" :min="0" :max="150"
+              <a-input-number @change="update" v-model:value="right" :disabled="inputDisabled.right" :min="0" :max="150"
                 size="mini"></a-input-number>
             </div>
             <div>
               <p>下</p>
-              <a-input-number @change="update" v-model="bottom" :disabled="bottomDisable" :min="0" :max="150"
+              <a-input-number @change="update" v-model:value="bottom" :disabled="inputDisabled.bottom" :min="0" :max="150"
                 size="mini"></a-input-number>
             </div>
           </div>
@@ -80,16 +91,16 @@
         <div class="triangle-demo" :style="{ borderWidth: lengths, borderColor: colors }"></div>
       </div>
     </div>
-    <div style="width:100%;">
-      <h3>CSS</h3>
-      <div class="language-css extra-class">
-        <pre><code ref="code-container"></code></pre>
-      </div>
+    <div class="language-css extra-class">
+      <pre><code ref="codeContainerRef"></code></pre>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, reactive, watch, nextTick } from "vue";
+import Prism from "prismjs";
+
 const colorDirection = {
   top: "bottom",
   right: "left",
@@ -151,286 +162,301 @@ const lengthDirection = {
     left: false
   }
 };
-import Prism from "prismjs";
 
-export default {
-  name: "createTriangle",
-  data() {
-    return {
-      type: "iso",
-      choosenColor: "#00adb5",
-      direction: "top",
-      width: 100,
-      height: 100,
-      left: 50,
-      right: 50,
-      top: 50,
-      bottom: 50,
-      showEqu: true,
-      lengths: "",
-      colors: "",
-      widthDisable: false,
-      heightDisable: false,
-      leftDisable: false,
-      rightDisable: false,
-      topDisable: false,
-      bottomDisable: false
-    };
-  },
-  watch: {
-    direction(val) {
-      this.changeSetup();
-      this.changeSize();
-      this.updateCSS();
-    },
-    type() {
-      this.changeSetup();
-      this.changeSize();
-      this.updateCSS();
+const type = ref("iso"); // equ等边  iso等腰  sca不等边
+const choosenColor = ref("#00adb5"); // 初始颜色
+const direction = ref("top"); // 箭头方向
+// 默认初始值
+const width = ref(100);
+const height = ref(100);
+const left = ref(50);
+const right = ref(50);
+const top = ref(50);
+const bottom = ref(50);
+const showEqu = ref(true); // 是否展示等边选项
+const lengths = ref(""); // 三角边框样式
+const colors = ref(""); // 三角颜色样式
+// 控制input是否可编辑
+let inputDisabled = reactive({
+  width: false,
+  height: false,
+  left: false,
+  right: false,
+  top: false,
+  bottom: false
+});
+const codeContainerRef = ref(null);
+
+// 颜色、大小修改时，更新样式
+const update = () => {
+  changeSize();
+  updateCSS();
+}
+
+// 获取方向高亮
+const setActive = (dir) => {
+  return dir == direction.value ? "active" : "";
+}
+
+// 改变大小
+const changeSize = () => {
+  if (
+    direction.value == "top" ||
+    direction.value == "bottom" ||
+    direction.value == "left" ||
+    direction.value == "right"
+  ) {
+    if (inputDisabled.width) {
+      width.value = left.value * 1 + right.value * 1;
+    } else {
+      left.value = (width.value * 1) / 2;
+      right.value = (width.value * 1) / 2;
     }
-  },
-  methods: {
-    update() {
-      this.changeSize();
-      this.updateCSS();
-    },
-    setActive(dir) {
-      return dir == this.direction ? "active" : "";
-    },
-    changeSize() {
-      if (
-        this.direction == "top" ||
-        this.direction == "bottom" ||
-        this.direction == "left" ||
-        this.direction == "right"
-      ) {
-        if (this.widthDisable) {
-          this.width = this.left * 1 + this.right * 1;
-        } else {
-          this.left = (this.width * 1) / 2;
-          this.right = (this.width * 1) / 2;
-        }
-        if (this.heightDisable) {
-          this.height = this.top * 1 + this.bottom * 1;
-        } else {
-          this.top = (this.height * 1) / 2;
-          this.bottom = (this.height * 1) / 2;
-        }
-      } else if (this.type == "iso") {
-        this.left = (this.width * 1) / 2;
-        this.right = (this.width * 1) / 2;
-        this.top = (this.height * 1) / 2;
-        this.bottom = (this.height * 1) / 2;
-      }
-    },
-    updateCSS() {
-      let lengths = {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0
-      };
-      let colors = {
-        top: "transparent",
-        right: "transparent",
-        bottom: "transparent",
-        left: "transparent"
-      };
-      let lengthDirections = lengthDirection[this.direction];
-      colors[colorDirection[this.direction]] = this.choosenColor;
-      for (var key in lengthDirections) {
-        if (lengthDirections[key] === false) {
-          lengths[key] = "0";
-        } else {
-          switch (this.type) {
-            case "equ":
-              if (this.direction == "top" || this.direction == "bottom") {
-                var equHeight = ((Math.sqrt(3) / 2) * this.width).toFixed(1);
-                switch (lengthDirections[key]) {
-                  case "width":
-                    lengths[key] = equHeight + "px";
-                    break;
-                  case "height":
-                    lengths[key] = equHeight + "px";
-                    break;
-                  case "width-left":
-                    lengths[key] = this.width / 2 + "px";
-                    break;
-                  case "width-right":
-                    lengths[key] = this.width / 2 + "px";
-                    break;
-                }
-              } else if (
-                this.direction == "left" ||
-                this.direction == "right"
-              ) {
-                var equHeight = ((Math.sqrt(3) / 2) * this.height).toFixed(1);
-                switch (lengthDirections[key]) {
-                  case "width":
-                    lengths[key] = equHeight + "px";
-                    break;
-                  case "height":
-                    lengths[key] = equHeight + "px";
-                    break;
-                  case "height-top":
-                    lengths[key] = this.height / 2 + "px";
-                    break;
-                  case "height-bottom":
-                    lengths[key] = this.height / 2 + "px";
-                    break;
-                }
-              }
-              break;
-            case "iso":
-              switch (lengthDirections[key]) {
-                case "width":
-                  lengths[key] = this.width + "px";
-                  break;
-                case "height":
-                  lengths[key] = this.height + "px";
-                  break;
-                case "width-left":
-                  lengths[key] = this.width / 2 + "px";
-                  break;
-                case "width-right":
-                  lengths[key] = this.width / 2 + "px";
-                  break;
-                case "height-top":
-                  lengths[key] = this.height / 2 + "px";
-                  break;
-                case "height-bottom":
-                  lengths[key] = this.height / 2 + "px";
-                  break;
-              }
-              break;
-            case "sca":
-              switch (lengthDirections[key]) {
-                case "width":
-                  lengths[key] = this.width + "px";
-                  break;
-                case "height":
-                  lengths[key] = this.height + "px";
-                  break;
-                case "width-left":
-                  lengths[key] = this.left + "px";
-                  break;
-                case "width-right":
-                  lengths[key] = this.right + "px";
-                  break;
-                case "height-top":
-                  lengths[key] = this.top + "px";
-                  break;
-                case "height-bottom":
-                  lengths[key] = this.bottom + "px";
-                  break;
-              }
-              break;
-          }
-        }
-      }
+    if (inputDisabled.height) {
+      height.value = top.value * 1 + bottom.value * 1;
+    } else {
+      top.value = (height.value * 1) / 2;
+      bottom.value = (height.value * 1) / 2;
+    }
+  } else if (type.value == "iso") {
+    left.value = (width.value * 1) / 2;
+    right.value = (width.value * 1) / 2;
+    top.value = (height.value * 1) / 2;
+    bottom.value = (height.value * 1) / 2;
+  }
+}
 
-      this.lengths = this.toArray(lengths).join(" ");
-      this.colors = this.toArray(colors).join(" ");
-
-      let outputCssStr = `.triangle {
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: ${this.lengths};
-  border-color: ${this.colors};
-}`;
-      let cssCode = Prism.highlight(outputCssStr, Prism.languages.css);
-      this.$refs["code-container"].innerHTML = cssCode;
-    },
-
-    changeSetup() {
-      if (
-        this.direction == "topRight" ||
-        this.direction == "bottomRight" ||
-        this.direction == "bottomLeft" ||
-        this.direction == "topLeft"
-      ) {
-        if (this.type == "equ") {
-          this.type = "iso";
-        }
-        this.showEqu = false;
-      } else {
-        this.showEqu = true;
-      }
-
-      switch (this.type) {
+// 更新样式
+const updateCSS = () => {
+  let dLengths = {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0
+  };
+  let dColors = {
+    top: "transparent",
+    right: "transparent",
+    bottom: "transparent",
+    left: "transparent"
+  };
+  let lengthDirections = lengthDirection[direction.value];
+  dColors[colorDirection[direction.value]] = choosenColor.value;
+  for (var key in lengthDirections) {
+    if (lengthDirections[key] === false) {
+      dLengths[key] = "0";
+    } else {
+      switch (type.value) {
         case "equ":
-          if (this.direction == "top" || this.direction == "bottom") {
-            this.widthDisable = false;
-            this.heightDisable = true;
-            this.leftDisable = true;
-            this.rightDisable = true;
-            this.topDisable = true;
-            this.bottomDisable = true;
-          } else if (this.direction == "left" || this.direction == "right") {
-            this.widthDisable = true;
-            this.heightDisable = false;
-            this.leftDisable = true;
-            this.rightDisable = true;
-            this.topDisable = true;
-            this.bottomDisable = true;
-          } else {
-            this.widthDisable = false;
-            this.heightDisable = false;
-            this.leftDisable = true;
-            this.rightDisable = true;
-            this.topDisable = true;
-            this.bottomDisable = true;
+          if (direction.value == "top" || direction.value == "bottom") {
+            var equHeight = ((Math.sqrt(3) / 2) * width.value).toFixed(1);
+            switch (lengthDirections[key]) {
+              case "width":
+                dLengths[key] = equHeight + "px";
+                break;
+              case "height":
+                dLengths[key] = equHeight + "px";
+                break;
+              case "width-left":
+                dLengths[key] = width.value / 2 + "px";
+                break;
+              case "width-right":
+                dLengths[key] = width.value / 2 + "px";
+                break;
+            }
+          } else if (
+            direction.value == "left" ||
+            direction.value == "right"
+          ) {
+            var equHeight = ((Math.sqrt(3) / 2) * height.value).toFixed(1);
+            switch (lengthDirections[key]) {
+              case "width":
+                dLengths[key] = equHeight + "px";
+                break;
+              case "height":
+                dLengths[key] = equHeight + "px";
+                break;
+              case "height-top":
+                dLengths[key] = height.value / 2 + "px";
+                break;
+              case "height-bottom":
+                dLengths[key] = height.value / 2 + "px";
+                break;
+            }
           }
           break;
         case "iso":
-          this.widthDisable = false;
-          this.heightDisable = false;
-          this.leftDisable = true;
-          this.rightDisable = true;
-          this.topDisable = true;
-          this.bottomDisable = true;
+          switch (lengthDirections[key]) {
+            case "width":
+              dLengths[key] = width.value + "px";
+              break;
+            case "height":
+              dLengths[key] = height.value + "px";
+              break;
+            case "width-left":
+              dLengths[key] = width.value / 2 + "px";
+              break;
+            case "width-right":
+              dLengths[key] = width.value / 2 + "px";
+              break;
+            case "height-top":
+              dLengths[key] = height.value / 2 + "px";
+              break;
+            case "height-bottom":
+              dLengths[key] = height.value / 2 + "px";
+              break;
+          }
           break;
         case "sca":
-          if (this.direction == "top" || this.direction == "bottom") {
-            this.widthDisable = true;
-            this.heightDisable = false;
-            this.leftDisable = false;
-            this.rightDisable = false;
-            this.topDisable = true;
-            this.bottomDisable = true;
-          } else if (this.direction == "left" || this.direction == "right") {
-            this.widthDisable = false;
-            this.heightDisable = true;
-            this.leftDisable = true;
-            this.rightDisable = true;
-            this.topDisable = false;
-            this.bottomDisable = false;
-          } else {
-            this.widthDisable = false;
-            this.heightDisable = false;
-            this.leftDisable = true;
-            this.rightDisable = true;
-            this.topDisable = true;
-            this.bottomDisable = true;
+          switch (lengthDirections[key]) {
+            case "width":
+              dLengths[key] = width.value + "px";
+              break;
+            case "height":
+              dLengths[key] = height.value + "px";
+              break;
+            case "width-left":
+              dLengths[key] = left.value + "px";
+              break;
+            case "width-right":
+              dLengths[key] = right.value + "px";
+              break;
+            case "height-top":
+              dLengths[key] = top.value + "px";
+              break;
+            case "height-bottom":
+              dLengths[key] = bottom.value + "px";
+              break;
           }
           break;
       }
-    },
-    toArray(obj) {
-      var arr = [];
-      for (var key in obj) {
-        arr.push(obj[key]);
-      }
-      return arr;
     }
-  },
-  mounted() {
-    this.changeSetup();
-    this.changeSize();
-    this.updateCSS();
   }
-};
+
+  lengths.value = toArray(dLengths).join(" ");
+  colors.value = toArray(dColors).join(" ");
+
+  let outputCssStr = `.triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: ${lengths.value};
+  border-color: ${colors.value};
+}`;
+  let cssCode = Prism.highlight(outputCssStr, Prism.languages.css);
+  nextTick(() => {
+    codeContainerRef.value.innerHTML = cssCode;
+  })
+}
+
+const changeSetup = () => {
+  // 改变类型时，是否展示等边选项
+  if (
+    direction.value == "topRight" ||
+    direction.value == "bottomRight" ||
+    direction.value == "bottomLeft" ||
+    direction.value == "topLeft"
+  ) {
+    if (type.value == "equ") {
+      type.value = "iso";
+    }
+    showEqu.value = false;
+  } else {
+    showEqu.value = true;
+  }
+
+  // 改变类型时，大小输入框是否允许编辑
+  switch (type.value) {
+    case "equ":
+      if (direction.value == "top" || direction.value == "bottom") {
+        inputDisabled = Object.assign(inputDisabled, {
+          width: false,
+          height: true,
+          left: true,
+          right: true,
+          top: true,
+          bottom: true,
+        })
+      } else if (direction.value == "left" || direction.value == "right") {
+        inputDisabled = Object.assign(inputDisabled, {
+          width: true,
+          height: false,
+          left: true,
+          right: true,
+          top: true,
+          bottom: true,
+        })
+      } else {
+        inputDisabled = Object.assign(inputDisabled, {
+          width: false,
+          height: false,
+          left: true,
+          right: true,
+          top: true,
+          bottom: true,
+        })
+      }
+      break;
+    case "iso":
+      inputDisabled = Object.assign(inputDisabled, {
+        width: false,
+        height: false,
+        left: true,
+        right: true,
+        top: true,
+        bottom: true,
+      })
+      break;
+    case "sca":
+      if (direction.value == "top" || direction.value == "bottom") {
+        inputDisabled = Object.assign(inputDisabled, {
+          width: true,
+          height: false,
+          left: false,
+          right: false,
+          top: true,
+          bottom: true,
+        })
+      } else if (direction.value == "left" || direction.value == "right") {
+        inputDisabled = Object.assign(inputDisabled, {
+          width: false,
+          height: false,
+          left: true,
+          right: true,
+          top: false,
+          bottom: false,
+        })
+      } else {
+        inputDisabled = Object.assign(inputDisabled, {
+          width: false,
+          height: false,
+          left: true,
+          right: true,
+          top: true,
+          bottom: true,
+        })
+      }
+      break;
+  }
+}
+
+// 对象的值转数组
+const toArray = (obj) => {
+  var arr = [];
+  for (var key in obj) {
+    arr.push(obj[key]);
+  }
+  return arr;
+}
+
+// 监听方向、类型变化时，更新
+watch([direction, type], () => {
+  changeSetup();
+  changeSize();
+  updateCSS();
+}, {
+  immediate: true,
+})
 </script>
 
 <style scoped lang="scss">
@@ -443,12 +469,11 @@ export default {
     width: 300px;
     height: 300px;
     margin: 0 auto;
-    background-image: url(/extdomains/github.com/QiShaoXuan/css_tricks/blob/master/docs/.vuepress/public/images/transparent.png);
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAC1JREFUeNpiPHPmDAM2YGxsjFWciYFEMKqBGMD4//9/rBJnz54dDSX6aQAIMABCtQiAsDRF+wAAAABJRU5ErkJggg==);
   }
 
   h4 {
-    margin-top: 15px;
-    margin-bottom: 8px;
+    margin: 10px 0 4px;
 
     span {
       font-weight: normal;
@@ -456,8 +481,6 @@ export default {
       color: #aaa;
     }
   }
-
-  .tool-box {}
 
   .direction-contianer {
     width: 140px;
@@ -544,10 +567,8 @@ export default {
   }
 
   .size-section {
-    width: 400px;
-
     p {
-      margin: 10px 0 6px 0;
+      margin: 4px 0 2px 0;
     }
   }
 
@@ -560,22 +581,5 @@ export default {
       margin-right: 15px;
     }
   }
-}
-
-@media screen and (max-width: 959px) {
-  .createTriangle-container {
-    position: relative;
-    padding-top: 310px;
-
-    .triangle-container {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      margin: auto;
-    }
-  }
-
-  .tool-box {}
 }
 </style>
