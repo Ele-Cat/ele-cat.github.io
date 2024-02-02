@@ -1,34 +1,14 @@
 <template>
-  <div class="example-source-wrapper">
-    <div class="language-css">
-      <pre v-if="imageValue">
-  .list {
-    list-style-position: {{ positionValue }};
-    list-style-image: url("{{ imageValue }}");
-    list-style-type: {{ typeValue }};
-  }</pre>
-      <pre v-else>
-  .list {
-    list-style-position: {{ positionValue }};
-    list-style-type: {{ typeValue }};
-  }</pre>
-    </div>
+  <div class="language-css extra-class">
+    <pre><code ref="listStyleOptionsRef"></code></pre>
   </div>
-  同：
-  <div class="example-source-wrapper">
-    <div class="language-css">
-      <pre v-if="imageValue">
-  .list {
-    list-style: {{ positionValue }} url("{{ imageValue }}") {{ typeValue }};
-  }</pre>
-      <pre v-else>
-  .list {
-    list-style: {{ positionValue }} {{ typeValue }};
-  }</pre>
-    </div>
+  <p>同：</p>
+  <div class="language-css extra-class">
+    <pre><code ref="listStyleRef"></code></pre>
   </div>
   <div class="flex">
-    <ul :style="{ listStyleType: typeValue, listStylePosition: positionValue, listStyleImage: imageValue && `url(${imageValue})` }">
+    <ul
+      :style="{ listStyleType: typeValue, listStylePosition: positionValue, listStyleImage: imageValue && `url(${imageValue})` }">
       <li v-for="item in list" :key="item">{{ item }}</li>
     </ul>
 
@@ -50,7 +30,8 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch, nextTick } from "vue";
+import Prism from "prismjs";
 
 const list = [
   "HTML5",
@@ -221,6 +202,31 @@ const yesOrNo = [
 const typeValue = ref("disc");
 const positionValue = ref("inside");
 const imageValue = ref("");
+const listStyleOptionsRef = ref(null);
+const listStyleRef = ref(null);
+
+watch([typeValue, positionValue, imageValue], () => {
+  const listStyleOptionsCssStr = imageValue.value ? `.list {
+  list-style-position: ${positionValue.value};
+  list-style-image: url("${imageValue.value}");
+  list-style-type: ${typeValue.value};
+}` : `.list {
+  list-style-position: ${positionValue.value};
+  list-style-type: ${typeValue.value};
+}`;
+  const listStyleCssStr = imageValue.value ? `.list {
+  list-style: ${positionValue.value} url("${imageValue.value}") ${typeValue.value};
+}` : `.list {
+  list-style: ${positionValue.value} ${typeValue.value};
+}`;
+  nextTick(() => {
+    listStyleOptionsRef.value.innerHTML = Prism.highlight(listStyleOptionsCssStr, Prism.languages.css);
+    listStyleRef.value.innerHTML = Prism.highlight(listStyleCssStr, Prism.languages.css);
+  })
+}, {
+  immediate: true,
+})
+
 </script>
 
 <style lang="scss">
@@ -240,10 +246,12 @@ const imageValue = ref("");
   .radio-group {
     flex: 1;
     margin-left: 12px;
+
     .ant-radio-group {
       width: 100%;
       padding: 4px;
     }
+
     h4 {
       margin: 6px 0 4px;
     }
@@ -252,5 +260,4 @@ const imageValue = ref("");
   .ant-radio-wrapper {
     width: 48.5%;
   }
-}
-</style>
+}</style>

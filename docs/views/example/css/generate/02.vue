@@ -27,18 +27,8 @@
           </a-form-item>
         </a-form>
       </div>
-      <div class="example-source-wrapper">
-        <div class="language-css">
-          <pre>
-  .flex-box {
-    display: flex;
-    flex-direction: {{boxFormState["flex-direction"]}};
-    flex-wrap: {{boxFormState["flex-wrap"]}};
-    justify-content: {{boxFormState["justify-content"]}};
-    align-items: {{boxFormState["align-items"]}};
-    align-content: {{boxFormState["align-content"]}};
-  }</pre>
-        </div>
+      <div class="language-css extra-class">
+        <pre  class="language-css"><code ref="boxStyleRef"></code></pre>
       </div>
       <!-- <h4>flex item配置</h4> -->
     </a-col>
@@ -46,7 +36,8 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, watch, nextTick } from "vue";
+import Prism from "prismjs";
 
 const flexBoxOptions = ref([
   {
@@ -116,9 +107,28 @@ const lists = ref([
     alignSelf: "stretch",
   },
 ]);
+
+const boxStyleRef = ref(null);
+
+watch(() => boxFormState, () => {
+  const boxStyle = `.flex-box {
+  display: flex;
+  flex-direction: ${boxFormState["flex-direction"]};
+  flex-wrap: ${boxFormState["flex-wrap"]};
+  justify-content: ${boxFormState["justify-content"]};
+  align-items: ${boxFormState["align-items"]};
+  align-content: ${boxFormState["align-content"]};
+}`
+  nextTick(() => {
+    boxStyleRef.value.innerHTML = Prism.highlight(boxStyle, Prism.languages.css);
+  })
+}, {
+  immediate: true,
+  deep: true,
+})
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .flex-box {
   border: 1px solid #ccc;
   .ant-form-item {
