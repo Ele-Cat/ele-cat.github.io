@@ -35,7 +35,7 @@ outline: [2, 3]
 
 ## 02. 在项目中使用
 
-> 以 Vite + Vue3 为示例，[项目地址](https://gitee.com/ele-cat/unocss)
+> 以 Vite + Vue3 为示例
 
 ::: tip 在非Vite构建下
 其他框架或环境下的安装请参考[博客](https://blog.csdn.net/halo1416/article/details/131162456)或[官网配置](https://unocss.dev/integrations/)
