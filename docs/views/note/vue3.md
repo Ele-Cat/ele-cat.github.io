@@ -4,6 +4,8 @@ outline: [2, 3]
 
 # Vue3 学习笔记
 
+- [Vue3 快速上手](./vue3-quick-start.md)
+
 ## 01. 为什么学 vue3
 
 > 目标：了解 vue3 现状，以及它的优点，展望它的未来
