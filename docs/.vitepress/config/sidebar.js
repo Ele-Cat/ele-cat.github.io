@@ -25,7 +25,10 @@ const sidebar = {
     {
       text: "后端",
       collapsed: true,
-      items: [{ text: "Node", link: "/views/note/node" }],
+      items: [
+        { text: "Node", link: "/views/note/node" },
+        { text: "Python", link: "/views/note/python" },
+      ],
     },
   ],
   // 当用户位于 `tools` 目录时，会显示此侧边栏

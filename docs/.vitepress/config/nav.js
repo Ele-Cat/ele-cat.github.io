@@ -30,6 +30,10 @@ const nav = [
             text: "Node",
             link: "/views/note/node",
           },
+          {
+            text: "Python",
+            link: "/views/note/python",
+          },
         ],
       },
     ],
