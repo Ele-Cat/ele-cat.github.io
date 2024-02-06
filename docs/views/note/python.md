@@ -73,3 +73,216 @@ Python 作为一种高级编程语言，在全球范围内广泛应用于网站�
 - [其他解释器](https://www.liaoxuefeng.com/wiki/1016959663602400/1016966024263840)
 
 ### 2.3 第一个 Python 程序
+
+1. 在**Python 交互式环境**中，输入以下代码并回车：
+
+   ```sh
+   >>> 100+200
+   # 输出：300
+   ```
+
+   ```sh
+   >>> print('hello, world')
+   # 输出：hello, world
+   ```
+
+   ```sh
+   >>> exit()
+   # 退出 Python 交互式环境
+   ```
+
+   ::: tip
+   但是上述的代码并未保存下来，下次还想用的时候，还得再敲一遍！这时候就要用到`.py`文件了。
+   :::
+
+2. 创建`.py`文件，并运行。在目录下创建`print.py`文件，写入：
+
+   ```py
+   print(100 + 200 + 300)
+   print("Hello World")
+   print('The quick brown fox', 'jumps over', 'the lazy dog')
+   print('100 + 200 + 300 =', 100 + 200 + 300)
+   ```
+
+   并在该目录下的命令行中执行：
+
+   ```sh
+   python calc.py
+   # 输出
+   # 600
+   # Hello World
+   # The quick brown fox jumps over the lazy dog
+   # 100 + 200 + 300 = 600
+   ```
+
+### 2.4 输出&输入
+
+> 上小节[2.3](#_2-3-第一个-python-程序) 中我们在`.py`文件中写入了一些代码，并得到了相应的输出。得知可以用`print()`输出你想要的结果。
+
+#### 2.4.1 输出
+
+1. 基本打印：直接使用 print()函数，括号内填写你想要输出的内容。
+
+   ```python
+   print("Hello, World!")
+   ```
+
+   :::details 查看输出：
+
+   ```sh
+   Hello World
+   ```
+
+   :::
+
+2. 打印变量：将变量作为 print()函数的参数，可以输出变量的值。
+
+   ```python
+   message = "Hello, Python!"
+   print(message)
+   ```
+
+   :::details 查看输出：
+
+   ```sh
+   Hello, Python!
+   ```
+
+   :::
+
+3. 打印多个项：`print()`函数可以接收多个参数，使用逗号`,`分隔，它们会依次打印，参数之间默认以空格分隔。
+
+   ```python
+   name = "Alice"
+   age = 30
+   print(name, "is", age, "years old.")
+   ```
+
+   :::details 查看输出：
+
+   ```sh
+   Jim is 30 years old.
+   ```
+
+   :::
+
+4. 修改分隔符：通过关键字参数 sep，可以修改 print()函数输出时各参数之间的分隔符，默认是空格。
+
+   ```python
+   print("Hello", "Python", sep="-")
+   ```
+
+   :::details 查看输出：
+
+   ```sh
+   Hello-Python
+   ```
+
+   :::
+
+5. 结尾处理：`print()`函数默认在打印结束后会换行，这是因为其有一个 end 参数，默认值为\n。可以修改 end 参数来改变结束字符。
+
+   ```python
+   print("Hello, Python", end="!")
+   print("This is on the same line.")
+   ```
+
+   :::details 查看输出：
+
+   ```sh
+   Hello Python!This is on the same line.
+   ```
+
+   :::
+
+6. 格式化输出：Python 提供了多种字符串格式化的方法，`print()`函数可以结合这些方法输出格式化后的字符串。
+
+   - 使用%操作符：
+
+   ```python
+   name = "Alice"
+   age = 30
+   print("%s is %d years old." % (name, age))
+   ```
+
+   - 使用.format()方法：
+
+   ```python
+   print("{} is {} years old.".format(name, age))
+   print("{0} is {1} years old.".format(name, age))
+   ```
+
+   - 使用 f-string（Python 3.6+）：
+
+   ```python
+   print(f"{name} is {age} years old.")
+   ```
+
+   :::details 以上几种情况都输出：
+
+   ```sh
+   Jim is 30 years old.
+   ```
+
+   :::
+
+7. 打印到文件：`print()`函数还可以通过 file 参数将内容输出到文件而非标准输出。
+
+   ```python
+   with open('output.txt', 'w') as f:
+     print("Hello, file!", file=f)
+   ```
+
+   :::details 执行结果：
+
+   在当前目录下创建`output.txt`文件，文件内容：
+
+   ```sh
+   Hello, file!
+   ```
+
+   :::
+
+::: tip 小结
+这些是 print()函数的一些基本用法，根据不同的需求选择合适的方式进行输出。
+:::
+
+#### 2.4.2 输入
+
+> 输入函数：`input()`函数用于获取用户输入的内容。
+
+1. 在**Python 交互式环境**中输入：
+
+   ```sh
+   >>> name = input("请输入你的名字：")
+   Jim
+   ```
+
+   当在输入`name = input("请输入你的名字：")`并按下回车后，Python 交互命令行就在等待用户输入了，输入`Jim`后回车，会发现无任何输出且 Python 交互命令行又恢复至`>>>`状态，那我们刚刚输入的 Jim 到哪里去了呢？答案是：存储到变量`name`中，验证：
+
+   ```sh
+   print(name)
+   # 输出
+   # Jim
+   ```
+
+2. 创建`input.py`文件，写入：
+
+   ```python
+   name = input("请输入你的名字：")
+   print("Hello,", name)
+   ```
+
+   运行`input.py`文件
+
+   ```sh
+   python input.py
+   ```
+
+   执行文件后，命令行会提示**请输入你的名字：**，在命令行中输入`Jim`并回车，会输出：
+
+   ```sh
+   Hello, Jim
+   ```
+
+## 03. Python 基础
