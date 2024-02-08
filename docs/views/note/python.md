@@ -493,8 +493,6 @@ print(PI)
 
 ### 3.3 列表与元组
 
-> 列表和元组是 Python 中最常用的两种数据类型。
-
 1. **列表**（**list**）
 
    - 列表是 Python 中最常用的一种数据类型，列表用`[]`表示，列表中的元素用`,`分割开，如下所示：
@@ -661,7 +659,7 @@ print(PI)
    :::
 
    - 可变`tuple`，`tuple`所谓的“不变”是说，`tuple`的每个元素，指向永远不变。
-   
+
    ```python
    a = (1, 2, [3, 4])
    a[2][0] = "x"
@@ -671,3 +669,153 @@ print(PI)
    ```
 
 ### 3.4 字典与集合
+
+1. **字典**（**dict**）
+
+   - 字典是 Python 中最常用的一种数据类型，字典用`{}`表示，以 `key: value` 方式存储，如下所示：
+
+   ```python
+   a = {'name': 'T007', 'age': 25}
+   # 字典a中有2个元素，分别是name和age。
+   ```
+
+   - 字典的键必须是不可变的，比如`int`、`float`、`str`、`tuple`等等，而不能是`list`、`dict`、`set`等等，字典的值可以是任意数据类型，如下所示：
+
+   ```python
+   a = {'name': 'T007', 'age': 25, 'hobby': ['football', 'basketball']}
+   # 字典a中有3个元素，分别是name、age和hobby。
+   ```
+
+   - 字典的元素是可以修改的，如下所示：
+
+   ```python
+   a = {'name': 'T007', 'age': 25, 'hobby': ['football', 'basketball']}
+   # 字典a中有3个元素，分别是name、age和hobby。
+   a['name'] = 'T008'
+   a['age'] = 20
+   a['hobby'].append('pingpang')
+   # 字典a中name的值修改为T008。
+   print(a)
+   # {'name': 'T008', 'age': 20, 'hobby': ['football', 'basketball', 'pingpang']}
+   ```
+
+   - 如果字典的`key`不存在，`dict`就会报错，如下所示：
+
+   ```python
+   a = {'name': 'T007', 'age': 25, 'hobby': ['football', 'basketball']}
+   print(a['address'])
+   # Traceback (most recent call last):
+   # File "<stdin>", line x, in <module>
+   # KeyError: 'address'
+   ```
+
+   ::: tip 避免 key 不存在引起的报错：
+
+   1. 通过`in`判断字典`key`是否存在，如下所示：
+
+   ```python
+   a = {'name': 'T007', 'age': 25, 'hobby': ['football', 'basketball']}
+   # print(a['address'])
+   print('address' in a)
+   # False
+   ```
+
+   2. 使用`dict`提供`get()`的方法，如果 key 不存在，可以返回`None`，或者自己指定的`value`，如下所示：
+
+   ```python
+   a = {'name': 'T007', 'age': 25, 'hobby': ['football', 'basketball']}
+   # print(a['address'])
+   print(a.get('address'))
+   # None
+   print(a.get('address', 'unknown'))
+   # unknown
+   ```
+
+   :::
+
+   - 字典的`key`是可以重复的，如下所示：
+
+   ```python
+   a = {'name': 'T007', 'age': 25, 'hobby': ['football', 'basketball'], 'name': 'T008'}
+   print(a)
+   # {'name': 'T008', 'age': 25, 'hobby': ['football', 'basketball']}
+   ```
+
+   - 字典的元素是可以删除的，如下所示：
+
+   ```python
+   a = {'name': 'T007', 'age': 25, 'hobby': ['football', 'basketball']}
+   a.pop('name')
+   # 字典a中name的值删除。
+   print(a)
+   # {'age': 25, 'hobby': ['football', 'basketball']}
+   ```
+
+2. **集合**（**set**）
+
+   - 集合是无序的，集合中不包含重复元素，集合使用`{}`表示，如下所示：
+
+   ```python
+   a = {1, 2, 3}
+   print(a)
+   # {1, 2, 3}
+   b = set([4, 5, 6])
+   print(b)
+   # {4, 5, 6}
+   ```
+
+   - 重复元素在`set`中被自动过滤：
+
+   ```python
+   a = {1, 2, 3, 1, 4, 3}
+   print(a)
+   # {1, 2, 3, 4}
+   ```
+
+   - 集合的元素是可以修改的，如下所示：
+
+   ```python
+   a = {1, 2, 3}
+   print(a)
+   # {1, 2, 3}
+   a.add(4)
+   # 集合a中添加元素4。
+   print(a)
+   # {1, 2, 3, 4}
+   ```
+
+   - 集合的元素是可以删除的，如下所示：
+
+   ```python
+   a = {1, 2, 3}
+   print(a)
+   # {1, 2, 3}
+   a.remove(2)
+   # 集合a中删除元素2。
+   print(a)
+   # {1, 3}
+   ```
+
+   - 集合的元素是可以清空的，如下所示：
+
+   ```python
+   a = {1, 2, 3}
+   print(a) 
+   # {1, 2, 3}
+   a.clear()
+   # 集合a中所有元素清空。 
+   print(a)
+   # set()
+   ```
+
+   - 集合的元素是可以判断是否存在的，如下所示：
+
+   ```python
+   a = {1, 2, 3}
+   print(2 in a)
+   # True
+   print(4 in a)
+   # False
+   ```
+
+   - 集合的元素是可以排序的，如下所示：
