@@ -500,25 +500,174 @@ print(PI)
    - 列表是 Python 中最常用的一种数据类型，列表用`[]`表示，列表中的元素用`,`分割开，如下所示：
 
    ```python
-   a = [1, 2, 3, 4, 5]
-   # 列表a中有5个元素，分别是1、2、3、4、5。
+   a = [1, 2, 3]
+   # 列表a中有3个元素，分别是1、2、3。
    ```
+
+   - 列表长度用`len()`函数计算，如下所示：
+
+   ```python
+   a = [1, 2, 3]
+   print(len(a))
+   # 3
+   ```
+
+   - 可以通过索引来访问列表的每个元素，索引是从`0`开始的：
+
+   ```python
+   a = [1, 2, 3]
+   print(a[0])
+   # 1
+   print(a[1])
+   # 2
+   print(a[2])
+   # 3
+   print(a[3])
+   # Traceback (most recent call last):
+   # File "<stdin>", line x, in <module>
+   # IndexError: list index out of range
+   ```
+
+   ::: warning 索引越界
+   当索引超出范围时，Python 会报一个`IndexError`的错误，所以要确保索引不要越界。
+   :::
+
+   也可以通过`-1`作为索引，取最后一个元素，以此类推：
+
+   ```python
+   a = [1, 2, 3]
+   print(a[-1])
+   # 3
+   print(a[-2])
+   # 2
+   print(a[-3])
+   # 1
+   print(a[-4])
+   # Traceback (most recent call last):
+   # File "<stdin>", line x, in <module>
+   # IndexError: list index out of range
+   ```
+
    - 列表中的元素可以是任意数据类型，甚至可以包含列表：
 
    ```python
-   a = [1, 2, 3, 4, 5, [1, 2, 3]]
-   # 列表a中有6个元素，分别是1、2、3、4、5、[1, 2, 3
-   # ]。
+   a = [1, "你好", [2, 3]]
+   # 列表a中有3个元素，分别是1、"你好"、[2, 3]。
    ```
+
    - 列表的元素是可以修改的，如下所示：
 
    ```python
-   a = [1, 2, 3, 4, 5]
-   # 列表a中有5个元素，分别是1、2、3、4、5。
+   a = [1, 2, 3]
+   # 列表a中有3个元素，分别是1、2、3。
    a[0] = 100
    # 列表a中第一个元素的值修改为100。
    print(a)
-   # [100, 2, 3, 4, 5]
+   # [100, 2, 3]
+   ```
+
+   - 列表数据末尾追加`append()`、指定位置插入`insert()`、末尾或指定位置删除`pop()`、删除指定元素`remove()`、排序`sort()`、倒序`reverse()`、清空`clear()`等等方法，如下所示：
+
+   ```python
+   a = [1, 2, 3]
+   print(a)
+   # [1, 2, 3]
+   a.append(4)
+   print(a)
+   # [1, 2, 3, 4]
+   a.insert(0, 0)
+   print(a)
+   # [0, 1, 2, 3, 4]
+   a.pop(0)
+   print(a)
+   # [1, 2, 3, 4]
+   a.insert(2, 5)
+   print(a)
+   # [1, 2, 5, 3, 4]
+   a.remove(4)
+   print(a)
+   # [1, 2, 5, 3]
+   a.sort()
+   print(a)
+   # [1, 2, 3, 5]
+   a.reverse()
+   print(a)
+   # [5, 3, 2, 1]
+   a.clear()
+   print(a)
+   # []
+   ```
+
+2. **元组**（**tuple**）
+
+   - 元组是另一种有序列表，用`()`表示，元组中的元素用`,`分割开。tuple 和 list 非常类似，但是 tuple 一旦初始化就不能修改，如下所示：
+
+   ```python
+   a = (1, 2, 3)
+   # 元组a中有3个元素，分别是1、2、3。
+   ```
+
+   - 元组的元素不可修改，如下所示：
+
+   ```python
+   a = (1, 2, 3)
+   # 元组a中有3个元素，分别是1、2、3。
+   a[0] = 100
+   print(a)
+   # Traceback (most recent call last):
+   # File "<stdin>", line x, in <module>
+   # TypeError: 'tuple' object does not support item assignment
+   ```
+
+   ::: warning 不可变的`tuple`有什么意义？
+   因为`tuple`不可变，所以代码更安全。如果可能，能用`tuple`代替`list`就尽量用`tuple`。
+   :::
+
+   ::: details `tuple`陷阱
+   当你定义一个`tuple`时，在定义的时候，`tuple`的元素就必须被确定下来，比如：
+
+   ```python
+   a = (1, 2, 3)
+   print(a)
+   # (1, 2, 3)
+   ```
+
+   想要定义一个空`tuple`，可以写成`()`：
+
+   ```python
+   a = ()
+   print(a)
+   # ()
+   ```
+
+   但是，想要定义只有一个元素的`tuple`，如果这样写：
+
+   ```python
+   a = (1)
+   print(a)
+   # 1
+   ```
+
+   > 可以看到打印`a = (1)`的结果是`1`这个数！这是因为括号`()`既可以表示 tuple，又可以表示数学公式中的小括号，这就产生了歧义，因此，Python 规定，这种情况下，按小括号进行计算，计算结果自然是`1`。
+
+   所以，只有 1 个元素的 tuple 定义时必须加一个逗号`,`，来消除歧义：
+
+   ```python
+   b = (1,)
+   print(b)
+   # (1,)
+   ```
+
+   :::
+
+   - 可变`tuple`，`tuple`所谓的“不变”是说，`tuple`的每个元素，指向永远不变。
+   
+   ```python
+   a = (1, 2, [3, 4])
+   a[2][0] = "x"
+   a[2][1] = "y"
+   print(a)
+   # (1, 2, ['x', 'y'])
    ```
 
 ### 3.4 字典与集合
