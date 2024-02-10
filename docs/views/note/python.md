@@ -803,10 +803,10 @@ print(PI)
 
    ```python
    a = {1, 2, 3}
-   print(a) 
+   print(a)
    # {1, 2, 3}
    a.clear()
-   # 集合a中所有元素清空。 
+   # 集合a中所有元素清空。
    print(a)
    # set()
    ```
@@ -831,4 +831,109 @@ print(PI)
    print(a | b)
    # {1, 2, 3, 4}
    ```
-   
+
+### 3.5 条件判断 & 模式匹配
+
+> 计算机之所以能做很多自动化的任务，因为它可以自己做条件判断与模式匹配。
+
+#### 3.5.1 `if`语句
+
+1. 使用`if`语句判断用户输入的年龄并输出不同内容，也可以给`if`添加一个`else`语句，意思是，如果`if`判断是`False`，不要执行`if`的内容，去把`else`执行了：
+
+```python
+age = int(input("请输入你的年龄："))
+
+print("你的年龄是：", age)
+if age >= 18:
+  print("你成年了")
+else:
+  print("你还未成年")
+```
+
+2. 使用`elif`语句，可以将判断变得更加细致：
+
+```python
+age = int(input("请输入你的年龄："))
+
+print("你的年龄是：", age)
+if age >= 18:
+  print("你成年了")
+elif age >= 8:
+  print("你还未成年")
+else:
+  print("你还是小孩")
+```
+
+:::tip 关于elif
+`elif`是`else if`的缩写，完全可以有多个`elif`，所以`if`语句的完整形式就是：
+
+```python
+if <条件判断1>:
+    <执行1>
+elif <条件判断2>:
+    <执行2>
+elif <条件判断3>:
+    <执行3>
+else:
+    <执行4>
+```
+:::
+
+> `if`语句执行有个特点，它是从上往下判断，如果在某个判断上是`True`，把该判断对应的语句执行后，就忽略掉剩下的`elif`和`else`。
+
+::: details 小练习
+小明身高1.75，体重80.5kg。请根据BMI公式（体重除以身高的平方）帮小明计算他的BMI指数，并根据BMI指数：
+
+- 低于18.5：过轻
+- 18.5-25：正常
+- 25-28：过重
+- 28-32：肥胖
+- 高于32：严重肥胖
+
+```python
+height = 1.75
+weight = 80.5
+
+bmi = weight / (height ** 2)
+print(bmi)
+if bmi < 18.5:
+   print("过轻")
+elif bmi < 25:
+   print("正常")
+elif bmi < 28:
+   print("过重")
+elif bmi < 32:
+   print("肥胖")
+else:
+   print("严重肥胖")
+```
+:::
+
+#### 3.5.2 `match`语句
+
+::: tip 使用`elif`可能引发的问题
+当我们用if ... elif ... elif ... else ...判断时，会写很长一串代码，可读性较差。针对某个变量匹配若干种情况，可以使用`match`语句。
+:::
+
+例如，我们判断某学生成绩，使用`if`、`elif`、`else`语句：
+
+```python
+score = int(input("请输入学生成绩："))
+
+if score >= 90:
+  print("优秀")
+elif score >= 80:
+  print("良好")
+elif score >= 70:
+  print("合格")
+elif score >= 60:
+  print("及格")
+else:
+  print("不及格")
+```
+
+使用`match`语句，则可改写为：
+
+```python
+
+```
