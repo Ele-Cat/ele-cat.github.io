@@ -864,7 +864,7 @@ else:
   print("你还是小孩")
 ```
 
-:::tip 关于elif
+:::tip 关于 elif
 `elif`是`else if`的缩写，完全可以有多个`elif`，所以`if`语句的完整形式就是：
 
 ```python
@@ -877,18 +877,19 @@ elif <条件判断3>:
 else:
     <执行4>
 ```
+
 :::
 
 > `if`语句执行有个特点，它是从上往下判断，如果在某个判断上是`True`，把该判断对应的语句执行后，就忽略掉剩下的`elif`和`else`。
 
 ::: details 小练习
-小明身高1.75，体重80.5kg。请根据BMI公式（体重除以身高的平方）帮小明计算他的BMI指数，并根据BMI指数：
+小明身高 1.75，体重 80.5kg。请根据 BMI 公式（体重除以身高的平方）帮小明计算他的 BMI 指数，并根据 BMI 指数：
 
-- 低于18.5：过轻
+- 低于 18.5：过轻
 - 18.5-25：正常
 - 25-28：过重
 - 28-32：肥胖
-- 高于32：严重肥胖
+- 高于 32：严重肥胖
 
 ```python
 height = 1.75
@@ -907,26 +908,29 @@ elif bmi < 32:
 else:
    print("严重肥胖")
 ```
+
 :::
 
 #### 3.5.2 `match`语句
 
 ::: tip 使用`elif`可能引发的问题
-当我们用if ... elif ... elif ... else ...判断时，会写很长一串代码，可读性较差。针对某个变量匹配若干种情况，可以使用`match`语句。
+当我们用 if ... elif ... elif ... else ...判断时，会写很长一串代码，可读性较差。针对某个变量匹配若干种情况，可以使用`match`语句。
 :::
+
+1. 简单匹配
 
 例如，我们判断某学生成绩，使用`if`、`elif`、`else`语句：
 
 ```python
-score = int(input("请输入学生成绩："))
+score = input("请输入学生成绩：")
 
-if score >= 90:
+if score == 'A':
   print("优秀")
-elif score >= 80:
+elif score == 'B':
   print("良好")
-elif score >= 70:
+elif score == 'C':
   print("合格")
-elif score >= 60:
+elif score == 'D':
   print("及格")
 else:
   print("不及格")
@@ -935,5 +939,172 @@ else:
 使用`match`语句，则可改写为：
 
 ```python
+score = input("请输入学生成绩：")
 
+match score:
+  case 'A':
+    print("优秀")
+  case 'B':
+    print("良好")
+  case 'C':
+    print("合格")
+  case 'D':
+    print("及格")
+  case _:
+    print("不及格")
+```
+
+::: danger 特别注意
+匹配语句需要 Python 3.10 或更高版本 Pylance！
+:::
+
+2. 复杂匹配
+
+`match`语句除了可以匹配简单的单个值外，还可以匹配多个值、匹配一定范围，并且把匹配后的值绑定到变量：
+
+```python
+age = 15
+
+match age:
+  case x if x < 10:
+    print(f'< 10 years old: {x}')
+  case 10:
+    print('10 years old.')
+  case 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18:
+    print('11~18 years old.')
+  case 19:
+    print('19 years old.')
+  case _:
+    print('not sure.')
+```
+
+::: details 解析
+
+- 第一个`case x if x < 10`表示当`age < 10`成立时匹配，且赋值给变量`x`
+- 第二个`case 10`仅匹配单个值，第三个`case 11|12|...|18`能匹配多个值，用`|`分隔
+- 最后一个`_`表示匹配其他所有情况。
+
+:::
+
+3. 匹配列表
+
+```python
+args = ['gcc', 'hello.c', 'world.c']
+# args = ['clean']
+# args = ['gcc']
+
+match args:
+  # 如果仅出现gcc，报错:
+  case ['gcc']:
+    print('gcc: missing source file(s).')
+  # 出现gcc，且至少指定了一个文件:
+  case ['gcc', file1, *files]:
+    print('gcc compile: ' + file1 + ', ' + ', '.join(files))
+  # 仅出现clean:
+  case ['clean']:
+    print('clean')
+  case _:
+    print('invalid command.')
+```
+
+::: details 解析
+
+- 第一个 `case ['gcc']`表示列表仅有`'gcc'`一个字符串，没有指定文件名，报错；
+- 第二个 `case ['gcc', file1, *files]`表示列表第一个字符串是`'gcc'`，第二个字符串绑定到变量 `file1`，后面的任意个字符串绑定到`*files`（符号`*`的作用将在函数的参数中讲解），它实际上表示至少指定一个文件；
+- 第三个 `case ['clean']`表示列表仅有`'clean'`一个字符串；
+- 最后一个 `case _`表示其他所有情况。
+  :::
+
+### 3.6 循环
+
+::: tip 引子
+要计算 1+2+3，我们可以直接写表达式：
+
+```python
+print(1 + 2 + 3)
+# 6
+```
+
+那如果计算 1 + 2 + 3 + ... + 10000 呢，直接写加法运算就不合适了，这就用到了循环方法。
+:::
+
+
+#### 3.6.1 `for x in ...` 循环
+
+> `for x in ...` 循环就是将列表或元组中的每个元素依次迭代展开
+
+```python
+sum = 0
+for x in list(range(10001)):
+  sum += x
+print(sum)
+# 50005000
+```
+
+::: details 解析
+从 1 写到 10000 有点困难，幸好 Python 提供一个`range()`函数，可以生成一个整数序列，再通过`list()`函数可以转换为 list。比如`range(5)`生成的序列是从 0 开始小于 5 的整数，即[0, 1, 2, 3, 4]，因此想要生成`1 - 10000`，的整数列表可以使用`list(range(10001))`。
+:::
+
+#### 3.6.2 `while` 循环
+
+> 只要条件满足，就不断循环，条件不满足时退出循环。
+
+```python
+sum = 0
+n = 1
+
+while n < 10001:
+  sum += n
+  n += 1
+print(sum)
+# 50005000
+```
+
+::: details 解析
+设定初始总和为0，当`n`小于`10001`时，进入循环叠加到总和中并`自增1`，直到`n`的值`不小于10001`时，退出循环。
+:::
+
+1. `break`语句
+
+> 在循环中，`break`可以中断并退出循环
+
+```python
+sum = 0
+n = 1
+
+while n < 10001:
+  if n >= 101:
+    break
+  sum += n
+  n += 1
+print(sum)
+# 5050
+```
+
+::: details 解析
+本来是要计算0~10000的总和，但是加入`n >= 101`时退出循环的逻辑后，只会计算0~100的总和。
+:::
+
+2. `continue`语句
+
+> 在循环过程中，也可以通过`continue`语句，跳过当前的这次循环，直接开始下一次循环。
+
+```python
+n = 0
+while n < 10:
+  n += 1
+  print(n)
+# 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+```
+
+上例中，我们可以成功打印出`1`到`10`，但是如果我们只想打印奇数，该如何操作呢：
+
+```python
+n = 0
+while n < 10:
+  n += 1
+  if n % 2 == 0: # 如果n是偶数，执行continue语句
+    continue # continue语句会直接继续下一轮循环，后续的print()语句不会执行
+  print(n)
+# 1，3，5，7，9
 ```
