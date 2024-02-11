@@ -1196,9 +1196,124 @@ print(c)
    # TypeError: bad operand type for abs(): 'str'
    ```
 
-> 不管是调用内置函数还是自定义函数，在调用时都可以查看文档或研读函数内部代码确定函数的输入与输出，或根据报错信息修复问题。
+> 不管是调用内置函数还是自定义函数，在调用时都可以查看文档或研读函数内部代码确定函数的参数与返回值，或根据报错信息修复问题。
 
 ### 4.2 自定义函数
+
+> 在 Python 中，定义一个函数要使用`def`语句，依次写出函数名、括号、括号中的参数和冒号`:`，然后，在缩进块中编写函数体，函数的返回值用`return`语句返回。
+
+1. 示例，自定义一个求绝对值的`my_abs`函数：
+
+   ```python
+   def my_abs(x):
+     if x >= 0:
+       return x
+     else:
+       return -x
+
+   print(my_abs(10))
+   # 10
+   print(my_abs(-20))
+   # 20
+   print(my_abs(0))
+   # 0
+   print(my_abs(-1.34))
+   # 1.34
+   ```
+
+2. 参数检查
+
+   - 调用函数时，如果参数个数不对，Python 解释器会自动检查出来，并抛出`TypeError`：
+
+   ```python
+   print(my_abs(1, 2))
+   # Traceback (most recent call last):
+   # File "<stdin>", line 3, in <module>
+   # TypeError: my_abs() takes 1 positional argument but 2 were given
+   ```
+
+   - 但是如果参数类型不对，Python 解释器就无法帮我们检查。试试 `my_abs` 和内置函数 `abs` 的差别：
+
+   ```python
+   print(my_abs('A'))
+   # Traceback (most recent call last):
+   # File "<stdin>", line 6, in <module>
+   # File "<stdin>", line 4, in my_abs
+   # TypeError: '>=' not supported between instances of 'str' and 'int'
+
+   print(abs('A'))
+   # Traceback (most recent call last):
+   # File "<stdin>", line 5, in <module>
+   # TypeError: bad operand type for abs(): 'str'
+   ```
+
+   > - 当传入了不恰当的参数时，内置函数 `abs` 会检查出参数错误，而我们定义的 `my_abs` 没有参数检查，会导致 `if` 语句出错，出错信息和 `abs` 不一样。所以，这个函数定义不够完善。
+   > - 让我们修改一下 my_abs 的定义，对参数类型做检查，只允许整数和浮点数类型的参数。数据类型检查可以用内置函数 `isinstance()`实现：
+
+   ```python
+   def my_abs(x):
+    if not isinstance(x, (int, float)):
+      raise TypeError('bad operand type')
+    if x >= 0:
+      return x
+    else:
+      return -x
+
+   print(my_abs(10))
+   # 10
+   print(my_abs(-20))
+   # 20
+   print(my_abs(0))
+   # 0
+   print(my_abs(-1.34))
+   # 1.34
+   print(my_abs('A'))
+   # Traceback (most recent call last):
+   #   File "<stdin>", line 1, in <module>
+   #   File "<stdin>", line 3, in my_abs
+   # TypeError: bad operand type
+   ```
+
+3. 返回多个值
+
+   > 函数可以返回多个值
+
+   示例，游戏中，从一个点移动到另一个点，给出初始坐标、步数以及角度，就可以得出新的坐标：
+
+   ```python
+   import math
+   def move(x, y, step, angle = 0):
+     nx = x + step * math.cos(angle)
+     ny = y - step * math.sin(angle)
+     return nx, ny
+
+   x, y = move(100, 100, 60, math.pi / 6)
+   print(x, y)
+   # 151.96152422706632 70.0
+   ```
+
+   :::warning 注意
+   但其实这只是一种假象。Python 函数返回的依然是单一值：
+
+   ```python
+   poi = move(100, 100, 60, math.pi / 6)
+   print(poi)
+   # (151.96152422706632, 70.0)
+   ```
+
+   > 原来返回值是一个 `tuple`！但是，在语法上，返回一个 `tuple` 可以省略括号，而多个变量可以同时接收一个 `tuple`，按位置赋给对应的值，所以，Python 的函数返回多值其实就是返回一个 `tuple`，但写起来更方便。
+
+   :::
+
+::: tip 小结
+
+- 定义函数时，需要确定函数名和参数个数；
+- 如果有必要，可以先对参数的数据类型做检查；
+- 函数体内部可以用 `return` 随时返回函数结果；
+- 函数执行完毕也没有 `return` 语句时，自动 `return None`。
+- 函数可以同时返回多个值，但其实就是一个 `tuple`。
+
+:::
 
 ### 4.3 函数的参数
 
