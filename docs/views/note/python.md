@@ -1393,7 +1393,58 @@ print(c)
 
 3. 可变参数
 
-> 在Python函数中，还可以定义可变参数。顾名思义，可变参数就是传入的参数个数是可变的，可以是1个、2个到任意个，还可以是0个。
+   > 在 Python 函数中，还可以定义可变参数。顾名思义，可变参数就是传入的参数个数是可变的，可以是 1 个、2 个到任意个，还可以是 0 个。
+
+   ::: tip 引子
+   我们以不定参数 a,b,c...，求 a² + b² + c² + ...为例，因为入参个数未知，我们可以用列表`list`或元组`tuple`传进来：
+
+   ```python
+   def calc(numbers):
+     sum = 0
+     for n in numbers:
+       sum = sum + n * n
+     return sum
+
+   print(calc([1, 2, 3]))
+   # 14
+   print(calc((1, 2, 3, 4)))
+   # 30
+   ```
+
+   :::
+
+   上例中，传入的参数为我们提前组装好的`list`或者`tuple`，要想使用**可变参数**，可以将函数稍作修改：
+
+   ```python
+   def calc(*numbers):
+     sum = 0
+     for n in numbers:
+       sum = sum + n * n
+
+     return sum
+
+   print(calc(1, 2, 3))
+   # 14
+   print(calc(1, 2, 3, 4))
+   # 30
+   print(calc())
+   # 0
+   ```
+
+   ::: warning `*`的作用
+
+   Python 允许在 list 或 tuple 前面加一个\*号，把 list 或 tuple 的元素变成可变参数传进去：
+
+   ```python
+   print([1, 2, 3])
+   # [1, 2, 3]
+   print(*[1, 2, 3])
+   # 1 2 3
+   ```
+
+   > `*`表示把`nums`这个`list`的所有元素作为可变参数传进去。这种写法相当有用，而且很常见。
+
+   :::
 
 4. 关键字参数
 
