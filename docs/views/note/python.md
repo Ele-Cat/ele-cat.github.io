@@ -1317,4 +1317,88 @@ print(c)
 
 ### 4.3 函数的参数
 
+> 定义函数的时候，我们把参数的名字和位置确定下来，函数的接口定义就完成了。Python 的函数定义非常简单，但灵活度却非常大。除了正常定义的必选参数外，还可以使用默认参数、可变参数和关键字参数，使得函数定义出来的接口，不但能处理复杂的参数，还可以简化调用者的代码。
+
+1. 位置参数
+
+   定义一个计算`x^2`的函数：
+
+   ```python
+   def power(x):
+     return x * x
+   ```
+
+   对于`power(x)`来说，参数`x`就是一个位置参数。当我们调用`power`函数时，必须传入有且仅有的一个参数`x`：
+
+   ```python
+   print(power(2))
+   # 4
+   print(power(-3))
+   # 9
+   ```
+
+   但如果我们计算`x^3`、`x^4`、、、`x^n`呢，我们不能定义无限个函数（ps：在创建函数时，要考虑函数方法的可扩展性）。我们将`power`函数修改为：
+
+   ```python
+   def power(x, n):
+     if not isinstance(x, (int, float)) or not isinstance(n, (int, float)):
+       raise TypeError('bad operand type')
+     return x ** n
+
+   print(power(2, 3))
+   # 8
+   print(power(2, 10))
+   # 1024
+   print(power(2, 0))
+   # 1
+   print(power(0, 2))
+   # 0
+   ```
+
+   修改后的`power(x, n)`函数有两个参数：`x`和`n`，这两个参数都是位置参数，调用函数时，传入的两个值按照位置顺序依次赋给参数`x`和`n`。
+
+2. 默认参数
+
+   上例中，新定义的`power(x, n)`在传入两个参数时是没有问题的，但是没有兼容之间一个参数时的写法：
+
+   ```python
+   print(power(2))
+
+   # Traceback (most recent call last):
+   #   File "<stdin>", line 11, in <module>
+   # TypeError: power() missing 1 required positional argument: 'n'
+   ```
+
+   Python 的错误信息很明确：调用函数`power()`缺少了一个位置参数`n`。
+
+   这个时候，默认参数就派上了用场，由于我们是兼容之前`x^2`的写法，因此给参数`n`默认值设定为`2`：
+
+   ```python
+   def power(x, n = 2):
+     if not isinstance(x, (int, float)) or not isinstance(n, (int, float)):
+       raise TypeError('bad operand type')
+     return x ** n
+
+   print(power(2, 3))
+   # 8
+   print(power(2))
+   # 4
+   ```
+
+   ::: tip 注意
+
+   - 一是必选参数在前，默认参数在后，否则 Python 的解释器会报错；
+   - 二是当函数有多个参数时，把变化大的参数放前面，变化小的参数放后面。变化小的参数就可以作为默认参数。
+     :::
+
+3. 可变参数
+
+> 在Python函数中，还可以定义可变参数。顾名思义，可变参数就是传入的参数个数是可变的，可以是1个、2个到任意个，还可以是0个。
+
+4. 关键字参数
+
+5. 命名关键字参数
+
+6. 参数组合
+
 ### 4.4 递归函数
