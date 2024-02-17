@@ -1606,3 +1606,107 @@ print(c)
 ### 4.4 递归函数
 
 > 在函数内部，可以调用其他函数。如果一个函数在内部调用自身本身，这个函数就是**递归函数**。
+
+::: tip 引子
+举个例子，我们来计算阶乘`n! = 1 x 2 x 3 x ... x n`，用函数`fact(n)`表示，可以看出：
+
+fact(n) = n! = 1 x 2 x 3 x ... x (n-1) x n = (n-1)! x n = fact(n-1) x n
+
+所以，fact(n)可以表示为 n x fact(n-1)，只有 n=1 时需要特殊处理。
+
+于是，fact(n)用递归的方式写出来就是：
+
+```python
+def fact(n):
+  if not isinstance(n, int):
+    return '需为整数'
+  if n <= 0:
+    return '需大于0的整数'
+  if n == 1:
+    return 1
+  return n * fact(n - 1)
+
+print(fact('a'))
+# 需为整数
+print(fact(0))
+# 需大于0的整数
+print(fact(-1))
+# 需大于0的整数
+print(fact(1))
+# 1
+print(fact(5))
+# 120
+print(fact(100))
+# 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
+```
+
+:::
+
+递归函数的优点是定义简单，逻辑清晰。理论上，所有的递归函数都可以写成循环的方式，但循环的逻辑不如递归清晰。
+
+::: warning 栈溢出问题
+使用递归函数需要注意防止栈溢出。在计算机中，函数调用是通过栈（stack）这种数据结构实现的，每当进入一个函数调用，栈就会加一层栈帧，每当函数返回，栈就会减一层栈帧。由于栈的大小不是无限的，所以，递归调用的次数过多，会导致栈溢出。可以试试 fact(1000)：
+
+```python
+print(fact(1000))
+# Traceback (most recent call last):
+#   File "<stdin>", line *, in <module>
+#   File "<stdin>", line *, in fact
+#   File "<stdin>", line *, in fact
+#   File "<stdin>", line *, in fact
+#   [Previous line repeated 996 more times]
+# RecursionError: maximum recursion depth exceeded
+```
+
+:::
+
+解决递归调用栈溢出的方法是通过**尾递归**优化，事实上尾递归和循环的效果是一样的，所以，把循环看成是一种特殊的尾递归函数也是可以的。
+
+::: tip 尾递归
+尾递归是指，**在函数返回的时候，调用自身，且 return 语句不能包含表达式**。这样，编译器或者解释器就可以把尾递归做优化，使递归本身无论调用多少次，都只占用一个栈帧，不会出现栈溢出的情况。
+:::
+
+优化**引子**中的**递归函数**为**尾递归**：
+
+```python
+def fact(n):
+  return fact_iter(n, 1)
+
+def fact_iter(num, product):
+  if not isinstance(num, int):
+    return '需为整数'
+  if num < 0:
+    return '需大于0的整数'
+  if num == 0:
+    return product
+  return fact_iter(num - 1, num * product)
+```
+
+可以看到，`return fact_iter(num - 1, num * product)`仅返回递归函数本身，`num - 1`和`num * product`在函数调用前就会被计算，不影响函数调用。
+
+::: tip 小结
+
+- 使用递归函数的优点是逻辑简单清晰，缺点是过深的调用会导致栈溢出。
+- 针对尾递归优化的语言可以通过尾递归防止栈溢出。尾递归事实上和循环是等价的，没有循环语句的编程语言只能通过尾递归实现循环。
+- Python 标准的解释器没有针对尾递归做优化，任何递归函数都存在栈溢出的问题。
+
+练习：使用递归函数现实[**汉诺塔的移动**](https://baike.baidu.com/item/汉诺塔/3468295)
+
+```python
+def move(n, a, b, c):
+  if n == 1:
+    print(a, '->', c)
+  else:
+    move(n - 1, a, c, b)
+    print(a, '->', c)
+    move(n - 1, b, a, c)
+
+move(3, 'A', 'B', 'C')
+# ...
+move(4, 'A', 'B', 'C')
+# ...
+```
+
+解析：当N==1时，直接将A移动到C；当N>=2时，我们想要把所有的盘从A通过B移到C，那么需要先把A上面N-1个盘通过C转移到B，再把最下面的那个最大的盘从A直接转移到C，然后再把B上面的所有盘通过A转移到C。
+
+:::
