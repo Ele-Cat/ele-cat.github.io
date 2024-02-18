@@ -1951,3 +1951,33 @@ L = ['Hello', 'World', 'IBM', 'Apple']
 print([s.lower() for s in L])
 # ['hello', 'world', 'ibm', 'apple']
 ```
+
+:::warning 列表生成式中的`if...else`
+使用列表生成式输出 1~10 之间的偶数：
+
+```python
+print([x for x in range(1, 11) if x % 2 == 0])
+# [2, 4, 6, 8, 10]
+```
+
+但是，我们不能在最后的 `if` 加上 `else` 语句：
+
+```python
+print([x for x in range(1, 11) if x % 2 == 0 else 0])
+# File "<stdin>", line 1
+#   print([x for x in range(1, 11) if x % 2 == 0 else 0])
+# SyntaxError: invalid syntax
+```
+
+会抛出一个语法错误，这是因为在 `for` 之后的 `if` 是一个筛选条件，而不是 `if...else` 语句。
+
+需要注意的是，在 `for` 语句之前的 `if` 为`if...else`语句，可以使用 `else` 语句：
+
+```python
+print([x if x % 2 == 0 else -x for x in range(1, 11)])
+# [-1, 2, -3, 4, -5, 6, -7, 8, -9, 10]
+```
+
+> 可见，在一个列表生成式中，`for` 前面的 `if ... else` 是表达式，而 `for` 后面的 `if` 是过滤条件，不能带 `else`。
+
+:::
