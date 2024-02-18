@@ -1867,3 +1867,24 @@ for i in s:
   print(i)
 # a b c d e f g
 ```
+
+那么如何判断一个对象是否可迭代呢？方法是通过`collections.abc`模块的`Iterable`类型判断：
+
+```python
+from collections.abc import Iterable
+
+print(isinstance('abc', Iterable))
+# True
+print(isinstance([1, 2, 3], Iterable))
+# True
+print(isinstance((1, 2, 3), Iterable))
+# True
+print(isinstance({'a': 1, 'b': 2, 'c': 3}, Iterable))
+# True
+print(isinstance(123, Iterable))
+# False
+```
+
+### 5.3 列表生成式
+
+> 列表生成式即List Comprehensions，是Python内置的非常简单却强大的可以用来创建list的生成式。
