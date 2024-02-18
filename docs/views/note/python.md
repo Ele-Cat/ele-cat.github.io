@@ -1912,7 +1912,7 @@ print(L)
 
 :::
 
-使用列表生成式实现引子种的功能：
+1. 使用**列表生成式**实现引子中的功能：
 
 ```python
 print([x * x for x in range(1, 11)])
@@ -1920,3 +1920,34 @@ print([x * x for x in range(1, 11)])
 ```
 
 写列表生成式时，把要生成的元素 `x * x` 放到前面，后面跟 for 循环，就可以把 `list` 创建出来。
+
+2. 在 `for` 循环之后还可以加 `if` 判断，这样我们就可以添加筛选条件：
+
+```python
+# 筛选仅为偶数的平方：
+print([x ** 2 for x in range(1, 11) if x % 2 == 0])
+# [4, 16, 36, 64, 100]
+```
+
+3. 使用两层循环，实现全排列：
+
+```python
+print([m + n for m in 'ABC' for n in 'XYZ'])
+# ['AX', 'AY', 'AZ', 'BX', 'BY', 'BZ', 'CX', 'CY', 'CZ']
+```
+
+4. 运用列表生成式，可以写出非常简洁的代码。例如，列出当前目录下的所有文件和目录名，可以通过一行代码实现：
+
+```python
+import os # 导入os模块
+print([d for d in os.listdir('.')]) # os.listdir可以列出文件和目录
+# 输出[文件列表]
+```
+
+5. 实现将 `list` 中的所有字符转换为小写：
+
+```python
+L = ['Hello', 'World', 'IBM', 'Apple']
+print([s.lower() for s in L])
+# ['hello', 'world', 'ibm', 'apple']
+```
