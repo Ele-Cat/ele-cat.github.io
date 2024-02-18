@@ -1774,7 +1774,7 @@ print(list[1:3])
 # ['李四', '王五']
 ```
 
-类似从数组取后几个元素【*list[-1]*】，Python 也支持倒数切片：
+类似从数组取后几个元素【_list[-1]_】，Python 也支持倒数切片：
 
 ```python
 list = ['张三', '李四', '王五', '赵六', '孙七']
@@ -1836,4 +1836,34 @@ print(S[:3])
 # ABC
 print(S[::2])
 # ACEG
+```
+
+### 5.2 迭代
+
+> 如果给定一个 `list` 或 `tuple`，我们可以通过 `for` 循环来遍历这个 `list` 或 `tuple`，这种遍历我们称为迭代（Iteration）。
+
+在 Python 中，是通过`for ... in ...`来完成迭代的，其不止可以作用于`list`或`tuple`，还可以作用在其他可迭代对象上。
+
+```python
+# 对数组迭代
+l = [1, 2, 3, 4, 5]
+for i in l:
+  print(i)
+# 1 2 3 4 5
+
+# 对字典迭代
+d = {'a': 1, 'b': 2, 'c': 3}
+for key in d:
+  print(key, d[key])
+for key, val in d.items():
+  print(key, val)
+# a 1
+# b 2
+# c 3
+
+# 对字符串迭代
+s = 'abcdefg'
+for i in s:
+  print(i)
+# a b c d e f g
 ```
