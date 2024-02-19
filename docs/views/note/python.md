@@ -2056,12 +2056,35 @@ def fib(max):
   n, a, b = 0, 0, 1
   while n < max:
     print(b)
+    # t = (b, a + b) # t是一个tuple
+    # a = t[0]
+    # b = t[1]
     a, b = b, a + b
     n = n + 1
   print('done')
 
 fib(10)
-# 1 1 2 3 5 8 13 21 34 55
+# 1 1 2 3 5 8 13 21 34 55 done
 ```
 
+这里可以看出， `fib` 函数定义了斐波拉契数列的推算规则，可以从第一个元素开始，推算出后续任意位的元素，而要把 `fib` 函数变成 `generator` 函数只需要将 `print(b)` 修改为 `yield b`就可以了：
+
+```python
+def fib(max):
+  n, a, b = 0, 0, 1
+  while n < max:
+    yield b
+    a, b = b, a + b
+    n = n + 1
+  return 'done'
+
+f = fib(6)
+print(f)
+# <generator object fib at 0x00000225A14792A0>
+```
+
+> 由此可见，如果一个函数定义中包含 `yield` 关键字，那么这个函数就不再是一个普通函数，而是一个 `generator` 函数，调用一个 `generator` 函数将返回一个 `generator`。
+
 :::
+
+> 引子中，最难理解的就是 generator 函数和普通函数的执行流程。普通函数是顺序执行，遇到 `return` 语句或者最后一行函数语句就返回。而变成 generator 的函数，在每次调用 `next()` 的时候执行，遇到 `yield` 语句返回，再次执行时从上次返回的 `yield` 语句后继续执行。
