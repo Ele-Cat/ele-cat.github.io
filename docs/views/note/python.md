@@ -1981,3 +1981,87 @@ print([x if x % 2 == 0 else -x for x in range(1, 11)])
 > 可见，在一个列表生成式中，`for` 前面的 `if ... else` 是表达式，而 `for` 后面的 `if` 是过滤条件，不能带 `else`。
 
 :::
+
+### 5.4 生成器
+
+:::tip 引子
+通过列表生成式，我们可以直接创建一个列表。但是，受到内存限制，列表容量肯定是有限的。而且，创建一个包含 100 万个元素的列表，不仅占用很大的存储空间，如果我们仅仅需要访问前面几个元素，那后面绝大多数元素占用的空间都白白浪费了。
+
+所以，如果列表元素可以按照某种算法推算出来，那我们是否可以在循环的过程中不断推算出后续的元素呢？这样就不必创建完整的 `list`，从而节省大量的空间。在 Python 中，这种一边循环一边计算的机制，称为**生成器：generator**。
+:::
+
+1. 想创建一个 `generator` 很简单，只要把列表生成式的 `[]` 改成 `()` 即可：
+
+   ```python
+   L = [x * x for x in range(4)]
+   g = (x * x for x in range(4))
+
+   print(L)
+   # [0, 1, 4, 9]
+   print(g)
+   # <generator object <genexpr> at 0x000002B38FD1DD80>
+   ```
+
+   可以看到，`L` 是一个 `list`，而 `g` 是一个 `generator`。我们可以打印出 `list` 的每一个元素，但我们怎么打印出 `generator` 的每一个元素呢？
+
+   可以通过 `next()` 函数获得 `generator` 的下一个返回值：
+
+   ```python
+   g = (x * x for x in range(4))
+
+   print(next(g))
+   # 0
+   print(next(g))
+   # 1
+   print(next(g))
+   # 4
+   print(next(g))
+   # 9
+   print(next(g))
+   # Traceback (most recent call last):
+   #   File "<stdin>", line 7, in <module>
+   # StopIteration
+   ```
+
+   > `generator` 保存的是算法，每次调用 `next(g)`，就计算出 `g` 的下一个元素的值，直到计算到最后一个元素，没有更多的元素时，抛出 `StopIteration` 的错误。
+
+   当然，上面这种不断调用 `next(g)`实在是太不方便了，正确的方法是使用 `for` 循环，因为 `generator` 也是可迭代对象：
+
+   ```python
+   from collections.abc import Iterable
+
+   g = (x * x for x in range(4))
+   print(isinstance(g, Iterable))
+   # True
+
+   for n in g:
+     print(n)
+   # 0
+   # 1
+   # 4
+   # 9
+   ```
+
+   所以，我们创建了一个 `generator` 后，基本上永远不会调用 `next()`，而是通过 `for` 循环来迭代它，并且不需要关心 `StopIteration` 的错误。
+
+2. 使用 `yield` 关键字
+
+::: tip 引子
+`generator` 非常强大。如果推算的算法比较复杂，用类似列表生成式的 `for` 循环无法实现的时候，还可以用函数来实现。
+
+比如，著名的斐波拉契数列（Fibonacci），除第一个和第二个数外，任意一个数都可由前两个数相加得到：`1, 1, 2, 3, 5, 8, 13, 21, 34, ...`，斐波拉契数列用列表生成式写不出来，但是，用函数把它打印出来却很容易：
+
+```python
+def fib(max):
+  n, a, b = 0, 0, 1
+  while n < max:
+    print(b)
+    a, b = b, a + b
+    n = n + 1
+  print('done')
+
+fib(10)
+# 1 1 2 3 5 8 13 21 34 55
+```
+
+:::
