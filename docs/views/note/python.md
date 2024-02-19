@@ -2046,45 +2046,102 @@ print([x if x % 2 == 0 else -x for x in range(1, 11)])
 
 2. 使用 `yield` 关键字
 
-::: tip 引子
-`generator` 非常强大。如果推算的算法比较复杂，用类似列表生成式的 `for` 循环无法实现的时候，还可以用函数来实现。
+   ::: tip 引子
+   `generator` 非常强大。如果推算的算法比较复杂，用类似列表生成式的 `for` 循环无法实现的时候，还可以用函数来实现。
 
-比如，著名的斐波拉契数列（Fibonacci），除第一个和第二个数外，任意一个数都可由前两个数相加得到：`1, 1, 2, 3, 5, 8, 13, 21, 34, ...`，斐波拉契数列用列表生成式写不出来，但是，用函数把它打印出来却很容易：
+   比如，著名的斐波拉契数列（Fibonacci），除第一个和第二个数外，任意一个数都可由前两个数相加得到：`1, 1, 2, 3, 5, 8, 13, 21, 34, ...`，斐波拉契数列用列表生成式写不出来，但是，用函数把它打印出来却很容易：
 
-```python
-def fib(max):
-  n, a, b = 0, 0, 1
-  while n < max:
-    print(b)
-    # t = (b, a + b) # t是一个tuple
-    # a = t[0]
-    # b = t[1]
-    a, b = b, a + b
-    n = n + 1
-  print('done')
+   ```python
+   def fib(max):
+     n, a, b = 0, 0, 1
+     while n < max:
+       print(b)
+       # t = (b, a + b) # t是一个tuple
+       # a = t[0]
+       # b = t[1]
+       a, b = b, a + b
+       n = n + 1
+     print('done')
 
-fib(10)
-# 1 1 2 3 5 8 13 21 34 55 done
-```
+   fib(10)
+   # 1 1 2 3 5 8 13 21 34 55 done
+   ```
 
-这里可以看出， `fib` 函数定义了斐波拉契数列的推算规则，可以从第一个元素开始，推算出后续任意位的元素，而要把 `fib` 函数变成 `generator` 函数只需要将 `print(b)` 修改为 `yield b`就可以了：
+   这里可以看出， `fib` 函数定义了斐波拉契数列的推算规则，可以从第一个元素开始，推算出后续任意位的元素，而要把 `fib` 函数变成 `generator` 函数只需要将 `print(b)` 修改为 `yield b`就可以了：
 
-```python
-def fib(max):
-  n, a, b = 0, 0, 1
-  while n < max:
-    yield b
-    a, b = b, a + b
-    n = n + 1
-  return 'done'
+   ```python
+   def fib(max):
+     n, a, b = 0, 0, 1
+     while n < max:
+       yield b
+       a, b = b, a + b
+       n = n + 1
+     return 'done'
 
-f = fib(6)
-print(f)
-# <generator object fib at 0x00000225A14792A0>
-```
+   f = fib(6)
+   print(f)
+   # <generator object fib at 0x00000225A14792A0>
+   ```
 
-> 由此可见，如果一个函数定义中包含 `yield` 关键字，那么这个函数就不再是一个普通函数，而是一个 `generator` 函数，调用一个 `generator` 函数将返回一个 `generator`。
+   > 由此可见，如果一个函数定义中包含 `yield` 关键字，那么这个函数就不再是一个普通函数，而是一个 `generator` 函数，调用一个 `generator` 函数将返回一个 `generator`。
 
-:::
+   :::
 
-> 引子中，最难理解的就是 generator 函数和普通函数的执行流程。普通函数是顺序执行，遇到 `return` 语句或者最后一行函数语句就返回。而变成 generator 的函数，在每次调用 `next()` 的时候执行，遇到 `yield` 语句返回，再次执行时从上次返回的 `yield` 语句后继续执行。
+   > 引子中，最难理解的就是 generator 函数和普通函数的执行流程。普通函数是顺序执行，遇到 `return` 语句或者最后一行函数语句就返回。而变成 generator 的函数，在每次调用 `next()` 的时候执行，遇到 `yield` 语句返回，再次执行时从上次返回的 `yield` 语句后继续执行。示例：
+
+   ```python
+   def odd():
+     print('step 1')
+     yield 1
+     print('step 2')
+     yield(3)
+     print('step 3')
+     yield(5)
+
+   o = odd()
+   print(next(o))
+   # step 1
+   # 1
+   print(next(o))
+   # step 2
+   # 2
+   print(next(o))
+   # step 3
+   # 3
+   print(next(o))
+   # Traceback (most recent call last):
+   #   File "<stdin>", line 13, in <module>
+   # StopIteration
+   ```
+
+   可以看到，`odd` 不是普通函数，而是 `generator` 函数，在执行过程中，遇到 `yield` 就中断，下次又继续执行。执行 3 次 `yield` 后，已经没有 `yield` 可以执行了，所以，第 4 次调用 `next(o)`就报错。
+
+   ::: warning 特别注意
+
+   > 调用 generator 函数会创建一个 generator 对象，多次调用 generator 函数会创建多个相互独立的 generator。
+
+   ```python
+   def odd():
+     print('step 1')
+     yield 1
+     print('step 2')
+     yield(3)
+     print('step 3')
+     yield(5)
+
+   print(next(o))
+   # step 1
+   # 1
+   print(next(o))
+   # step 1
+   # 1
+   print(next(o))
+   # step 1
+   # 1
+   ```
+
+   上例中，每次结果都返回`1`，原因在于 `odd()`会创建一个新的 `generator` 对象，上述代码实际上创建了 3 个完全独立的 `generator`，对 3 个 `generator` 分别调用 `next()` 当然每个都会返回第一个值。正确的写法是创建一个 generator 对象，然后不断对这一个 generator 对象调用 `next()`。
+
+   :::
+
+> generator 是非常强大的工具，在 Python 中，可以简单地把列表生成式改成 generator，也可以通过函数实现复杂逻辑的 generator。
