@@ -2145,3 +2145,5 @@ print([x if x % 2 == 0 else -x for x in range(1, 11)])
    :::
 
 > generator 是非常强大的工具，在 Python 中，可以简单地把列表生成式改成 generator，也可以通过函数实现复杂逻辑的 generator。
+
+### 5.5 迭代器
