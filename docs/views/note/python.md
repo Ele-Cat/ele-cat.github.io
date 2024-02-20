@@ -2147,3 +2147,30 @@ print([x if x % 2 == 0 else -x for x in range(1, 11)])
 > generator 是非常强大的工具，在 Python 中，可以简单地把列表生成式改成 generator，也可以通过函数实现复杂逻辑的 generator。
 
 ### 5.5 迭代器
+
+:::tip 引子
+我们已经知道，可以直接作用于 `for` 循环的数据类型有以下几种：
+
+1. 一类是集合数据类型，如 `list`、`tuple`、`dict`、`set`、`str`等；
+2. 一类是`generator`，包括生成器和带 `yield`的 generator function。
+
+这些可以直接作用于`for`循环的对象统称为可迭代对象：`Iterable`。可使用`isinstance()`判断一个对象是否是`Interable`对象。
+
+```python
+from collections.abc import Iterable
+
+print(isinstance([], Iterable))
+# True
+print(isinstance((), Iterable))
+# True
+print(isinstance({}, Iterable))
+# True
+print(isinstance('abc', Iterable))
+# True
+print(isinstance((x for x in range(10)), Iterable))
+# True
+print(isinstance(100, Iterable))
+# False
+```
+
+:::
