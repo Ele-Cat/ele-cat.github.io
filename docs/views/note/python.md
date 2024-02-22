@@ -2216,6 +2216,42 @@ print(isinstance(100, Iterator))
 
 ### 6.1 高阶函数
 
+:::tip 引子
+
+1. 变量可以指向函数
+
+   以 Python 内置的求绝对值的函数 `abs()`为例，调用该函数用以下代码：
+
+   ```python
+   print(abs(-10))
+   # 10
+   print(abs)
+   # <built-in function abs>
+   ```
+
+   将函数赋值给变量：
+
+   ```python
+   a = abs(-10)
+   print(a)
+   # 10
+   b = abs
+   print(b)
+   # <built-in function abs>
+   ```
+
+   由此可见，函数本身也是可以赋值给变量的，即：**变量可以指向函数**。那如果变量指向了函数，是否可以通过该变量来调用函数？
+
+   ```python
+   f = abs
+   print(f(-10))
+   # 10
+   ```
+
+   > 由此可见，变量可以指向函数本身，直接调用函数和调用指向该函数的变量完全相同。
+
+:::
+
 ### 6.2 返回函数
 
 ### 6.3 匿名函数
