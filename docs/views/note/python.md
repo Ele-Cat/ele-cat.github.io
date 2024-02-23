@@ -2284,6 +2284,12 @@ print(isinstance(100, Iterator))
 
 :::
 
+#### 6.1.1 map/reduce
+
+#### 6.1.2 filter/lambda
+
+#### 6.1.3 sorted
+
 ### 6.2 返回函数
 
 ### 6.3 匿名函数
