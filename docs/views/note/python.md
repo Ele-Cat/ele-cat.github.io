@@ -2218,7 +2218,7 @@ print(isinstance(100, Iterator))
 
 :::tip 引子
 
-1. 变量可以指向函数
+1. **变量可以指向函数**
 
    以 Python 内置的求绝对值的函数 `abs()`为例，调用该函数用以下代码：
 
@@ -2250,7 +2250,21 @@ print(isinstance(100, Iterator))
 
    > 由此可见，变量可以指向函数本身，直接调用函数和调用指向该函数的变量完全相同。
 
-2. 函数名也是变量
+2. **函数名也是变量**
+
+   **函数名实际上就是指向函数的变量**，对于 `abs()`函数，完全可以把`abs`看做变量，它指向一个可以计算绝对值的函数！
+
+   那如果把`abs`指向其他对象，会发生什么情况？
+
+   ```python
+   abs = 10
+   print(abs(-10))
+   # Traceback (most recent call last):
+   #   File "<stdin>", line 2, in <module>
+   # TypeError: 'int' object is not callable
+   ```
+
+   把 `abs` 指向 `10` 后，就无法通过 `abs(-10)`调用该函数了！因为 `abs` 这个变量已经不指向求绝对值函数而是指向一个整数 `10`！
 
 :::
 
