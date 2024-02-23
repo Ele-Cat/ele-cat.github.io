@@ -2286,6 +2286,21 @@ print(isinstance(100, Iterator))
 
 #### 6.1.1 map/reduce
 
+1. map
+
+`map()`函数接收两个参数，一个是函数，一个是`Iterable`，`map`将传入的函数一次作用到系列的每个元素，并把结果作为新的`Iterator`返回。
+
+```python
+def f(x):
+  return x ** 2
+
+r = map(f, [1, 2, 3, 4, 5])
+print(list(r))
+# [1, 4, 9, 16, 25]
+```
+
+`map()`传入的第一个参数是 `f`，即函数对象本身。由于结果 `r` 是一个 `Iterator`，`Iterator` 是惰性序列，因此通过 `list()`函数让它把整个序列都计算出来并返回一个 `list`。
+
 #### 6.1.2 filter/lambda
 
 #### 6.1.3 sorted
