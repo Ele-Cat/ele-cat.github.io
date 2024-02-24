@@ -2365,7 +2365,62 @@ print(isinstance(100, Iterator))
    # 13579
    ```
 
-#### 6.1.2 filter/lambda
+#### 6.1.2 filter
+
+> 在 Python 中，`filter()`函数用于过滤序列。
+
+和 `map()`类似，`filter()`也接收一个函数和一个序列。和 `map()`不同的是，`filter()`把传入的函数依次作用于每个元素，然后根据返回值是 `True` 还是 `False` 决定**保留**还是**丢弃**该元素。
+
+将一个序列中的偶数剔除：
+
+```python
+def is_odd(n):
+  return n % 2 == 1
+
+print(list(filter(is_odd, [1, 2, 3, 4, 5, 6, 7])))
+# [1, 3, 5, 7]
+```
+
+将一个序列中的空字符串剔除：
+
+```python
+def is_empty(s):
+  return s and s.strip()
+
+print(list(filter(is_empty, ['A', '', 'B', None, 'C', '  '])))
+# ['A', 'B', 'C']
+```
+
+使用`filter()`函数写出一个计算`素数`的方法：
+
+```python
+def odd_iter():
+  n = 1
+  while True:
+    n = n + 2
+    yield n
+
+def _not_divisible(n):
+  return lambda x: x % n > 0
+
+def primes():
+  yield 2
+
+  it = odd_iter()
+  while True:
+    n = next(it)
+    yield n
+    it = filter(_not_divisible(n), it)
+
+for n in primes():
+  if n < 1000:
+    print(n)
+  else:
+    break
+# 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
+```
+
+> `filter()`的作用是从一个序列中筛出符合条件的元素。由于 `filter()`使用了惰性计算，所以只有在取 `filter()`结果的时候，才会真正筛选并每次返回下一个筛出的元素。
 
 #### 6.1.3 sorted
 
