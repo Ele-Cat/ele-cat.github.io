@@ -2631,6 +2631,46 @@ print(sorted(['bob', 'about', 'Zoo', 'Credit'], key=str.lower, reverse = True))
 
 ### 6.3 匿名函数
 
+有时候，我们需要一个临时的函数，它只会用一次，定义一个函数然后立刻丢弃，这种需求可以通过匿名函数来满足：
+
+```python
+def calc(numbers):
+  return list(map(lambda x: x * x, numbers))
+
+print(calc([1, 3, 5, 7, 9]))
+# [1, 9, 25, 49, 81]
+```
+
+由此可见，`lambda x: x * x`实际上就是：
+
+```python
+def f(x):
+  return x * x
+```
+
+> 关键字`lambda`表示**匿名函数**，冒号前的`x`表示函数参数。需要注意匿名函数只能有一个表达式，且不用写`return`，返回值就是表达式的结果。
+
+此外，匿名函数也是一个函数，可以将它赋值给一个变量，再利用变量来调用。
+
+```python
+f = lambda x: x * x
+
+print(f)
+<function <lambda> at 0x0000017BA9C28A40>
+print(f(2))
+# 4
+```
+
+同样的，也可以将`lambda`作为函数的返回值：
+
+```python
+def build(x, y):
+  return lambda: x * x + y * y
+
+print(build(3, 4)())
+# 25
+```
+
 ### 6.4 装饰器
 
 ### 6.5 偏函数
