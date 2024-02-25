@@ -2463,6 +2463,172 @@ print(sorted(['bob', 'about', 'Zoo', 'Credit'], key=str.lower, reverse = True))
 
 ### 6.2 返回函数
 
+1. 函数作为返回值
+
+   > 高阶函数不仅可以接受函数作为参数，还可以把函数作为结果值返回。
+
+   通常情况下，求和函数这样编写：
+
+   ```python
+   def calc_sum(*args):
+     sum = 0
+     for n in args:
+       sum = sum + n
+     return sum
+
+   print(calc_sum(1, 2, 3, 4, 5))
+   # 15
+   ```
+
+   但是，如果不需要立刻求和，而是在后续代码中再计算，可以不反悔计算结果，而是返回求和函数：
+
+   ```python
+   def lazy_sum(*args):
+     def sum():
+       ax = 0
+       for n in args:
+         ax = ax + n
+       return ax
+     return sum
+
+   f = lazy_sum(1, 2, 3, 4, 5)
+   print(f)
+   # <function lazy_sum.<locals>.sum at 0x0000025019869080>
+   print(f())
+   # 15
+   ```
+
+   可以看到在调用`lazy_sum()`函数时，并没有立刻计算，而是返回了`sum()`函数，在调用`f`时，才真正计算求和的结果。
+
+   > 在这个例子中，我们在函数 `lazy_sum` 中又定义了函数 `sum`，并且，内部函数 `sum` 可以引用外部函数 `lazy_sum` 的参数和局部变量，当 `lazy_sum` 返回函数 `sum` 时，相关参数和变量都保存在返回的函数中，这种称为“闭包（Closure）”的程序结构拥有极大的威力。
+
+   :::warning 注意
+   当我们在调用`lazy_sum()`时，每次都会返回一个新的函数，即使传入相同的参数：
+
+   ```python
+   def lazy_sum(*args):
+     def sum():
+       ax = 0
+       for n in args:
+         ax = ax + n
+       return ax
+     return sum
+
+   f1 = lazy_sum(1, 2, 3, 4, 5)
+   f2 = lazy_sum(1, 2, 3, 4, 5)
+   print(f1 == f2)
+   # False
+   ```
+
+   `f1()`和`f2()`的调用结果互不影响。
+
+   :::
+
+2. 闭包
+
+   注意到返回的函数在其定义内部引用了局部变量 `args`，所以，当一个函数返回了一个函数后，其内部的局部变量还被新函数引用，所以，闭包用起来简单，实现起来可不容易。
+
+   ```python
+   def count():
+     fs = []
+     for i in range(1, 4):
+       def f():
+         return i*i
+       fs.append(f)
+     return fs
+
+   f1, f2, f3 = count()
+
+   print(f1())
+   # 9
+   print(f2())
+   # 9
+   print(f3())
+   # 9
+   ```
+
+   上例中，每次循环，都会创建一个新的函数，然后把这三个函数都返回了，并且都返回`9`，原因在于返回的函数都引用了变量`i`，但它却没有立刻执行；等到 3 个函数都返回是，引用的变量`i`已经变成了`3`，因此最终结果为`9`。
+
+   :::danger 特别注意
+   返回闭包时，返回函数不要引用任何循环变量，或者后续会发生变化的变量。
+   :::
+
+   ```python
+   def count():
+     def f(j):
+       def g():
+         return j*j
+       return g
+     fs = []
+     for i in range(1, 4):
+       fs.append(f(i)) # f(i)立刻被执行，因此i的当前值被传入f()
+     return fs
+
+   f1, f2, f3 = count()
+
+   print(f1())
+   # 1
+   print(f2())
+   # 4
+   print(f3())
+   # 9
+   ```
+
+3. nonlocal
+
+   使用闭包，就是内层函数引用了外层函数的局部变量，如果只是读外层变量的值，我们会发现返回的闭包函数调用一切正常：
+
+   ```python
+   def inc():
+     x = 0
+     def fn():
+       # 仅读取x的值:
+       return x + 1
+     return fn
+
+   f = inc()
+   print(f()) # 1
+   print(f()) # 1
+   ```
+
+   但是，如果对外层变量赋值，由于 Python 解释器会把 x 当作函数 fn()的局部变量，它会报错：
+
+   ```python
+   def inc():
+     x = 0
+     def fn():
+       # nonlocal x
+       x = x + 1
+       return x
+     return fn
+
+   f = inc()
+   print(f())
+   print(f())
+   Traceback (most recent call last):
+     File "<stdin>", line 10, in <module>
+     File "<stdin>", line 5, in fn
+   UnboundLocalError: cannot access local variable 'x' where it is not associated with a value
+   ```
+
+   原因是 `x` 作为局部变量并没有初始化，直接计算 `x+1` 是不行的。但我们其实是想引用 `inc()`函数内部的 `x`，所以需要在 `fn()`函数内部加一个 `nonlocal x` 的声明。加上这个声明后，解释器把 `fn()`的 `x` 看作外层函数的局部变量，它已经被初始化了，可以正确计算 `x+1`。
+
+   ```python
+   def inc():
+     x = 0
+     def fn():
+       nonlocal x
+       x = x + 1
+       return x
+     return fn
+
+   f = inc()
+   print(f()) # 1
+   print(f()) # 2
+   ```
+
+   > 使用闭包时，对外层变量赋值前，需要先使用 `nonlocal` 声明该变量不是当前函数的局部变量。
+
 ### 6.3 匿名函数
 
 ### 6.4 装饰器
