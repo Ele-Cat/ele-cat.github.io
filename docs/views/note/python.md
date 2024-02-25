@@ -2673,4 +2673,56 @@ print(build(3, 4)())
 
 ### 6.4 装饰器
 
+> 函数是一个对象且可以赋值给变量，通过变量也可以调用该函数。
+
+```python
+from datetime import datetime
+def now():
+  return datetime.now()
+
+f = now
+print(f())
+# 2024-02-25 21:19:53.044793
+```
+
+函数对象有一个`__name__`属性（**注意前后各是两个下划线**），可以拿到函数名字：
+
+```python
+from datetime import datetime
+def now():
+  return datetime.now()
+
+f = now
+print(now.__name)
+# now
+print(f.__name)
+# now
+```
+
+现在，假设我们要增强 `now()`函数的功能，比如，在函数调用前后自动打印日志，但又不希望修改 `now()`函数的定义，这种在代码运行期间动态增加功能的方式，称之为“**装饰器**”（Decorator）。
+
+本质上，`decorator` 就是一个返回函数的高阶函数。所以，我们要定义一个能打印日志的 `decorator`，可以定义如下：
+
+```python
+def log(func):
+  def wrapper(*args, **kw):
+    print('call %s():' % func.__name__)
+    return func(*args, **kw)
+  return wrapper
+
+@log
+def now():
+  print('2015-3-25')
+
+now()
+# call now():
+# 2015-3-25
+```
+
+把`@log` 放到 `now()`函数的定义处，相当于执行了语句：
+
+```python
+now = log(now)
+```
+
 ### 6.5 偏函数
