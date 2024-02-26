@@ -2799,7 +2799,7 @@ now()
 
 :::
 
-以上两种 decorator 的定义都没有问题，但还差最后一步。因为我们讲了函数也是对象，它有`__name__`等属性，但你去看经过 decorator 装饰之后的函数，它们的`__name__`已经从原来的`'now'`变成了`'wrapper'`：
+函数也是对象，它有`__name__`等属性，但经过 decorator 装饰之后的函数，它们的`__name__`已经从原来的`'now'`变成了`'wrapper'`：
 
 ```python
 def log(text):
@@ -2821,5 +2821,185 @@ print(now.__name__)
 # 2025-3-25
 # wrapper
 ```
+
+因为返回的那个 `wrapper()`函数名字就是`'wrapper'`，所以，需要把原始函数的`__name__`等属性复制到 `wrapper()`函数中，否则，有些依赖函数签名的代码执行就会出错。
+
+不需要编写 `wrapper.__name__ = func.__name__` 这样的代码，Python 内置的`functools.wraps`就是干这个事的，所以，一个完整的 decorator 的写法如下：
+
+```python
+import functools
+
+def log(func):
+  @functools.wraps(func)
+  def wrapper(*args, **kw):
+    print('call %s():' % func.__name__)
+    return func(*args, **kw)
+  return wrapper
+
+@log
+def now():
+  print('2025-3-25')
+
+now()
+# call now():
+# 2024-02-26 19:48:36.016319
+print(now.__name__)
+# wrapper
+```
+
+或带参的 decorator：
+
+```python
+import functools
+
+def log(text):
+  def decorator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kw):
+      print('%s %s():' % (text, func.__name__))
+      return func(*args, **kw)
+    return wrapper
+  return decorator
+
+@log('execute')
+def now():
+  print('2025-3-25')
+
+now()
+# execute now():
+# 2025-3-25
+print(now.__name__)
+# now
+```
+
+:::details 习题 1：请设计一个 decorator，它可作用于任何函数上，并打印该函数的执行时间。
+
+```python
+import time, functools
+
+def metric(fn):
+  @functools.wraps(fn)
+  def wrapper(*args, **kw):
+    start_time = time.time()
+    func = fn(*args, **kw)
+    end_time = time.time()
+    duration = (end_time - start_time) * 1000
+    print('%s executed in %.2f ms' % (fn.__name__, duration))
+    return func
+  return wrapper
+
+# 测试
+@metric
+def fast(x, y):
+  time.sleep(0.0012)
+  return x + y;
+
+@metric
+def slow(x, y, z):
+  time.sleep(0.1234)
+  return x * y * z;
+
+f = fast(11, 22)
+s = slow(11, 22, 33)
+if f != 33:
+  print('测试失败!')
+elif s != 7986:
+  print('测试失败!')
+else:
+  print('测试成功!')
+```
+
+:::
+
+:::details 习题 2：请编写一个 decorator，能在函数调用的前后打印出`'begin call'`和`'end call'`的日志。
+
+```python
+import time, functools
+
+def metric(fn):
+  @functools.wraps(fn)
+  def wrapper(*args, **kw):
+    print(fn.__name__, 'begin call')
+    func = fn(*args, **kw)
+    print(fn.__name__, 'end call')
+    return func
+  return wrapper
+
+# 测试
+@metric
+def fast(x, y):
+  time.sleep(0.0012)
+  return x + y;
+
+@metric
+def slow(x, y, z):
+  time.sleep(0.1234)
+  return x * y * z;
+
+f = fast(11, 22)
+s = slow(11, 22, 33)
+if f != 33:
+  print('测试失败!')
+elif s != 7986:
+  print('测试失败!')
+else:
+  print('测试成功!')
+```
+
+:::
+
+:::details 习题 3：装饰器兼容。
+
+能否写出一个@log 的 decorator，使它既支持：
+
+```python
+@log
+def f():
+  pass
+```
+
+又支持：
+
+```python
+@log('execute')
+def f():
+  pass
+```
+
+解答：
+
+```python
+import functools
+
+def log(arg = None):
+  def metric(fn):
+    @functools.wraps(fn)
+    def decorator(*args, **kw):
+      if not callable(arg):
+        print(arg)
+      print('begin call %s' % fn.__name__)
+      k = fn(*args, **kw)
+      print('end call %s' % fn.__name__)
+      return k
+    return decorator
+
+  if callable(arg):
+      return metric(arg)
+  else:
+      return metric
+
+# 测试
+@log
+def f():
+  print('2025-3-25')
+
+@log('execute')
+def f():
+  print('2025-3-25')
+
+f()
+```
+
+:::
 
 ### 6.5 偏函数
