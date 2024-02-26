@@ -2673,7 +2673,7 @@ print(build(3, 4)())
 
 ### 6.4 装饰器
 
-> 函数是一个对象且可以赋值给变量，通过变量也可以调用该函数。
+_函数是一个对象且可以赋值给变量，通过变量也可以调用该函数。_
 
 ```python
 from datetime import datetime
@@ -2701,7 +2701,7 @@ print(f.__name)
 
 现在，假设我们要增强 `now()`函数的功能，比如，在函数调用前后自动打印日志，但又不希望修改 `now()`函数的定义，这种在代码运行期间动态增加功能的方式，称之为“**装饰器**”（Decorator）。
 
-本质上，`decorator` 就是一个返回函数的高阶函数。所以，我们要定义一个能打印日志的 `decorator`，可以定义如下：
+本质上，decorator 就是一个返回函数的高阶函数。所以，我们要定义一个能打印日志的 decorator，可以定义如下：
 
 ```python
 def log(func):
@@ -2712,17 +2712,114 @@ def log(func):
 
 @log
 def now():
-  print('2015-3-25')
+  print('2025-3-25')
 
 now()
 # call now():
-# 2015-3-25
+# 2025-3-25
 ```
 
 把`@log` 放到 `now()`函数的定义处，相当于执行了语句：
 
 ```python
 now = log(now)
+```
+
+::: details 解析
+
+```python
+def log(func):
+  def wrapper(*args, **kw):
+    print('call %s():' % func.__name__)
+    return func(*args, **kw)
+  return wrapper
+
+def now():
+  print('2025-3-25')
+
+now = log(now)
+
+now()
+# call now():
+# 2025-3-25
+```
+
+由于 `log()`是一个 decorator，返回一个函数，所以，原来的 `now()`函数仍然存在，只是现在同名的 `now` 变量指向了新的函数，于是调用 `now()`将执行新函数，即在 `log()`函数中返回的 `wrapper()`函数。
+
+`wrapper()`函数的参数定义是`(*args, **kw)`，因此，`wrapper()`函数可以接受任意参数的调用。在 `wrapper()`函数内，首先打印日志，再紧接着调用原始函数。
+:::
+
+如果 decorator 本身需要传入参数，那就需要编写一个返回 decorator 的高阶函数，写出来会更复杂。比如，要自定义 log 的文本：
+
+```python
+def log(text):
+  def decorator(func):
+    def wrapper(*args, **kw):
+      print('%s %s():' % (text, func.__name__))
+      return func(*args, **kw)
+    return wrapper
+  return decorator
+
+@log('execute')
+def now():
+  print('2025-3-25')
+
+now()
+# execute now():
+# 2025-3-25
+```
+
+和两层嵌套的 decorator 相比，3 层嵌套的效果是这样的：
+
+```python
+now = log('execute')(now)
+```
+
+::: details 解析
+
+```python
+def log(text):
+  def decorator(func):
+    def wrapper(*args, **kw):
+      print('%s %s():' % (text, func.__name__))
+      return func(*args, **kw)
+    return wrapper
+  return decorator
+
+def now():
+  print('2025-3-25')
+
+now = log('execute')(now)
+now()
+# execute now():
+# 2025-3-25
+```
+
+我们来剖析上面的语句，首先执行 `log('execute')`，返回的是 `decorator` 函数，再调用返回的函数，参数是 `now` 函数，返回值最终是 `wrapper` 函数。
+
+:::
+
+以上两种 decorator 的定义都没有问题，但还差最后一步。因为我们讲了函数也是对象，它有`__name__`等属性，但你去看经过 decorator 装饰之后的函数，它们的`__name__`已经从原来的`'now'`变成了`'wrapper'`：
+
+```python
+def log(text):
+  def decorator(func):
+    def wrapper(*args, **kw):
+      print('%s %s():' % (text, func.__name__))
+      return func(*args, **kw)
+    return wrapper
+  return decorator
+
+@log('execute')
+def now():
+  print('2015-3-25')
+
+now()
+
+print(now.__name__)
+# execute now():
+# 2025-3-25
+# wrapper
 ```
 
 ### 6.5 偏函数
