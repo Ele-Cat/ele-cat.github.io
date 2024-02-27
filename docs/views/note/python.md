@@ -3094,8 +3094,204 @@ print(max(*args))
 
 ## 07. 模块
 
-### 7.1 模块简介
+### 7.1 模块介绍
+
+在计算机程序的开发过程中，随着程序代码越写越多，在一个文件里代码就会越来越长，越来越不容易维护。
+
+为了编写可维护的代码，我们把很多函数分组，分别放到不同的文件里，这样，每个文件包含的代码就相对较少，很多编程语言都采用这种组织代码的方式。在 Python 中，一个 `.py` 文件就称之为一个**模块（Module）**。在编写模块时，函数、变量名不要与 Python 的[内置函数](https://docs.python.org/zh-cn/3/library/functions.html)冲突。
+
+不同的人编写的模块名相同怎么办？为了避免模块名冲突，Python 又引入了按目录来组织模块的方法，称为**包（Package）**。
+
+举个例子，一个 `abc.py` 的文件就是一个名字叫 `abc` 的模块，一个 `xyz.py` 的文件就是一个名字叫 `xyz` 的模块。
+
+现在，假设我们的 `abc` 和 `xyz` 这两个模块名字与其他模块冲突了，于是我们可以通过包来组织模块，避免冲突。方法是选择一个顶层包名，比如 `mycompany`，按照如下目录存放：
+
+```
+mycompany
+├── __init__.py
+├── abc.py
+└── xyz.py
+```
+
+引入了包以后，只要顶层的包名不与别人冲突，那所有模块都不会与别人冲突。现在，`abc.py` 模块的名字就变成了 `mycompany.abc`，类似的，`xyz.py` 的模块名变成了 `mycompany.xyz`。
+
+:::warning 注意
+每一个包目录下面都会有一个 `__init__.py` 的文件，这个文件是必须存在的，否则，Python 就把这个目录当成普通目录，而不是一个包。 `__init__.py` 可以是空文件，也可以有 Python 代码，因为 `__init__.py` 本身就是一个模块，而它的模块名就是 `mycompany`。
+:::
+
+:::danger 关于命名
+自己创建模块时要注意命名，不能和 Python 自带的模块名称冲突。例如，系统自带了 `sys` 模块，自己的模块就不可命名为 `sys.py`，否则将无法导入系统自带的 `sys` 模块。
+:::
+
+> 小结：
+> 模块是一组 Python 代码的集合，可以使用其他模块，也可以被其他模块使用。创建自己的模块时，要注意：
+>
+> - 模块名要遵循 Python 变量命名规范，不要使用中文、特殊字符；
+> - 模块名不要和系统模块名冲突，最好先查看系统是否已存在该模块，检查方法是在 Python 交互环境执行 `import abc`，若成功则说明系统存在此模块。
 
 ### 7.2 使用模块
 
+Python 本身就内置了很多非常有用的模块，只要安装完毕，这些模块就可以立刻使用。
+
+我们以内建的 `sys` 模块为例，编写一个 `hello` 的模块：
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+' a test module '
+
+__author__ = 'Cola'
+
+import sys
+
+def test():
+  args = sys.argv
+  if len(args)==1:
+    print('Hello, world!')
+  elif len(args)==2:
+    print('Hello, %s!' % args[1])
+  else:
+    print('Too many arguments!')
+
+if __name__=='__main__':
+  test()
+# Hello, world!
+```
+
+:::tip 解析
+
+- 第 1 行和第 2 行是标准注释，第 1 行注释可以让这个 `hello.py` 文件直接在 Unix/Linux/Mac 上运行，第 2 行注释表示 `.py` 文件本身使用标准 UTF-8 编码；
+- 第 4 行是一个字符串，表示模块的文档注释，任何模块代码的第一个字符串都被视为模块的文档注释；
+- 第 6 行使用`__author__`变量把作者写进去，这样当你公开源代码后别人就可以瞻仰你的大名；
+
+_以上就是 Python 模块的标准文件模板，当然也可以全部删掉不写，但是，按标准办事肯定没错。_
+
+使用 `sys` 模块的第一步，就是导入该模块：
+
+```python
+import sys
+```
+
+导入 `sys` 模块后，我们就有了变量 `sys` 指向该模块，利用 `sys` 这个变量，就可以访问 `sys` 模块的所有功能。
+
+`sys` 模块有一个 `argv` 变量，用 `list` 存储了命令行的所有参数。`argv` 至少有一个元素，因为第一个参数永远是该 `.py` 文件的名称，例如：
+
+- 运行 `python hello.py` 获得的 `sys.argv` 就是`['hello.py']`；
+- 运行 `python hello.py Cola` 获得的 `sys.argv` 就是`['hello.py', 'Cola']`。
+
+最后，注意到这两行代码：
+
+```python
+if __name__=='__main__':
+  test()
+```
+
+当我们在命令行运行 `hello` 模块文件时，Python 解释器把一个特殊变量`__name__`置为`__main__`，而如果在其他地方导入该 `hello` 模块时，`if` 判断将失败，因此，这种 `if` 测试可以让一个模块通过命令行运行时执行一些额外的代码，最常见的就是运行测试。下面进行测试：
+
+```sh
+$ python hello.py
+# Hello, world!
+$ python hello.py Cola
+# Hello, Cola!
+```
+
+在与`hello.py`同级目录下新建一个`test.py`文件，并录入：
+
+```python
+import hello
+```
+
+运行后无任何效果，因为没有执行`test()`函数。补全：
+
+```python
+import hello
+hello.test()
+# Hello, world!
+```
+
+:::
+
+**作用域**
+
+在一个模块中，我们可能会定义很多函数和变量，但有的函数和变量我们希望给别人使用，有的函数和变量我们希望仅仅在模块内部使用。在 Python 中，是通过 `_` 前缀来实现的。
+
+- 正常的函数和变量名是公开的（public），可以被直接引用，比如：`abc`，`x123`，`PI` 等；
+- 类似`__xxx__`这样的变量是特殊变量，可以被直接引用，但是有特殊用途，比如上面的`__author__`，`__name__`就是特殊变量，`hello` 模块定义的文档注释也可以用特殊变量`__doc__`访问，我们自己的变量一般不要用这种变量名；
+- 类似`_xxx` 和`__xxx` 这样的函数或变量就是非公开的（private），不应该被直接引用，比如`_abc`，`__abc` 等；
+
+之所以我们说，private 函数和变量“不应该”被直接引用，而不是“不能”被直接引用，是因为 Python 并没有一种方法可以完全限制访问 private 函数或变量，但是，从编程习惯上不应该引用 private 函数或变量。
+
+```python
+def _private_1(name):
+  return 'Hello, %s' % name
+
+def _private_2(name):
+  return 'Hi, %s' % name
+
+def greeting(name):
+  if len(name) > 3:
+    return _private_1(name)
+  else:
+    return _private_2(name)
+```
+
+使用：
+
+```python
+import greet
+
+print(greet.greeting("Li"))
+# Hi, Li
+print(greet.greeting("Cola"))
+# Hello, Cola
+```
+
+我们在模块里公开 `greeting()`函数，而把内部逻辑用 private 函数隐藏起来了，这样，调用 `greeting()`函数不用关心内部的 private 函数细节，这也是一种非常有用的代码封装和抽象的方法，即：
+
+外部不需要引用的函数全部定义成 private，只有外部需要引用的函数才定义为 public。
+
 ### 7.3 第三方模块
+
+在命令行中输入：
+
+```sh
+pip
+# 可查看pip全部命令
+```
+
+**使用[清华源](https://mirrors.tuna.tsinghua.edu.cn/help/pypi/)安装会更快**
+
+```sh
+pip install requests -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+```python
+import requests
+print(requests.__version__)
+# 2.31.0
+```
+
+当我们试图加载一个模块时，Python 会在指定的路径下搜索对应的.py 文件，如果找不到，就会报错。默认情况下，Python 解释器会搜索当前目录、所有已安装的内置模块和第三方模块，搜索路径存放在 sys 模块的 path 变量中：
+
+```python
+import sys
+
+print(sys.path)
+# ['<stdin>\\test.py', 'C:<stdin>\\AppData\\Local\\Programs\\Python\\Python312\\python312.zip', 'C:<stdin>\\AppData\\Local\\Programs\\Python\\Python312\\DLLs', 'C:<stdin>\\AppData\\Local\\Programs\\Python\\Python312\\Lib', 'C:<stdin>\\AppData\\Local\\Programs\\Python\\Python312', 'C:<stdin>\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages']
+```
+
+有两种方法可以修改搜索目录：
+
+1. 直接修改`sys.path`：
+
+   ```python
+   import sys
+
+   sys.path.append('/Users/michael/my_py_scripts')
+   # ['<stdin>\\test.py', 'C:<stdin>\\AppData\\Local\\Programs\\Python\\Python312\\python312.zip', 'C:<stdin>\\AppData\\Local\\Programs\\Python\\Python312\\DLLs', 'C:<stdin>\\AppData\\Local\\Programs\\Python\\Python312\\Lib', 'C:<stdin>\\AppData\\Local\\Programs\\Python\\Python312', 'C:<stdin>\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages','/Users/michael/my_py_scripts']
+   ```
+
+   这种方法是在运行时修改，运行结束后失效。
+
+2. 修改环境变量`PYTHONPATH`。
