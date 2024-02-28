@@ -3299,10 +3299,88 @@ print(sys.path)
 ## 08. 面向对象编程
 
 > **面向对象编程**——Object Oriented Programming，简称 OOP，是一种程序设计思想。OOP 把对象作为程序的基本单元，一个对象包含了数据和操作数据的函数。
+>
 > - **面向过程**的程序设计把计算机程序视为一系列的命令集合，即一组函数的顺序执行。为了简化程序设计，面向过程把函数继续切分为子函数，即把大块函数通过切割成小块函数来降低系统的复杂度。
 > - **面向对象**的程序设计把计算机程序视为一组对象的集合，而每个对象都可以接收其他对象发过来的消息，并处理这些消息，计算机程序的执行就是一系列消息在各个对象之间传递。
 
 ### 8.1 类和实例
+
+面向对象最重要的概念就是类（Class）和实例（Instance），必须牢记类是抽象的模板，比如 Student 类，而实例是根据类创建出来的一个个具体的“对象”，每个对象都拥有相同的方法，但各自的数据可能不同。
+
+以 Student 类为例，在 Python 中，定义类是通过 `class` 关键字：
+
+```python
+class Student(object):
+  pass
+```
+
+`class` 后面紧接着是类名，即 `Student`，类名通常是大写开头的单词，紧接着是`(object)`，表示该类是从哪个类**继承**下来的，继承的概念我们后面再讲，通常，如果没有合适的继承类，就使用 `object` 类，这是所有类最终都会继承的类。
+
+定义好了 `Student` 类，就可以根据 `Student` 类创建出 `Student` 的实例，创建实例是通过类名+()实现的：
+
+```python
+class Student(object):
+  pass
+
+stu1 = Student()
+print(stu1)
+# <__main__.Student object at 0x0000022535EF9DF0>
+stu2 = Student()
+print(stu2)
+# <__main__.Student object at 0x000001BFA1FD9EB0>
+print(Student)
+# <class '__main__.Student'>
+```
+
+可以看到，变量 `bart` 指向的就是一个 `Student` 的实例，后面的 `0x0000022535EF9DF0` 是内存地址，每个 `object` 的地址都不一样，而 `Student` 本身则是一个类。
+
+可以自由地给一个实例变量绑定属性，比如，给实例 `stu1` 绑定一个 `name` 属性：
+
+```python
+class Student(object):
+  pass
+
+stu1 = Student()
+stu1.name = 'Cola'
+print(stu1.name)
+# Cola
+```
+
+由于类可以起到模板的作用，因此，可以在创建实例的时候，把一些我们认为必须绑定的属性强制填写进去。通过定义一个特殊的 `__init__` 方法，在创建实例的时候，就把 `name`，`score` 等属性绑上去：
+
+```python
+class Student(object):
+  def __init__(self, name, score):
+    self.name = name
+    self.score = score
+
+stu1 = Student('Cola', 98)
+print(stu1.name)
+# Cola
+print(stu1.score)
+# 98
+```
+
+:::tip 注意
+
+- 注意到 `__init__` 方法的第一个参数永远是 `self`，表示创建的实例本身，因此，在 `__init__` 方法内部，就可以把各种属性绑定到 `self`，因为 `self` 就指向创建的实例本身。
+- 有了 `__init__` 方法，在创建实例的时候，就不能传入空的参数了，必须传入与 `__init__` 方法匹配的参数，但 `self` 不需要传，Python 解释器自己会把实例变量传进去。如果在对类实例化时不传与 `__init__` 方法匹配的参数，就会报错：
+
+```python
+class Student(object):
+  def __init__(self, name, score):
+    self.name = name
+    self.score = score
+
+stu1 = Student()
+# Traceback (most recent call last):
+#   File "<stdin>", line 6, in <module>
+# TypeError: Student.__init__() missing 2 required positional arguments: 'name' and 'score'
+```
+
+:::
+
+> 和普通的函数相比，在类中定义的函数只有一点不同，就是第一个参数永远是实例变量 `self`，并且，调用时，不用传递该参数。除此之外，类的方法和普通函数没有什么区别，所以，你仍然可以用**默认参数**、**可变参数**、**关键字参数**和**命名关键字参数**。
 
 ### 8.2 访问限制
 
