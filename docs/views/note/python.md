@@ -3384,6 +3384,184 @@ stu1 = Student()
 
 ### 8.2 访问限制
 
+在 Class 内部，可以有属性和方法，而外部代码可以通过直接调用实例变量的方法来操作数据，这样，就隐藏了内部的复杂逻辑。
+
+在上一节中，可以通过外部代码，自由的修改实例的任意属性：
+
+```python
+class Student(object):
+  def __init__(self, name, score):
+    self.name = name
+    self.score = score
+
+stu1 = Student('Cola', 98)
+print(stu1.name)
+# Cola
+stu1.name = 'Cat'
+print(stu1.name)
+# Cat
+```
+
+如果要让内部属性不被外部访问，可以把属性的名称前加上**两个下划线** `__` ，在 Python 中，实例的变量名如果以 `__` 开头，就变成了一个**私有变量（private）**，只有内部可以访问，外部不能访问，所以，我们把 `Student` 类改一改：
+
+```python
+class Student(object):
+  def __init__(self, name, score):
+    self.__name = name
+    self.__score = score
+
+stu1 = Student('Cola', 98)
+print(stu1.__name)
+# Traceback (most recent call last):
+#   File "<stdin>", line 7, in <module>
+# AttributeError: 'Student' object has no attribute '__name'
+```
+
+这样就保证了外部代码无法随意获取、修改实例对象的内部状态。那如何在外部获取对象内部状态呢？可以给 Student 类增加获取内部状态的方法：
+
+```python
+class Student(object):
+  def __init__(self, name, score):
+    self.__name = name
+    self.__score = score
+
+  def get_name(self):
+    return self.__name
+
+  def get_score(self):
+    return self.__score
+
+stu1 = Student('Cola', 98)
+print(stu1.get_name())
+# Cola
+print(stu1.get_score())
+# 98
+```
+
+如果想在外部修改`name`、`score`怎么办？一样的，可以给 Student 类增加`set_score`方法：
+
+```python
+class Student(object):
+  def __init__(self, name, score):
+    self.__name = name
+    self.__score = score
+
+  def get_name(self):
+    return self.__name
+
+  def get_score(self):
+    return self.__score
+
+  def set_score(self, score):
+    self.__score = score
+
+stu1 = Student('Cola', 98)
+print(stu1.get_score())
+# 98
+stu1.set_score(88)
+print(stu1.get_score())
+# 88
+```
+
+原先那种直接通过 stu1.score = 88 也可以修改啊，为什么要定义一个方法大费周折？因为在方法中，可以对参数做检查，避免传入无效的参数：
+
+```python
+class Student(object):
+  def __init__(self, name, score):
+    self.__name = name
+    self.__score = score
+
+  def get_name(self):
+    return self.__name
+
+  def get_score(self):
+    return self.__score
+
+  def set_score(self, score):
+    if 0 <= score <= 100:
+      self.__score = score
+    else:
+      raise ValueError('bad score')
+
+stu1 = Student('Cola', 98)
+print(stu1.get_score())
+# 98
+stu1.set_score(120)
+# Traceback (most recent call last):
+#   File "<stdin>", line 20, in <module>
+#     stu1.set_score(120)
+#   File "<stdin>", line 16, in set_score
+#     raise ValueError('bad score')
+# ValueError: bad score
+```
+
+:::tip 注意
+
+在 Python 中，变量名类似`__xxx__`的，也就是以双下划线开头，并且以双下划线结尾的，是特殊变量，特殊变量是可以直接访问的，不是 private 变量，所以，不能用`__name__`、`__score__`这样的变量名。
+
+有些时候，你会看到以一个下划线开头的实例变量名，比如`_name`，这样的实例变量外部是可以访问的，但是，按照约定俗成的规定，当你看到这样的变量时，意思就是，“虽然我可以被访问，但是，请把我视为私有变量，不要随意访问”。
+
+_以上两种变量命名方式自行测试_。
+
+:::
+
+双下划线开头的实例变量是不是一定不能从外部访问呢？其实也不是。不能直接访问`__name`是因为 Python 解释器对外把`__name`变量改成了`_Student__name`，所以，仍然可以通过`_Student__name`来访问`__name`变量：
+
+```python
+class Student(object):
+  def __init__(self, name, score):
+    self.__name = name
+    self.__score = score
+
+  def get_name(self):
+    return self.__name
+
+stu1 = Student('Cola', 98)
+print(stu1._Student__name)
+# Cola
+stu1._Student__name = 'Cat'
+print(stu1._Student__name)
+# Cat
+```
+
+但是强烈建议你不要这么干，因为不同版本的 Python 解释器可能会把`__name`改成不同的变量名。总的来说就是，Python 本身没有任何机制阻止你干坏事，一切全靠自觉。
+
+:::danger 一种错误写法
+
+```python
+class Student(object):
+  def __init__(self, name, score):
+    self.__name = name
+    self.__score = score
+
+  def get_name(self):
+    return self.__name
+
+  def get_score(self):
+    return self.__score
+
+  def set_score(self, score):
+    if 0 <= score <= 100:
+      self.__score = score
+    else:
+      raise ValueError('bad score')
+
+stu1 = Student('Cola', 98)
+print(stu1.get_score())
+# 98
+stu1.__score = 88
+print(stu1.__score)
+# 88
+print(stu1.get_score())
+# 98
+print(stu1._Student__score)
+# 98
+```
+
+可以看到，通过`stu1.__score = 88`目测成功的修改了`score`的值，但实际上这个`__score`与 Student 类内部的`__score`变量不是同一个变量！内部的`__score`变量已经被 Python 解释器自动改成了`_Student__score`，而外部代码给 stu1 新增了一个`__score`变量。
+
+:::
+
 ### 8.3 集成和多态
 
 ### 8.4 获取对象信息
