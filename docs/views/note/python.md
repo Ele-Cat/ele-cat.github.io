@@ -4072,3 +4072,78 @@ print(fn()) # 调用fn()与调用obj.power()是一样的
 ```
 
 ### 8.5 实例属性和类属性
+
+由于Python是动态语言，根据类创建的实例可以任意绑定属性。给实例绑定属性的方法是通过实例变量，或者通过`self`变量：
+
+```python
+class Student(object):
+  def __init__(self, name):
+    self.name = name
+
+s = Student('Cola')
+s.score = 98
+print(s.name)
+# Cola
+print(s.score)
+# 98
+```
+
+但是，如果`Student`类本身需要绑定一个属性呢？可以直接在class中定义属性，这种属性是类属性，归`Student`类所有：
+
+```python
+class Student(object):
+  school = '一中'
+
+s = Student() # 创建实例s
+print(s.school) # 打印school属性，因为实例并没有school属性，所以会继续查找class的school属性
+# 一中
+print(Student.school) # 打印类的school属性
+# 一中
+s.school = '二中' # 给实例绑定school属性
+print(s.school) # 由于实例属性优先级比类属性高，因此，它会屏蔽掉类的school属性
+# 二中
+print(Student.school) # 但是类属性并未消失，用Student.school仍然可以访问
+# 一中
+del s.school # 如果删除实例的school属性
+print(s.school) # 再次调用s.school，由于实例的school属性没有找到，类的school属性就显示出来了
+# 一中
+print(Student.school) # 类属性仍然可以访问
+# 一中
+```
+
+:::details 为了统计学生人数，可以给Student类增加一个类属性，每创建一个实例，该属性自动增加：
+
+```python
+class Student(object):
+  count = 0
+
+  def __init__(self, name):
+    self.name = name
+    Student.count += 1
+
+# 测试:
+if Student.count != 0:
+  print('1测试失败!')
+else:
+  bart = Student('Bart')
+  if Student.count != 1:
+    print('2测试失败!')
+  else:
+    lisa = Student('Bart')
+    if Student.count != 2:
+      print('3测试失败!')
+    else:
+      print('Students:', Student.count)
+      print('测试通过!')
+
+```
+
+:::
+
+:::tip 小结
+
+- 实例属性属于各个实例所有，互不干扰；
+- 类属性属于类所有，所有实例共享一个属性；
+- 不要对实例属性和类属性使用相同的名字，否则将产生难以发现的错误。
+
+:::
