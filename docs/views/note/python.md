@@ -3730,7 +3730,7 @@ run_twice(Tortoise())
 
 继承还可以一级一级地继承下来，就好比从爷爷到爸爸、再到儿子这样的关系。而任何类，最终都可以追溯到根类 object，这些继承关系看上去就像一颗倒着的树。比如如下的继承树：
 
-```
+<pre>
                 ┌───────────────┐
                 │    object     │
                 └───────────────┘
@@ -3748,7 +3748,7 @@ run_twice(Tortoise())
 ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐
 │   Dog   │  │   Cat   │  │  Tree   │  │ Flower  │
 └─────────┘  └─────────┘  └─────────┘  └─────────┘
-```
+</pre>
 
 :::warning 静态语言 VS 动态语言
 
@@ -3842,14 +3842,237 @@ run_twice(Stone())
 
 1. type()
 
+   基本类型都可以用`type()`判断：
+
+   ```python
+   print(type(123))
+   # <class 'int'>
+   print(type('str'))
+   # <class 'str'>
+   print(type(None))
+   # <class 'NoneType'>
+   ```
+
+   如果一个变量指向函数或类，也可以用`type()`判断：
+
+   ```python
+   print(type(abs))
+   # <class 'builtin_function_or_method'>
+   class Animal(object):
+     pass
+   a = Animal()
+   print(type(a))
+   # <class '__main__.Animal'>
+   ```
+
+   `type()`函数返回的是 Class 类型。如果我们要在`if`语句中判断，就需要比较两个变量的 type 类型是否相同：
+
+   ```python
+   print(type(123) == type(456))
+   # True
+   print(type(123) == int)
+   # True
+   print(type('str') == type('123'))
+   # True
+   print(type('str') == str)
+   # True
+   print(type('abc') == type(123))
+   # False
+   ```
+
+   判断基本数据类型可以直接写 `int`，`str` 等，但如果要判断一个对象是否是函数怎么办？可以使用 `types` 模块中定义的常量：
+
+   ```python
+   import types
+
+   def fn():
+     pass
+
+   print(type(fn) == types.FunctionType)
+   # True
+   print(type(abs) == types.BuiltinFunctionType)
+   # True
+   print(type(lambda x: x) == types.LambdaType)
+   # True
+   print(type((x for x in range(10))) == types.GeneratorType)
+   # True
+   ```
+
 2. isinstance()
 
+   对于 class 的继承关系来说，使用`type()`就很不方便。我们要判断 class 的类型，可以使用`isinstance()`函数。
+
+   ```python
+   class Animal(object):
+     pass
+
+   class Dog(Animal):
+     pass
+
+   class Husky(Dog):
+     pass
+
+   a = Animal()
+   d = Dog()
+   h = Husky()
+
+   print(isinstance(h, Husky) and isinstance(h, Dog) and isinstance(h, Animal) and isinstance(h, object))
+   # True
+   print(isinstance(d, Dog) and isinstance(h, Animal))
+   # True
+   print(isinstance(d, Husky))
+   # False
+   ```
+
+   能用`type()`判断的基本类型也可以用`isinstance()`判断：
+
+   ```python
+   print(isinstance('a', str))
+   # True
+   print(isinstance(123, int))
+   # True
+   print(isinstance(b'a', bytes))
+   # True
+   ```
+
+   并且还可以判断一个变量是否是某些类型中的一种，比如下面的代码就可以判断是否是 `list` 或者 `tuple`：
+
+   ```python
+   print(isinstance([1, 2, 3], list))
+   # True
+   print(isinstance([1, 2, 3], tuple))
+   # False
+   print(isinstance([1, 2, 3], (list, tuple)))
+   # True
+   print(isinstance((1, 2, 3), (list, tuple)))
+   # True
+   ```
+
+   > 总是优先使用`isinstance()`判断类型，可以将指定类型及其子类“一网打尽”。
+
 3. dir()
+
+如果要获得一个对象的**所有属性和方法**，可以使用`dir()`函数，它返回一个包含字符串的`list`：
+
+```python
+print(dir('ABC'))
+# ['__add__', '__class__', '__contains__', '__delattr__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__getnewargs__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__iter__', '__le__', '__len__', '__lt__', '__mod__', '__mul__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__rmod__', '__rmul__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', 'capitalize', 'casefold', 'center', 'count', 'encode', 'endswith', 'expandtabs', 'find', 'format', 'format_map', 'index', 'isalnum', 'isalpha', 'isascii', 'isdecimal', 'isdigit', 'isidentifier', 'islower', 'isnumeric', 'isprintable', 'isspace', 'istitle', 'isupper', 'join', 'ljust', 'lower', 'lstrip', 'maketrans', 'partition', 'removeprefix', 'removesuffix', 'replace', 'rfind', 'rindex', 'rjust', 'rpartition', 'rsplit', 'rstrip', 'split', 'splitlines', 'startswith', 'strip', 'swapcase', 'title', 'translate', 'upper', 'zfill']
+print(dir(123))
+# ['__abs__', '__add__', '__and__', '__bool__', '__ceil__', '__class__', '__delattr__', '__dir__', '__divmod__', '__doc__', '__eq__', '__float__', '__floor__', '__floordiv__', '__format__', '__ge__', '__getattribute__', '__getnewargs__', '__getstate__', '__gt__', '__hash__', '__index__', '__init__', '__init_subclass__', '__int__', '__invert__', '__le__', '__lshift__', '__lt__', '__mod__', '__mul__', '__ne__', '__neg__', '__new__', '__or__', '__pos__', '__pow__', '__radd__', '__rand__', '__rdivmod__', '__reduce__', '__reduce_ex__', '__repr__', '__rfloordiv__', '__rlshift__', '__rmod__', '__rmul__', '__ror__', '__round__', '__rpow__', '__rrshift__', '__rshift__', '__rsub__', '__rtruediv__', '__rxor__', '__setattr__', '__sizeof__', '__str__', '__sub__', '__subclasshook__', '__truediv__', '__trunc__', '__xor__', 'as_integer_ratio', 'bit_count', 'bit_length', 'conjugate', 'denominator', 'from_bytes', 'imag', 'is_integer', 'numerator', 'real', 'to_bytes']
+```
+
+类似`__xxx__`的属性和方法在 Python 中都是有特殊用途的，比如`__len__`方法返回长度。在 Python 中，如果你调用`len()`函数试图获取一个对象的长度，实际上，在`len()`函数内部，它自动去调用该对象的`__len__()`方法，所以，下面的代码是等价的：
+
+```python
+print(len('ABC'))
+# 3
+print('ABC'.__len__())
+# 3
+```
+
+我们自己写的类，如果也想用`len(myObj)`的话，就自己写一个`__len__()`方法：
+
+```python
+class MyDog(object):
+  def __len__(self):
+    return 100
+
+dog = MyDog()
+print(len(dog))
+# 100
+```
+
+仅仅把属性和方法列出来是不够的，配合`getattr()`、`setattr()`以及`hasattr()`，我们可以直接操作一个对象的状态：
+
+```python
+class MyObject(object):
+  def __init__(self):
+    self.x = 9
+
+  def power(self):
+    return self.x * self.x
+
+obj = MyObject()
+
+print(hasattr(obj, 'x'))
+# True
+print(obj.x)
+# 9
+print(setattr(obj, 'y', 16))
+# None
+print(hasattr(obj, 'y'))
+# True
+print(getattr(obj, 'y'))
+# 16
+print(obj.y)
+# 16
+
+print(getattr(obj, 'z', 99))
+```
+
+如果试图获取不存在的属性，会抛出AttributeError的错误：
+
+```python
+class MyObject(object):
+  def __init__(self):
+    self.x = 9
+
+  def power(self):
+    return self.x * self.x
+
+obj = MyObject()
+
+print(hasattr(obj, 'z'))
+# False
+print(getattr(obj, 'z')) # 获取属性'z'
+# Traceback (most recent call last):
+#   File "<stdin>", line 11, in <module>
+# AttributeError: 'MyObject' object has no attribute 'z'
+```
+
+可以传入一个default参数，如果属性不存在，就返回默认值：
+
+```python
+class MyObject(object):
+  def __init__(self):
+    self.x = 9
+
+  def power(self):
+    return self.x * self.x
+
+obj = MyObject()
+
+print(hasattr(obj, 'z'))
+# False
+print(getattr(obj, 'z', 99))  # 获取属性'z'，如果不存在，返回默认值99
+# 99
+```
+
+也可以获取对象的方法：
+
+```python
+class MyObject(object):
+  def __init__(self):
+    self.x = 9
+
+  def power(self):
+    return self.x * self.x
+
+obj = MyObject()
+
+print(hasattr(obj, 'power')) # 是否有'power'属性
+# True
+print(getattr(obj, 'power')) # 获取'power'属性
+# <bound method MyObject.power of <__main__.MyObject object at 0x00000262BB66A0F0>>
+fn = getattr(obj, 'power') # 获取属性'power'并赋值到变量fn
+print(fn) # fn指向obj.power
+# <bound method MyObject.power of <__main__.MyObject object at 0x00000262BB66A0F0>>
+print(fn()) # 调用fn()与调用obj.power()是一样的
+# 81
+```
 
 4. help()
 
 5. `对象.__dict__`
-
-
 
 ### 8.5 实例属性和类属性
