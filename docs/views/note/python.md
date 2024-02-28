@@ -3562,7 +3562,279 @@ print(stu1._Student__score)
 
 :::
 
-### 8.3 集成和多态
+### 8.3 继承和多态
+
+#### 8.3.1 继承
+
+> 在 OOP 程序设计中，当我们定义一个 class 的时候，可以从某个现有的 class 继承，新的 class 称为子类（Subclass），而被继承的 class 称为基类、父类或超类（Base class、Super class）。
+
+比如，我们已经编写了一个名为 `Animal` 的 `class`，有一个 `run()`方法可以直接打印：
+
+```python
+class Animal(object):
+  def run(self):
+    print('Animal is running...')
+
+animal = Animal()
+animal.run()
+# Animal is running...
+```
+
+这时，我们新建`Dog`、`Cat`类，并直接从 `Animal`类继承：
+
+```python
+class Animal(object):
+  def run(self):
+    print('Animal is running...')
+
+class Dog(Animal):
+  pass
+
+class Cat(Animal):
+  pass
+
+animal = Animal()
+animal.run()
+# Animal is running...
+dog = Dog()
+dog.run()
+# Animal is running...
+cat = Cat()
+cat.run()
+# Animal is running...
+```
+
+对于 `Dog` 来说，`Animal` 就是它的父类，对于 `Animal` 来说，`Dog` 就是它的子类。`Cat` 和 `Dog` 类似。
+
+**继承最大的好处是子类获得了父类的全部功能**。由于 `Animial` 实现了 `run()`方法，因此，`Dog` 和 `Cat` 作为它的子类，什么事也没干，就自动拥有了 `run()`方法。
+
+#### 8.3.2 多态
+
+对上面代码进行改进：
+
+```python
+class Animal(object):
+  def run(self):
+    print('Animal is running...')
+
+class Dog(Animal):
+  def run(self):
+    print('Dog is running...')
+
+class Cat(Animal):
+  def run(self):
+    print('Cat is running...')
+
+animal = Animal()
+animal.run()
+# Animal is running...
+dog = Dog()
+dog.run()
+# Dog is running...
+cat = Cat()
+cat.run()
+# Cat is running...
+```
+
+> 当子类和父类都存在相同的 `run()`方法时，我们说，子类的 `run()`覆盖了父类的 `run()`，在代码运行的时候，总是会调用子类的 `run()`。这样，我们就获得了继承的另一个好处：**多态**。
+
+要理解什么是多态，我们首先要对数据类型再作一点说明。当我们定义一个 class 的时候，我们实际上就定义了一种数据类型。我们定义的数据类型和 Python 自带的数据类型，比如 str、list、dict 没什么两样：
+
+```python
+class Animal(object):
+  def run(self):
+    print('Animal is running...')
+
+class Dog(Animal):
+  pass
+
+a = list()
+b = Animal()
+c = Dog()
+print(isinstance(a, list))
+# True
+print(isinstance(b, Animal))
+# True
+print(isinstance(c, Dog))
+# True
+print(isinstance(c, Animal))
+# True
+print(isinstance(c, object))
+# True
+print(isinstance(b, Dog))
+# False
+```
+
+:::tip 理解多态
+
+因为 `Dog` 是从 `Animal` 继承下来的，当我们创建了一个 `Dog` 的实例 `c` 时，我们认为 `c` 的数据类型是 `Dog` 没错，但 `c` 同时也是 `Animal` 也没错，`Dog` 本来就是 `Animal` 的一种！
+
+在继承关系中，如果一个实例的数据类型是某个子类，那它的数据类型也可以被看做是父类。但是，反过来就不行。`Dog` 可以看成 `Animal`，但 `Animal` 不可以看成 `Dog`。
+
+:::
+
+再编写一个后函数，这个函数只接受一个`Animal`类型的变量：
+
+```python
+class Animal(object):
+  def run(self):
+    print('Animal is running...')
+
+class Cat(Animal):
+  def run(self):
+    print('Cat is running...')
+
+class Dog(Animal):
+  def run(self):
+    print('Dog is running...')
+
+def run_twice(animal):
+  animal.run()
+  animal.run()
+
+run_twice(Animal())
+# Animal is running...
+# Animal is running...
+run_twice(Cat())
+# Cat is running...
+# Cat is running...
+run_twice(Dog())
+# Dog is running...
+# Dog is running...
+```
+
+乍一看没啥意思，如果我们再定义一个 `Tortoise` 类型，也从 `Animal` 派生：
+
+```python
+class Tortoise(Animal):
+  def run(self):
+    print('Tortoise is running slowly...')
+
+run_twice(Tortoise())
+# Tortoise is running slowly...
+# Tortoise is running slowly...
+```
+
+会发现，新增一个 `Animal` 的子类，不必对 `run_twice()` 做任何修改，实际上，任何依赖 `Animal` 作为参数的函数或者方法都可以不加修改地正常运行，原因就在于**多态**。
+
+:::tip 多态的好处
+
+多态的好处就是，当我们需要传入 `Dog`、`Cat`、`Tortoise`……时，我们只需要接收 `Animal` 类型就可以了，因为 `Dog`、`Cat`、`Tortoise`……都是 `Animal` 类型，然后，按照 `Animal` 类型进行操作即可。由于 `Animal` 类型有 `run()`方法，因此，传入的任意类型，只要是 `Animal` 类或者子类，就会自动调用实际类型的 `run()`方法。
+
+对于一个变量，我们只需要知道它是 `Animal` 类型，无需确切地知道它的子类型，就可以放心地调用 `run()`方法，而具体调用的 `run()`方法是作用在 `Animal`、`Dog`、`Cat` 还是 `Tortoise` 对象上，由运行时该对象的确切类型决定，这就是多态真正的威力：调用方只管调用，不管细节，而当我们新增一种 `Animal` 的子类时，只要确保 `run()`方法编写正确，不用管原来的代码是如何调用的。这就是著名的“开闭”原则：
+
+- 对扩展开放：允许新增 `Animal` 子类；
+- 对修改封闭：不需要修改依赖 `Animal` 类型的 `run_twice()`等函数。
+
+:::
+
+继承还可以一级一级地继承下来，就好比从爷爷到爸爸、再到儿子这样的关系。而任何类，最终都可以追溯到根类 object，这些继承关系看上去就像一颗倒着的树。比如如下的继承树：
+
+```
+                ┌───────────────┐
+                │    object     │
+                └───────────────┘
+                        │
+           ┌────────────┴────────────┐
+           │                         │
+           ▼                         ▼
+    ┌─────────────┐           ┌─────────────┐
+    │   Animal    │           │    Plant    │
+    └─────────────┘           └─────────────┘
+           │                         │
+     ┌─────┴──────┐            ┌─────┴──────┐
+     │            │            │            │
+     ▼            ▼            ▼            ▼
+┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐
+│   Dog   │  │   Cat   │  │  Tree   │  │ Flower  │
+└─────────┘  └─────────┘  └─────────┘  └─────────┘
+```
+
+:::warning 静态语言 VS 动态语言
+
+对于静态语言（例如 Java）来说，如果需要传入 `Animal` 类型，则传入的对象必须是 `Animal` 类型或者它的子类，否则，将无法调用 `run()`方法。
+
+对于 Python 这样的动态语言来说，则不一定需要传入 `Animal` 类型。我们只需要保证传入的对象有一个 `run()`方法就可以了：
+
+```python
+class Animal(object):
+  def run(self):
+    print('Animal is running...')
+
+class Dog(Animal):
+  def run(self):
+    print('Dog is running...')
+
+class Timer(object):
+  def run(self):
+    print('Time start...')
+
+def run_twice(animal):
+  animal.run()
+  animal.run()
+
+run_twice(Animal())
+# Animal is running...
+# Animal is running...
+run_twice(Dog())
+# Dog is running...
+# Dog is running...
+run_twice(Timer())
+# Time start...
+# Time start...
+```
+
+可以看到，`Timer`类并没有继承`Animal`，而是自有`run()`方法，`run_twice()`函数仍然可以正常运行。
+
+这就是动态语言的“鸭子类型”，它并不要求严格的继承体系，一个对象只要“看起来像鸭子，走起路来像鸭子”，那它就可以被看做是鸭子。
+
+:::
+
+:::details 继承与多态示例
+
+```python
+class Animal(object): # 编写Animal类
+  def run(self):
+    print("Animal is running...")
+
+class Dog(Animal): # Dog类继承Amimal类，没有run方法
+  pass
+
+class Cat(Animal): # Cat类继承Animal类，有自己的run方法
+  def run(self):
+    print('Cat is running...')
+
+class Car(object): # Car类不继承，有自己的run方法
+  def run(self):
+    print('Car is running fast...')
+
+class Stone(object): # Stone类不继承，也没有run方法
+  pass
+
+def run_twice(animal):
+  animal.run()
+  animal.run()
+
+run_twice(Animal())
+# Animal is running...
+# Animal is running...
+run_twice(Dog())
+# Animal is running...
+# Animal is running...
+run_twice(Cat())
+# Cat is running...
+# Cat is running...
+run_twice(Car())
+# Car is running...
+# Car is running...
+run_twice(Stone())
+# Traceback (most recent call last):
+#   File "<stdin>", line 27, in <module>
+#   File "<stdin>", line 20, in run_twice
+# AttributeError: 'Stone' object has no attribute 'run'
+```
+
+:::
 
 ### 8.4 获取对象信息
 
