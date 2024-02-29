@@ -4150,7 +4150,7 @@ else:
 
 ## 09. 面向对象高级编程
 
-### 9.1 使用__slots__
+### 9.1 使用**slots**
 
 正常情况下，在定义一个类并创建了类的实例后，我们可以给该实例绑定任意属性和方法，这就是动态语言的灵活性。
 
@@ -4391,6 +4391,130 @@ g.grade = 'A'
 :::
 
 ### 9.2 使用@property
+
+在绑定属性时，如果我们直接把属性暴露出去，虽然写起来很简单，但是，没办法检查参数，导致可以把成绩随便改：
+
+```python
+class Student(object):
+  pass
+
+s = Student()
+s.score = 998
+print(s.score)
+# 998
+```
+
+这样显然不合理，外部可以随意设置成绩，为了给`score`一个范围，可以通过方法来执行：
+
+```python
+class Student(object):
+  def get_score(self):
+    return self._score
+  def set_score(self, score):
+    if not isinstance(score, int):
+      raise TypeError('score must be an integer')
+    if score < 0 or score > 100:
+      raise ValueError('score must between 0 ~ 100!')
+    else:
+      self._score = score
+  score = property(get_score, set_score)
+
+s = Student()
+s.set_score(98)
+print(s.get_score())
+# 98
+s.set_score(998)
+# Traceback (most recent call last):
+#   File "<stdin>", line 16, in <module>
+#     s.set_score(998)
+#   File "<stdin>", line 8, in set_score
+#     raise ValueError('score must between 0 ~ 100!')
+# ValueError: score must between 0 ~ 100!
+```
+
+但是，上面的调用方法又略显复杂，没有直接用属性这么直接简单。有没有**既能检查参数，又可以用类似属性**这样简单的方式来访问类的变量呢？
+
+还记得装饰器（decorator）可以给函数动态加上功能吗？对于类的方法，装饰器一样起作用。Python 内置的@property 装饰器就是负责把一个方法变成属性调用的：
+
+```python
+class Student(object):
+  @property
+  def score(self):
+    return self._score
+  @score.setter
+  def score(self, score):
+    if not isinstance(score, int):
+      raise TypeError('score must be an integer')
+    if score < 0 or score > 100:
+      raise ValueError('score must between 0 ~ 100!')
+    else:
+      self._score = score
+
+s = Student()
+s.score = 98
+print(s.score)
+# 98
+s.score = 998
+# Traceback (most recent call last):
+#   File "<stdin>", line 17, in <module>
+#   File "<stdin>", line 10, in score
+#     raise ValueError('score must between 0 ~ 100!')
+# ValueError: score must between 0 ~ 100!
+```
+
+> 解析：`@property` 的实现比较复杂，我们先考察如何使用。把一个 `getter` 方法变成属性，只需要加上`@property` 就可以了，此时，`@property` 本身又创建了另一个装饰器`@score.setter`，负责把一个 `setter` 方法变成属性赋值，于是，我们就拥有一个可控的属性操作。
+
+还可以定义**只读属性**：只定义 getter 方法，不定义 setter 方法：
+
+```python
+import datetime
+class Student(object):
+  @property
+  def birth(self):
+    return self._birth
+  @birth.setter
+  def birth(self, value):
+    self._birth = value
+  @property
+  def age(self):
+    return datetime.datetime.now().year - self._birth
+
+s = Student()
+s.birth = 2000
+print(s.birth)
+# 2000
+print(s.age)
+# 24
+```
+
+上面的 `birth` 是**可读写属性**，而 `age` 就是一个**只读属性**，因为 `age` 可以根据 `birth` 和当前年份计算出来。
+
+:::danger 特别注意
+
+属性的方法名**不要和**实例变量重名。例如，以下的代码是错误的：
+
+```python
+import datetime
+class Student(object):
+  @property
+  def birth(self):
+    return self.birth # RecursionError: maximum recursion depth exceeded
+  @birth.setter
+  def birth(self, value):
+    self.birth = value
+  @property
+  def age(self):
+    return datetime.datetime.now().year - self.birth
+
+s = Student()
+s.birth = 2000
+print(s.birth)
+print(s.age)
+```
+
+这是因为调用 `s.birth` 时，首先转换为方法调用，在执行 `return self.birth` 时，又视为访问 `self` 的属性，于是又转换为方法调用，造成无限递归，最终导致栈溢出报错 `RecursionError`。
+
+:::
 
 ### 9.3 多重继承
 
