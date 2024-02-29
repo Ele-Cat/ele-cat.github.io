@@ -4150,7 +4150,245 @@ else:
 
 ## 09. 面向对象高级编程
 
-### 9.1 使用__slots__
+### 9.1 使用**slots**
+
+正常情况下，在定义一个类并创建了类的实例后，我们可以给该实例绑定任意属性和方法，这就是动态语言的灵活性。
+
+```python
+from types import MethodType
+
+class Person():
+  pass
+
+def set_age(self, age):
+  self.age = age
+
+p = Person()
+p.name = 'Cola'
+print(p.name)
+# Cola
+p.set_age = MethodType(set_age, p)
+p.set_age(20)
+print(p.age)
+# 20
+```
+
+但是，给一个实例绑定的属性和方法，对另一个实例是不起作用的：
+
+```python
+from types import MethodType
+
+class Person():
+  pass
+
+def set_age(self, age):
+  self.age = age
+
+p = Person()
+p.name = 'Cola'
+p.set_age = MethodType(set_age, p)
+p.set_age(20)
+
+s = Person()
+print(s.name)
+# Traceback (most recent call last):
+#   File "<stdin>", line 17, in <module>
+# AttributeError: 'Person' object has no attribute 'name'
+s.set_age(18)
+# Traceback (most recent call last):
+#   File "<stdin>", line 18, in <module>
+# AttributeError: 'Person' object has no attribute 'set_age'
+```
+
+为了让所有类的实例化对象都可以使用属性或方法，可以**直接绑定在类上**：
+
+```python
+from types import MethodType
+
+class Person():
+  pass
+
+def set_age(self, age):
+  self.age = age
+
+Person.canSpeak = True
+Person.set_age = set_age
+p = Person()
+p.set_age(20)
+print('p今年' + str(p.age) + '岁，' + '是否会说话：' + str(p.canSpeak))
+# p今年20岁，是否会说话：True
+
+s = Person()
+s.set_age(0.2)
+print('s今年' + str(s.age) + '岁，' + '是否会说话：' + str(not s.canSpeak))
+# s今年0.2岁，是否会说话：False
+```
+
+通常情况下，上面的 `set_age` 方法可以直接定义在 class 中，但是动态绑定允许我们在程序运行的过程中动态给 class 加上功能，这在静态语言中很难实现。同时，想要限制在 class 上动态添加的属性和方法，就需要用到`__slots__`。
+
+```python
+class Student(object):
+  __slots__ = ('name', 'age') # 用tuple定义允许绑定的属性名称
+  pass
+
+s = Student()
+s.name = 'Cola'
+print(s.name)
+# Cola
+s.age = 18
+print(s.age)
+# 18
+s.score = 98
+print(s.score)
+# Traceback (most recent call last):
+#   File "<stdin>", line 10, in <module>
+# AttributeError: 'Student' object has no attribute 'score'
+```
+
+由于`'score'`没有被放到`__slots__`中，所以不能绑定 `score` 属性，试图绑定 `score` 将得到 `AttributeError` 的错误。
+
+:::tip 注意
+
+`__slots__`定义的属性仅对当前类实例起作用，对继承的子类是不起作用的：
+
+```python
+class Student(object):
+  __slots__ = ('name', 'age')
+  pass
+
+class GraduateStudent(Student):
+  pass
+
+g = GraduateStudent()
+g.score = 58
+print(g.score)
+# 58
+```
+
+除非在子类中也定义`__slots__`，这样，子类实例允许定义的属性就是自身的`__slots__`加上父类的`__slots__`：
+
+```python
+class Student(object):
+  __slots__ = ('name', 'age')
+  pass
+
+class GraduateStudent(Student):
+  __slots__ = ('score')
+  pass
+
+g = GraduateStudent()
+g.name = 'Cola'
+print(g.name)
+# Cola
+g.score = 58
+print(g.score)
+# 58
+g.grade = 'A'
+# Traceback (most recent call last):
+#   File "<stdin>", line 14, in <module>
+# AttributeError: 'GraduateStudent' object has no attribute 'grade'
+```
+
+:::
+
+> 总结：
+>
+> - 当子类本身没有`__slots__`时，不管父类有没有`__slots__`，子类的实例化对象都可以随意添加属性和方法；
+> - 当子类有`__slots__`定义的属性时，如果其父类没有`__slots__`，则该子类的实例化对象可以随意添加属性和方法；如果其父类有`__slots__`，则该子类与其父类`__slots__`并集的属性都可用作该子类的动态属性。
+
+:::details 四种情况汇总
+
+1. 父类没有`__slots__`，子类没有`__slots__`
+
+   ```python
+   class Parent(object):
+     pass
+
+   class Child(Parent):
+     pass
+
+   p = Parent()
+   c = Child()
+   p.age = 38 # 随意添加
+   print(p.age)
+   # 38
+   c.gender = 'Female' # 随意添加
+   print(c.gender)
+   # Female
+   ```
+
+2. 父类有`__slots__`限制，子类没有`__slots__`
+
+   ```python
+   class Parent(object):
+     __slots__ = ('age')
+
+   class Child(Parent):
+     pass
+
+   p = Parent()
+   c = Child()
+   p.age = 38 # 只能添加__slots__的属性
+   print(p.age)
+   # 38
+   # p.gender = 'Male' # 添加age以外的属性报错
+   # print(p.gender)
+   c.gender = 'Female' # 子类无限制
+   print(c.gender)
+   c.name = 'Cola' # 子类无限制
+   print(c.name)
+   ```
+
+3. 父类没有`__slots__`，子类有`__slots__`
+
+   ```python
+   class Parent(object):
+     pass
+
+   class Child(Parent):
+     __slots__ = ('gender')
+
+   p = Parent()
+   c = Child()
+   p.age = 38 # 父类不做限制，随意添加属性
+   print(p.age)
+   # 38
+   p.gender = 'Male' # 父类不做限制，随意添加属性
+   print(p.gender)
+   # Male
+   c.gender = 'Female' # 子级做了限制，可添加__slots__属性
+   print(c.gender)
+   # Female
+   c.name = 'Cola' # 子级做了限制，也可随意添加属性
+   print(c.name)
+   # Cola
+   ```
+
+4. 父类有`__slots__`，子类也有`__slots__`
+
+   ```python
+   class Parent(object):
+     __slots__ = ('age')
+     pass
+
+   class Child(Parent):
+     __slots__ = ('gender')
+
+   p = Parent()
+   c = Child()
+   p.age = 38 # 父类做了限制，只可添加age属性
+   print(p.age)
+   # p.gender = 'Male' # 添加其他属性报错
+   # print(p.gender)
+   c.gender = 'Female' # 子类的限制属性可用
+   print(c.gender)
+   c.age = 12 # 父类的限制属性可用【并集】
+   print(c.age)
+   # c.name = 'Cola' # 非并集内的属性不可用，报错
+   # print(c.name)
+   ```
+
+:::
 
 ### 9.2 使用@property
 
