@@ -4518,6 +4518,186 @@ print(s.age)
 
 ### 9.3 多重继承
 
+继承是面向对象编程的一个重要方式，通过继承，子类可以扩展父类的功能。
+
+:::tip 引子
+
+假设有一个`Animal`类，要实现 4 种动物
+
+- Dog - 狗
+- Bat - 蝙蝠
+- Parrot - 鹦鹉
+- Ostrich - 鸵鸟
+
+如果按照哺乳动物和鸟类归类，我们可以设计出这样的类的层次：
+
+<pre style='ling-height:12px'>
+                ┌───────────────┐
+                │    Animal     │
+                └───────────────┘
+                        │
+           ┌────────────┴────────────┐
+           │                         │
+           ▼                         ▼
+    ┌─────────────┐           ┌─────────────┐
+    │   Mammal    │           │    Bird     │
+    └─────────────┘           └─────────────┘
+           │                         │
+     ┌─────┴──────┐            ┌─────┴──────┐
+     │            │            │            │
+     ▼            ▼            ▼            ▼
+┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐
+│   Dog   │  │   Bat   │  │ Parrot  │  │ Ostrich │
+└─────────┘  └─────────┘  └─────────┘  └─────────┘
+</pre>
+
+但是如果按照“能跑”和“能飞”来归类，我们就应该设计出这样的类的层次：
+
+<pre>
+                ┌───────────────┐
+                │    Animal     │
+                └───────────────┘
+                        │
+           ┌────────────┴────────────┐
+           │                         │
+           ▼                         ▼
+    ┌─────────────┐           ┌─────────────┐
+    │  Runnable   │           │   Flyable   │
+    └─────────────┘           └─────────────┘
+           │                         │
+     ┌─────┴──────┐            ┌─────┴──────┐
+     │            │            │            │
+     ▼            ▼            ▼            ▼
+┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐
+│   Dog   │  │ Ostrich │  │ Parrot  │  │   Bat   │
+└─────────┘  └─────────┘  └─────────┘  └─────────┘
+</pre>
+
+如果要把上面的两种分类都包含进来，我们就得设计更多的层次：
+
+- 哺乳类：能跑的哺乳类，能飞的哺乳类；
+- 鸟类：能跑的鸟类，能飞的鸟类。
+
+<pre>
+                ┌───────────────┐
+                │    Animal     │
+                └───────────────┘
+                        │
+           ┌────────────┴────────────┐
+           │                         │
+           ▼                         ▼
+    ┌─────────────┐           ┌─────────────┐
+    │   Mammal    │           │    Bird     │
+    └─────────────┘           └─────────────┘
+           │                         │
+     ┌─────┴──────┐            ┌─────┴──────┐
+     │            │            │            │
+     ▼            ▼            ▼            ▼
+┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐
+│  MRun   │  │  MFly   │  │  BRun   │  │  BFly   │
+└─────────┘  └─────────┘  └─────────┘  └─────────┘
+     │            │            │            │
+     │            │            │            │
+     ▼            ▼            ▼            ▼
+┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐
+│   Dog   │  │   Bat   │  │ Ostrich │  │ Parrot  │
+└─────────┘  └─────────┘  └─────────┘  └─────────┘
+</pre>
+
+如果要再增加“宠物类”和“非宠物类”，这么搞下去，类的数量会呈指数增长，很明显这样设计是不行的。正确的做法是采用**多重继承**。
+
+:::
+
+```python
+class Animal(object):
+  pass
+
+class Mammal(Animal):
+  pass
+
+class Bird(Animal):
+  pass
+
+class Runnable(object):
+  def run(self):
+    print('Running...')
+
+class Flyable(object):
+  def fly(self):
+    print('Flying...')
+
+class Dog(Mammal, Runnable):
+  pass
+
+class Bat(Mammal, Flyable):
+  pass
+
+class Parrot(Bird, Flyable):
+  pass
+
+class Ostrich(Bird, Runnable):
+  pass
+```
+
+通过多重继承，一个子类就可以同时获得多个父类的所有功能。
+
+**Mixin**
+
+在设计类的继承关系时，通常，主线都是单一继承下来的，例如，`Ostrich` 继承自 `Bird`。但是，如果需要“混入”额外的功能，通过多重继承就可以实现，比如，让 `Ostrich` 除了继承自 `Bird` 外，再同时继承 `Runnable`。这种设计通常称之为 MixIn。
+
+同时，为了更好地看出继承关系，我们把 `Runnable` 和 `Flyable` 改为 `RunnableMixIn` 和 `FlyableMixIn`。类似的，你还可以定义出肉食动物 `CarnivorousMixIn` 和植食动物 `HerbivoresMixIn`，让某个动物同时拥有好几个 MixIn：
+
+```python
+class Dog(Mammal, RunnableMixIn, CarnivorousMixIn):
+  pass
+```
+
+> MixIn 的目的就是给一个类增加多个功能，这样，在设计类的时候，我们优先考虑通过多重继承来组合多个 MixIn 的功能，而不是设计多层次的复杂的继承关系。
+
+:::details 多 Mixin 继承
+
+```python
+class Animal(object):
+  def run(self):
+    print('Animal is running...')
+
+class Dog(Animal):
+  def run(self):
+    print('Dog is running...')
+
+class Cat(Animal):
+  def run(self):
+    print('Cat is running...')
+
+class Dc(Dog, Cat): # 继承列表又先后顺序
+  def run1(self):
+    self.run() # 继承自Dog的run方法
+  def run2(self):
+    super().run() # super()指向了优先级最高的Dog的run方法
+  def run3(self):
+    Cat.run(self) # 通过类名直接调用，已脱离继承的范畴
+  def run4(self):
+    super(Dog, self).run() # 表示在继承链中查找Dog下一个类的run()方法,也就是Cat
+    super(Cat, self).run() # 同上，Cat后是Animal
+
+dc = Dc()
+dc.run()
+# Dog is running...
+dc.run1()
+# Dog is running...
+dc.run2()
+# Dog is running...
+dc.run3()
+# Cat is running...
+dc.run4()
+# Cat is running...
+# Animal is running...
+```
+
+得出继承查找顺序：**Dc → Dog → Cat → Animal**
+
+:::
+
 ### 9.4 定制类
 
 ### 9.5 枚举类
