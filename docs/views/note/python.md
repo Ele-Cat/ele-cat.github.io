@@ -4855,113 +4855,115 @@ dc.run4()
 
 4. `__getattr__`
 
-正常情况下，当我们调用类的方法或属性时，如果不存在，就会报错。比如定义 Student 类：
+   正常情况下，当我们调用类的方法或属性时，如果不存在，就会报错。比如定义 Student 类：
 
-```python
-class Student(object):
-  def __init__(self):
-    self.name = 'Cola'
+   ```python
+   class Student(object):
+     def __init__(self):
+       self.name = 'Cola'
 
-s = Student()
-print(s.name)
-# Cola
-print(s.score)
-# Traceback (most recent call last):
-#   File "<stdin>", line 7, in <module>
-# AttributeError: 'Student' object has no attribute 'score'
-```
+   s = Student()
+   print(s.name)
+   # Cola
+   print(s.score)
+   # Traceback (most recent call last):
+   #   File "<stdin>", line 7, in <module>
+   # AttributeError: 'Student' object has no attribute 'score'
+   ```
 
-调用 `name` 属性，没问题，但是，调用不存在的 `score` 属性，就有问题了：错误信息很清楚地告诉我们，没有找到 `score` 这个 attribute。
+   调用 `name` 属性，没问题，但是，调用不存在的 `score` 属性，就有问题了：错误信息很清楚地告诉我们，没有找到 `score` 这个 attribute。
 
-要避免这个错误，除了可以加上一个 `score` 属性外，Python 还有另一个机制，那就是写一个`__getattr__()`方法，动态返回一个属性。修改如下：
-
-```python
-class Student(object):
-  def __init__(self):
-    self.name = 'Cola'
-  def __getattr__(self, attr):
-    if attr == 'score':
-      return 98
-
-s = Student()
-print(s.name)
-# Cola
-print(s.score)
-# 98
-```
-
-当调用不存在的属性时，比如 `score`，Python 解释器会试图调用`__getattr__(self, 'score')`来尝试获得属性，这样，我们就有机会返回 `score` 的值。返回函数也是可以的：
-
-```python
-class Student(object):
-  def __init__(self):
-    self.name = 'Cola'
-  def __getattr__(self, attr):
-    if attr == 'age':
-      return lambda: 28
-
-s = Student()
-print(s.age()) # 调用方式要变为函数调用
-# 28
-```
-
-:::tip 注意
-
-1. 只有在没有找到属性的情况下，才调用`__getattr__`，已有的属性，比如 `name`，不会在`__getattr__`中查找。
+   要避免这个错误，除了可以加上一个 `score` 属性外，Python 还有另一个机制，那就是写一个`__getattr__()`方法，动态返回一个属性。修改如下：
 
    ```python
    class Student(object):
      def __init__(self):
        self.name = 'Cola'
      def __getattr__(self, attr):
-       if attr == 'name':
-         return 'Cat'
+       if attr == 'score':
+         return 98
+
+   s = Student()
+   print(s.name)
+   # Cola
+   print(s.score)
+   # 98
+   ```
+
+   当调用不存在的属性时，比如 `score`，Python 解释器会试图调用`__getattr__(self, 'score')`来尝试获得属性，这样，我们就有机会返回 `score` 的值。返回函数也是可以的：
+
+   ```python
+   class Student(object):
+     def __init__(self):
+       self.name = 'Cola'
+     def __getattr__(self, attr):
        if attr == 'age':
          return lambda: 28
 
    s = Student()
-   print(s.name) # name已经在初始化时定义好了，所以不会在__getattr__中查找
-   # Cola
-   print(s.age())
+   print(s.age()) # 调用方式要变为函数调用
    # 28
    ```
 
-2. 注意到任意调用如 `s.abc` 都会返回 `None`，这是因为我们定义的`__getattr__`默认返回就是 `None`：
+   :::tip 注意
 
-   ```python
-   class Student(object):
-     def __getattr__(self, attr):
-       if attr == 'score':
-         return 98
+   1. 只有在没有找到属性的情况下，才调用`__getattr__`，已有的属性，比如 `name`，不会在`__getattr__`中查找。
 
-   s = Student()
-   print(s.abc) # 默认返回就是None
-   # None
-   ```
+      ```python
+      class Student(object):
+        def __init__(self):
+          self.name = 'Cola'
+        def __getattr__(self, attr):
+          if attr == 'name':
+            return 'Cat'
+          if attr == 'age':
+            return lambda: 28
 
-   要让 class 只响应特定的几个属性，我们就要按照约定，抛出 `AttributeError` 的错误：
+      s = Student()
+      print(s.name) # name已经在初始化时定义好了，所以不会在__getattr__中查找
+      # Cola
+      print(s.age())
+      # 28
+      ```
 
-   ```python
-   class Student(object):
-     def __getattr__(self, attr):
-       if attr == 'score':
-         return 98
-       raise AttributeError('\'Student\' object has no attribute \'%s\'' % attr)
+   2. 注意到任意调用如 `s.abc` 都会返回 `None`，这是因为我们定义的`__getattr__`默认返回就是 `None`：
 
-   s = Student()
-   print(s.score)
-   # 98
-   print(s.abc)
-   # Traceback (most recent call last):
-   #   File "<stdin>", line 8, in <module>
-   #   File "<stdin>", line 5, in __getattr__
-   #     raise AttributeError('\'Student\' object has no attribute \'%s\'' % attr)
-   # AttributeError: 'Student' object has no attribute 'abc'
-   ```
+      ```python
+      class Student(object):
+        def __getattr__(self, attr):
+          if attr == 'score':
+            return 98
 
-:::
+      s = Student()
+      print(s.abc) # 默认返回就是None
+      # None
+      ```
+
+      要让 class 只响应特定的几个属性，我们就要按照约定，抛出 `AttributeError` 的错误：
+
+      ```python
+      class Student(object):
+        def __getattr__(self, attr):
+          if attr == 'score':
+            return 98
+          raise AttributeError('\'Student\' object has no attribute \'%s\'' % attr)
+
+      s = Student()
+      print(s.score)
+      # 98
+      print(s.abc)
+      # Traceback (most recent call last):
+      #   File "<stdin>", line 8, in <module>
+      #   File "<stdin>", line 5, in __getattr__
+      #     raise AttributeError('\'Student\' object has no attribute \'%s\'' % attr)
+      # AttributeError: 'Student' object has no attribute 'abc'
+      ```
+
+      :::
 
 5. `__call__`
+
+一个对象实例可以有自己的属性和方法，当我们调用实例方法时，我们用 instance.method()来调用。能不能直接在实例本身上调用呢？在 Python 中，答案是肯定的。
 
 ### 9.5 枚举类
 
