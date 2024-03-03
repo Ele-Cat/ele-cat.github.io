@@ -5152,3 +5152,22 @@ print(type(h))
 正常情况下，我们都用 `class Xxx...`来定义类，但是，`type()`函数也允许我们动态创建出类来，也就是说，动态语言本身支持运行期动态创建类，这和静态语言有非常大的不同，要在静态语言运行期创建类，必须构造源代码字符串再调用编译器，或者借助一些工具生成字节码实现，本质上都是动态编译，会非常复杂。
 
 :::
+
+除了使用 `type()`动态创建类以外，要控制类的创建行为，还可以使用 metaclass。
+
+> metaclass，直译为元类，简单的解释就是：当我们定义了类以后，就可以根据这个类创建出实例，所以：先定义类，然后创建实例。
+
+```python
+class ListMetaclass(type):
+  def __new__(cls, name, bases, attrs):
+    attrs['add'] = lambda self, value: self.append(value)
+    return type.__new__(cls, name, bases, attrs)
+
+class MyList(list, metaclass=ListMetaclass):
+  pass
+
+L = MyList()
+L.add(1)
+print(L)
+# [1]
+```
