@@ -5006,4 +5006,90 @@ print(callable('str'))
 
 ### 9.5 枚举类
 
+当我们需要定义常量时，一个办法是用大写变量通过整数来定义，例如月份：
+
+```python
+JAN = 1
+FEB = 2
+MAR = 3
+# ...
+NOV = 11
+DEC = 12
+```
+
+更好的方法是为这样的枚举类型定义一个 class 类型，然后，每个常量都是 class 的一个唯一实例。Python 提供了`Enum`类来实现这个功能：
+
+```python
+from enum import Enum
+
+Month = Enum('Month', ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'))
+
+print(Month.Jan)
+# Month.Jan
+print(Month.Jan.value)
+# 1
+
+for name, member in Month.__members__.items():
+  print(name, '=>', member, ',', member.value)
+# Jan => Month.Jan , 1
+# Feb => Month.Feb , 2
+# Mar => Month.Mar , 3
+# Apr => Month.Apr , 4
+# May => Month.May , 5
+# Jun => Month.Jun , 6
+# Jul => Month.Jul , 7
+# Aug => Month.Aug , 8
+# Sep => Month.Sep , 9
+# Oct => Month.Oct , 10
+# Nov => Month.Nov , 11
+# Dec => Month.Dec , 12
+```
+
+`value` 属性则是自动赋给成员的 `int` 常量，默认从 `1` 开始计数。如果需要更精确地控制枚举类型，可以从 `Enum` 派生出自定义类：
+
+```python
+from enum import Enum, unique
+
+@unique
+class Weekend(Enum):
+  Sun = 0
+  Mon = 1
+  Tue = 2
+  Wed = 3
+  Thu = 4
+  Fri = 5
+  Sat = 6
+
+day1 = Weekend.Mon
+print(day1)
+#Weekend.Mon
+print(Weekend.Tue)
+#Weekend.Tue
+print(Weekend.Tue.value)
+#2
+print(day1 == Weekend.Mon)
+#True
+print(day1 == Weekend.Tue)
+#False
+print(Weekend(1))
+#Weekend.Mon
+print(day1 == Weekend(1))
+#True
+print(Weekend(7))
+# Traceback (most recent call last):
+#   File "<stdin>", line 21, in <module>
+# ValueError: 7 is not a valid Weekend
+for name, member in Weekend.__members__.items():
+  print(name, '=>', member, ',', member.value)
+# Sun => Weekend.Sun , 0
+# Mon => Weekend.Mon , 1
+# Tue => Weekend.Tue , 2
+# Wed => Weekend.Wed , 3
+# Thu => Weekend.Thu , 4
+# Fri => Weekend.Fri , 5
+# Sat => Weekend.Sat , 6
+```
+
+> 枚举既可以用成员名称引用枚举常量，又可以直接根据 value 的值获得枚举常量。
+
 ### 9.6 元类
