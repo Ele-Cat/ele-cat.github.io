@@ -5190,6 +5190,23 @@ Python 内置了一套异常处理机制，来帮助我们进行错误处理。�
 
 1. try
 
+```python
+try:
+  print('try...')
+  r = 10 / 0
+  print('result:', r)
+except ZeroDivisionError as e:
+  print('except:', e)
+finally:
+  print('finally')
+
+print('END')
+# try...
+# except: division by zero
+# finally
+# END
+```
+
 2. 调用栈
 
 3. 记录错误
