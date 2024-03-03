@@ -5050,7 +5050,7 @@ for name, member in Month.__members__.items():
 ```python
 from enum import Enum, unique
 
-@unique
+@unique # @unique装饰器可以帮助我们检查保证没有重复值。
 class Weekend(Enum):
   Sun = 0
   Mon = 1
@@ -5060,6 +5060,7 @@ class Weekend(Enum):
   Fri = 5
   Sat = 6
 
+# 访问这些枚举类型可以的若干种方法：
 day1 = Weekend.Mon
 print(day1)
 #Weekend.Mon
