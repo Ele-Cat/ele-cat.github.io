@@ -5158,7 +5158,7 @@ print(type(h))
 > metaclass，直译为元类，简单的解释就是：当我们定义了类以后，就可以根据这个类创建出实例，所以：先定义类，然后创建实例。
 
 ```python
-class ListMetaclass(type):
+class ListMetaclass(type): # metaclass是类的模板，所以必须从`type`类型派生：
   def __new__(cls, name, bases, attrs):
     attrs['add'] = lambda self, value: self.append(value)
     return type.__new__(cls, name, bases, attrs)
