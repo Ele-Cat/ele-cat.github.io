@@ -5094,3 +5094,61 @@ for name, member in Weekend.__members__.items():
 > 枚举既可以用成员名称引用枚举常量，又可以直接根据 value 的值获得枚举常量。
 
 ### 9.6 元类
+
+:::tip 引子
+
+动态语言和静态语言最大的不同，就是函数和类的定义，不是编译时定义的，而是运行时动态创建的。
+
+比方说我们要定义一个 `Hello` 的 class，就写一个 `hello.py` 模块：
+
+```python
+# hello.py
+class Hello(object):
+  def hello(self, name = 'world'):
+    print("Hello " + name)
+```
+
+当 Python 解释器载入 `hello` 模块时，就会依次执行该模块的所有语句，执行结果就是动态创建出一个 `Hello` 的 class 对象，测试如下：
+
+```python
+from hello import Hello
+h = Hello()
+h.hello()
+# Hello world
+print(type(Hello))
+# <class 'type'>
+print(type(h))
+# <class 'hello.Hello'>
+```
+
+`type()`函数可以查看一个类型或变量的类型，`Hello` 是一个 class，它的类型就是 `type`，而 `h` 是一个实例，它的类型就是 class `Hello`。
+
+我们说 class 的定义是运行时动态创建的，而创建 class 的方法就是使用 `type()`函数。
+
+`type()`函数既可以返回一个对象的类型，又可以创建出新的类型，比如，我们可以通过 `type()`函数创建出 `Hello` 类，而无需通过 `class Hello(object)...`的定义：
+
+```python
+def fn(self, name = 'world'):
+  print(f"Hello {name}!")
+
+Hello = type('Hello', (object,), dict(hello=fn))
+h = Hello()
+h.hello()
+# Hello world!
+print(type(Hello))
+# <class 'type'>
+print(type(h))
+# <class '__main__.Hello'>
+```
+
+要创建一个 class 对象，`type()`函数依次传入 3 个参数：
+
+1. class 的名称；
+2. 继承的父类集合，注意 Python 支持多重继承，如果只有一个父类，别忘了 tuple 的单元素写法；
+3. class 的方法名称与函数绑定，这里我们把函数 `fn` 绑定到方法名 `hello` 上。
+
+通过 `type()`函数创建的类和直接写 class 是完全一样的，因为 Python 解释器遇到 class 定义时，仅仅是扫描一下 class 定义的语法，然后调用 `type()`函数创建出 class。
+
+正常情况下，我们都用 `class Xxx...`来定义类，但是，`type()`函数也允许我们动态创建出类来，也就是说，动态语言本身支持运行期动态创建类，这和静态语言有非常大的不同，要在静态语言运行期创建类，必须构造源代码字符串再调用编译器，或者借助一些工具生成字节码实现，本质上都是动态编译，会非常复杂。
+
+:::
