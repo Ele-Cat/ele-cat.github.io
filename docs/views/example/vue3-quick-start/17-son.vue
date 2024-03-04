@@ -1,5 +1,5 @@
 <script lang="ts" setup name="Person">
-import { ref, defineExpose } from "vue";
+import { ref } from "vue";
 // 数据
 let name = ref("张三");
 let age = ref(18);

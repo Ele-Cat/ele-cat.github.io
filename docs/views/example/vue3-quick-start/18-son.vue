@@ -8,7 +8,6 @@
   </div>
 </template>
 <script lang="ts" setup name="Person">
-import { defineProps } from 'vue'
 import { type PersonInter, Persons } from './18-interface'
 // 第一种写法：仅接收
 // const props = defineProps(['list'])
