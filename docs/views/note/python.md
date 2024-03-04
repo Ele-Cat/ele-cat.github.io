@@ -5391,28 +5391,28 @@ Python 内置了一套异常处理机制，来帮助我们进行错误处理。�
 
 4. 抛出错误
 
-因为错误是 class，捕获一个错误就是捕获到该 class 的一个实例。因此，错误并不是凭空产生的，而是有意创建并抛出的。Python 的内置函数会抛出很多类型的错误，我们自己编写的函数也可以抛出错误。
+   因为错误是 class，捕获一个错误就是捕获到该 class 的一个实例。因此，错误并不是凭空产生的，而是有意创建并抛出的。Python 的内置函数会抛出很多类型的错误，我们自己编写的函数也可以抛出错误。
 
-如果要抛出错误，首先根据需要，可以定义一个错误的 class，选择好继承关系，然后，用 `raise` 语句抛出一个错误的实例：
+   如果要抛出错误，首先根据需要，可以定义一个错误的 class，选择好继承关系，然后，用 `raise` 语句抛出一个错误的实例：
 
-```python
-class FooError(ValueError):
-  pass
-def foo(s):
-  n = int(s)
-  if n == 0:
-    raise FooError('invalid value: %s' % s)
-  return 10 / n
-foo('0')
-# Traceback (most recent call last):
-#   File "<stdin>", line 8, in <module>
-#     foo('0')
-#   File "<stdin>", line 6, in foo
-#     raise FooError('invalid value: %s' % s)
-# FooError: invalid value: 0
-```
+   ```python
+   class FooError(ValueError):
+     pass
+   def foo(s):
+     n = int(s)
+     if n == 0:
+       raise FooError('invalid value: %s' % s)
+     return 10 / n
+   foo('0')
+   # Traceback (most recent call last):
+   #   File "<stdin>", line 8, in <module>
+   #     foo('0')
+   #   File "<stdin>", line 6, in foo
+   #     raise FooError('invalid value: %s' % s)
+   # FooError: invalid value: 0
+   ```
 
-只有在必要的时候才定义我们自己的错误类型。如果可以选择 Python 已有的内置的错误类型（比如`ValueError`，`TypeError`），尽量使用 Python 内置的错误类型。
+   只有在必要的时候才定义我们自己的错误类型。如果可以选择 Python 已有的内置的错误类型（比如`ValueError`，`TypeError`），尽量使用 Python 内置的错误类型。
 
 ### 10.2 调试
 
