@@ -5190,168 +5190,168 @@ Python 内置了一套异常处理机制，来帮助我们进行错误处理。�
 
 1. try
 
-当我们认为某些代码可能会出错时，就可以用 `try` 来运行这段代码，如果执行出错，则后续代码不会继续执行，而是直接跳转至错误处理代码，即 `except` 语句块，执行完 `except` 后，如果有 `finally` 语句块，则执行 `finally` 语句块，至此，执行完毕。
+   当我们认为某些代码可能会出错时，就可以用 `try` 来运行这段代码，如果执行出错，则后续代码不会继续执行，而是直接跳转至错误处理代码，即 `except` 语句块，执行完 `except` 后，如果有 `finally` 语句块，则执行 `finally` 语句块，至此，执行完毕。
 
-```python
-try:
-  print('try...')
-  r = 10 / 0
-  print('result:', r)
-except ZeroDivisionError as e:
-  print('except:', e)
-finally:
-  print('finally')
-print('END')
-# try...
-# except: division by zero
-# finally
-# END
-```
+   ```python
+   try:
+     print('try...')
+     r = 10 / 0
+     print('result:', r)
+   except ZeroDivisionError as e:
+     print('except:', e)
+   finally:
+     print('finally')
+   print('END')
+   # try...
+   # except: division by zero
+   # finally
+   # END
+   ```
 
-从输出可以看到，当错误发生时，后续语句 `print('result:', r)`不会被执行，`except` 由于捕获到 `ZeroDivisionError`，因此被执行。最后，`finally` 语句被执行。然后，程序继续按照流程往下走。
+   从输出可以看到，当错误发生时，后续语句 `print('result:', r)`不会被执行，`except` 由于捕获到 `ZeroDivisionError`，因此被执行。最后，`finally` 语句被执行。然后，程序继续按照流程往下走。
 
-如果把除数 `0` 改为 `2`，执行结果如下：
+   如果把除数 `0` 改为 `2`，执行结果如下：
 
-```python
-try:
-  print('try...')
-  r = 10 / 2
-  print('result:', r)
-except ZeroDivisionError as e:
-  print('except:', e)
-finally:
-  print('finally')
+   ```python
+   try:
+     print('try...')
+     r = 10 / 2
+     print('result:', r)
+   except ZeroDivisionError as e:
+     print('except:', e)
+   finally:
+     print('finally')
 
-print('END')
-# try...
-# result: 5.0
-# finally
-# END
-```
+   print('END')
+   # try...
+   # result: 5.0
+   # finally
+   # END
+   ```
 
-由于没有错误发生，所以 `except` 语句块不会被执行，但是 `finally` 如果有，则一定会被执行（可以没有 `finally` 语句）。
+   由于没有错误发生，所以 `except` 语句块不会被执行，但是 `finally` 如果有，则一定会被执行（可以没有 `finally` 语句）。
 
-当然，如果发生了不同类型的错误，应该由不同的 except 语句块捕获不同类型的错误：
+   当然，如果发生了不同类型的错误，应该由不同的 except 语句块捕获不同类型的错误：
 
-```python
-try:
-  print('try...')
-  r = 10 / int(input('请输入一个数字: '))
-  print('result:', r)
-except ValueError as e:
-  print('ValueError:', e) # 如果输入非数字，ValueError会抛出
-except ZeroDivisionError as e:
-  print('ZeroDivisionError:', e) # 如果除数为0，ZeroDivisionError会抛出
-else:
-  print('no error') # 当没有错误发生时，会自动执行else语句
-finally:
-  print('finally')
+   ```python
+   try:
+     print('try...')
+     r = 10 / int(input('请输入一个数字: '))
+     print('result:', r)
+   except ValueError as e:
+     print('ValueError:', e) # 如果输入非数字，ValueError会抛出
+   except ZeroDivisionError as e:
+     print('ZeroDivisionError:', e) # 如果除数为0，ZeroDivisionError会抛出
+   else:
+     print('no error') # 当没有错误发生时，会自动执行else语句
+   finally:
+     print('finally')
 
-print('END')
+   print('END')
 
-# 输入a
-# try...
-# 请输入一个数字: a
-# ValueError: invalid literal for int() with base 10: 'a'
-# finally
-# END
+   # 输入a
+   # try...
+   # 请输入一个数字: a
+   # ValueError: invalid literal for int() with base 10: 'a'
+   # finally
+   # END
 
-# 输入0
-# try...
-# 请输入一个数字: 0
-# ZeroDivisionError: division by zero
-# finally
-# END
+   # 输入0
+   # try...
+   # 请输入一个数字: 0
+   # ZeroDivisionError: division by zero
+   # finally
+   # END
 
-# 输入2
-# try...
-# 请输入一个数字: 2
-# result: 5.0
-# no error
-# finally
-# END
-```
+   # 输入2
+   # try...
+   # 请输入一个数字: 2
+   # result: 5.0
+   # no error
+   # finally
+   # END
+   ```
 
-`int()`函数可能会抛出 `ValueError`，所以我们用一个 `except` 捕获 `ValueError`，用另一个 `except` 捕获 `ZeroDivisionError`。此外，如果没有错误发生，可以在 `except` 语句块后面加一个 `else`，当没有错误发生时，会自动执行 `else` 语句。
+   `int()`函数可能会抛出 `ValueError`，所以我们用一个 `except` 捕获 `ValueError`，用另一个 `except` 捕获 `ZeroDivisionError`。此外，如果没有错误发生，可以在 `except` 语句块后面加一个 `else`，当没有错误发生时，会自动执行 `else` 语句。
 
-> 不需要在每个可能出错的地方去捕获错误，只要在合适的层次去捕获错误就可以了。这样一来，就大大减少了写 `try...except...finally` 的麻烦。
+   > 不需要在每个可能出错的地方去捕获错误，只要在合适的层次去捕获错误就可以了。这样一来，就大大减少了写 `try...except...finally` 的麻烦。
 
 2. 调用栈
 
-如果错误没有被捕获，它就会一直往上抛，最后被 Python 解释器捕获，打印一个错误信息，然后程序退出：
+   如果错误没有被捕获，它就会一直往上抛，最后被 Python 解释器捕获，打印一个错误信息，然后程序退出：
 
-```python
-def foo(s):
-  return 10 / int(s)
-def bar(s):
-  return foo(s) * 2
-def main():
-  bar(0)
+   ```python
+   def foo(s):
+     return 10 / int(s)
+   def bar(s):
+     return foo(s) * 2
+   def main():
+     bar(0)
 
-main()
-# Traceback (most recent call last):
-#   File "<stdin>", line 8, in <module>
-#     main()
-#   File "<stdin>", line 6, in main
-#     bar(0)
-#   File "<stdin>", line 4, in bar
-#     return foo(s) * 2
-#   File "<stdin>", line 2, in foo
-#     return 10 / int(s)
-# ZeroDivisionError: division by zero
-```
+   main()
+   # Traceback (most recent call last):
+   #   File "<stdin>", line 8, in <module>
+   #     main()
+   #   File "<stdin>", line 6, in main
+   #     bar(0)
+   #   File "<stdin>", line 4, in bar
+   #     return foo(s) * 2
+   #   File "<stdin>", line 2, in foo
+   #     return 10 / int(s)
+   # ZeroDivisionError: division by zero
+   ```
 
-:::tip 解析
+   :::tip 解析
 
-出错并不可怕，可怕的是不知道哪里出错了。解读错误信息是定位错误的关键。我们从上往下可以看到整个错误的调用函数链：
+   出错并不可怕，可怕的是不知道哪里出错了。解读错误信息是定位错误的关键。我们从上往下可以看到整个错误的调用函数链：
 
-错误信息第 1 行：
+   错误信息第 1 行：
 
-```python
-Traceback (most recent call last):
-```
+   ```python
+   Traceback (most recent call last):
+   ```
 
-告诉我们这是错误的跟踪信息。
+   告诉我们这是错误的跟踪信息。
 
-第 2~3 行：
+   第 2~3 行：
 
-```python
-File "<stdin>", line 8, in <module>
-  main()
-```
+   ```python
+   File "<stdin>", line 8, in <module>
+     main()
+   ```
 
-调用 main()出错了，在代码文件的第 8 行代码，但原因是第 6 行：
+   调用 main()出错了，在代码文件的第 8 行代码，但原因是第 6 行：
 
-```python
-File "<stdin>", line 6, in main
-  bar('0')
-```
+   ```python
+   File "<stdin>", line 6, in main
+     bar('0')
+   ```
 
-调用 bar('0')出错了，在代码文件的第 6 行代码，但原因是第 4 行：
+   调用 bar('0')出错了，在代码文件的第 6 行代码，但原因是第 4 行：
 
-```python
-File "<stdin>", line 4, in bar
-  return foo(s) * 2
-```
+   ```python
+   File "<stdin>", line 4, in bar
+     return foo(s) * 2
+   ```
 
-原因是 return foo(s) \* 2 这个语句出错了，但这还不是最终原因，继续往下看：
+   原因是 return foo(s) \* 2 这个语句出错了，但这还不是最终原因，继续往下看：
 
-```python
-File "<stdin>", line 2, in foo
-  return 10 / int(s)
-```
+   ```python
+   File "<stdin>", line 2, in foo
+     return 10 / int(s)
+   ```
 
-原因是 return 10 / int(s)这个语句出错了，这是错误产生的源头，因为下面打印了：
+   原因是 return 10 / int(s)这个语句出错了，这是错误产生的源头，因为下面打印了：
 
-```python
-ZeroDivisionError: division by zero
-```
+   ```python
+   ZeroDivisionError: division by zero
+   ```
 
-根据错误类型 `ZeroDivisionError`，我们判断，`int(s)`本身并没有出错，但是 `int(s)`返回 `0`，在计算 `10 / 0` 时出错，至此，找到错误源头。
+   根据错误类型 `ZeroDivisionError`，我们判断，`int(s)`本身并没有出错，但是 `int(s)`返回 `0`，在计算 `10 / 0` 时出错，至此，找到错误源头。
 
-:::
+   :::
 
-> 出错的时候，一定要分析错误的调用栈信息，才能定位错误的位置。
+   > 出错的时候，一定要分析错误的调用栈信息，才能定位错误的位置。
 
 3. 记录错误
 
