@@ -5201,7 +5201,6 @@ except ZeroDivisionError as e:
   print('except:', e)
 finally:
   print('finally')
-
 print('END')
 # try...
 # except: division by zero
@@ -5210,6 +5209,72 @@ print('END')
 ```
 
 从输出可以看到，当错误发生时，后续语句 `print('result:', r)`不会被执行，`except` 由于捕获到 `ZeroDivisionError`，因此被执行。最后，`finally` 语句被执行。然后，程序继续按照流程往下走。
+
+如果把除数 `0` 改为 `2`，执行结果如下：
+
+```python
+try:
+  print('try...')
+  r = 10 / 2
+  print('result:', r)
+except ZeroDivisionError as e:
+  print('except:', e)
+finally:
+  print('finally')
+
+print('END')
+# try...
+# result: 5.0
+# finally
+# END
+```
+
+由于没有错误发生，所以 `except` 语句块不会被执行，但是 `finally` 如果有，则一定会被执行（可以没有 `finally` 语句）。
+
+当然，如果发生了不同类型的错误，应该由不同的 except 语句块捕获不同类型的错误：
+
+```python
+try:
+  print('try...')
+  r = 10 / int(input('请输入一个数字: '))
+  print('result:', r)
+except ValueError as e:
+  print('ValueError:', e) # 如果输入非数字，ValueError会抛出
+except ZeroDivisionError as e:
+  print('ZeroDivisionError:', e) # 如果除数为0，ZeroDivisionError会抛出
+else:
+  print('no error') # 当没有错误发生时，会自动执行else语句
+finally:
+  print('finally')
+
+print('END')
+
+# 输入a
+# try...
+# 请输入一个数字: a
+# ValueError: invalid literal for int() with base 10: 'a'
+# finally
+# END
+
+# 输入0
+# try...
+# 请输入一个数字: 0
+# ZeroDivisionError: division by zero
+# finally
+# END
+
+# 输入2
+# try...
+# 请输入一个数字: 2
+# result: 5.0
+# no error
+# finally
+# END
+```
+
+`int()`函数可能会抛出 `ValueError`，所以我们用一个 `except` 捕获 `ValueError`，用另一个 `except` 捕获 `ZeroDivisionError`。此外，如果没有错误发生，可以在 `except` 语句块后面加一个 `else`，当没有错误发生时，会自动执行 `else` 语句。
+
+> 不需要在每个可能出错的地方去捕获错误，只要在合适的层次去捕获错误就可以了。这样一来，就大大减少了写 `try...except...finally` 的麻烦。
 
 2. 调用栈
 
