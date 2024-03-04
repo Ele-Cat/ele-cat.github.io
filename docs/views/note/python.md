@@ -5278,6 +5278,81 @@ print('END')
 
 2. 调用栈
 
+如果错误没有被捕获，它就会一直往上抛，最后被 Python 解释器捕获，打印一个错误信息，然后程序退出：
+
+```python
+def foo(s):
+  return 10 / int(s)
+def bar(s):
+  return foo(s) * 2
+def main():
+  bar(0)
+
+main()
+# Traceback (most recent call last):
+#   File "<stdin>", line 8, in <module>
+#     main()
+#   File "<stdin>", line 6, in main
+#     bar(0)
+#   File "<stdin>", line 4, in bar
+#     return foo(s) * 2
+#   File "<stdin>", line 2, in foo
+#     return 10 / int(s)
+# ZeroDivisionError: division by zero
+```
+
+:::tip 解析
+
+出错并不可怕，可怕的是不知道哪里出错了。解读错误信息是定位错误的关键。我们从上往下可以看到整个错误的调用函数链：
+
+错误信息第 1 行：
+
+```python
+Traceback (most recent call last):
+```
+
+告诉我们这是错误的跟踪信息。
+
+第 2~3 行：
+
+```python
+File "<stdin>", line 8, in <module>
+  main()
+```
+
+调用 main()出错了，在代码文件的第 8 行代码，但原因是第 6 行：
+
+```python
+File "<stdin>", line 6, in main
+  bar('0')
+```
+
+调用 bar('0')出错了，在代码文件的第 6 行代码，但原因是第 4 行：
+
+```python
+File "<stdin>", line 4, in bar
+  return foo(s) * 2
+```
+
+原因是 return foo(s) \* 2 这个语句出错了，但这还不是最终原因，继续往下看：
+
+```python
+File "<stdin>", line 2, in foo
+  return 10 / int(s)
+```
+
+原因是 return 10 / int(s)这个语句出错了，这是错误产生的源头，因为下面打印了：
+
+```python
+ZeroDivisionError: division by zero
+```
+
+根据错误类型 `ZeroDivisionError`，我们判断，`int(s)`本身并没有出错，但是 `int(s)`返回 `0`，在计算 `10 / 0` 时出错，至此，找到错误源头。
+
+:::
+
+> 出错的时候，一定要分析错误的调用栈信息，才能定位错误的位置。
+
 3. 记录错误
 
 4. 抛出错误
