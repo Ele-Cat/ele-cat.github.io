@@ -5289,6 +5289,7 @@ Python 内置了一套异常处理机制，来帮助我们进行错误处理。�
      bar(0)
 
    main()
+   print('END') # 出错后，程序退出不会打印这行
    # Traceback (most recent call last):
    #   File "<stdin>", line 8, in <module>
    #     main()
@@ -5355,7 +5356,63 @@ Python 内置了一套异常处理机制，来帮助我们进行错误处理。�
 
 3. 记录错误
 
+   如果不捕获错误，自然可以让 Python 解释器来打印出错误堆栈，但程序也被结束了。既然我们能捕获错误，就可以把错误堆栈打印出来，然后分析错误原因，同时，让程序继续执行下去。
+
+   Python 内置的 `logging` 模块可以非常容易地记录错误信息：
+
+   ```python
+   import logging
+
+   def foo(s):
+     return 10 / int(s)
+   def bar(s):
+     return foo(s) * 2
+   def main():
+     try:
+       bar('0')
+     except Exception as e:
+       logging.exception(e)
+
+   main()
+   print('END')
+   # ERROR:root:division by zero
+   # Traceback (most recent call last):
+   #   File "<stdin>", line 9, in main
+   #     bar('0')
+   #   File "<stdin>", line 6, in bar
+   #     return foo(s) * 2
+   #   File "<stdin>", line 4, in foo
+   #     return 10 / int(s)
+   # ZeroDivisionError: division by zero
+   # END
+   ```
+
+   同样是出错，但程序打印完错误信息后会继续执行，并正常退出。通过配置，`logging` 还可以把错误记录到日志文件里，方便事后排查。
+
 4. 抛出错误
+
+因为错误是 class，捕获一个错误就是捕获到该 class 的一个实例。因此，错误并不是凭空产生的，而是有意创建并抛出的。Python 的内置函数会抛出很多类型的错误，我们自己编写的函数也可以抛出错误。
+
+如果要抛出错误，首先根据需要，可以定义一个错误的 class，选择好继承关系，然后，用 `raise` 语句抛出一个错误的实例：
+
+```python
+class FooError(ValueError):
+  pass
+def foo(s):
+  n = int(s)
+  if n == 0:
+    raise FooError('invalid value: %s' % s)
+  return 10 / n
+foo('0')
+# Traceback (most recent call last):
+#   File "<stdin>", line 8, in <module>
+#     foo('0')
+#   File "<stdin>", line 6, in foo
+#     raise FooError('invalid value: %s' % s)
+# FooError: invalid value: 0
+```
+
+只有在必要的时候才定义我们自己的错误类型。如果可以选择 Python 已有的内置的错误类型（比如`ValueError`，`TypeError`），尽量使用 Python 内置的错误类型。
 
 ### 10.2 调试
 
