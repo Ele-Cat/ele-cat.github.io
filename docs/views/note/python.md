@@ -5418,77 +5418,83 @@ Python 内置了一套异常处理机制，来帮助我们进行错误处理。�
 
 > 程序能一次写完并正常运行的概率很小，基本不超过 1%。总会有各种各样的 bug 需要修正。有的 bug 很简单，看看错误信息就知道，有的 bug 很复杂，我们需要知道出错时，哪些变量的值是正确的，哪些变量的值是错误的，因此，需要一整套调试程序的手段来修复 bug。
 
-第一种方法简单直接，就是使用 `print()` 把可能有问题的变量打印出来：
+1. print
 
-```python
-def foo(s):
-  n = int(s)
-  print('n =', n)
-  return 10 / n
-def main():
-  foo('0')
-main()
-# n = 0
-# Traceback (most recent call last):
-#   File "<stdin>", line 10, in <module>
-#     main()
-#   File "<stdin>", line 8, in main
-#     foo('0')
-#   File "<stdin>", line 5, in foo
-#     return 10 / n
-# ZeroDivisionError: division by zero
-```
+   第一种方法简单直接，就是使用 `print()` 把可能有问题的变量打印出来：
 
-:::warning
+   ```python
+   def foo(s):
+     n = int(s)
+     print('n =', n)
+     return 10 / n
+   def main():
+     foo('0')
+   main()
+   # n = 0
+   # Traceback (most recent call last):
+   #   File "<stdin>", line 10, in <module>
+   #     main()
+   #   File "<stdin>", line 8, in main
+   #     foo('0')
+   #   File "<stdin>", line 5, in foo
+   #     return 10 / n
+   # ZeroDivisionError: division by zero
+   ```
 
-用 `print()`最大的坏处是将来还得删掉它，想想程序里到处都是 `print()`，运行结果也会包含很多垃圾信息。
+   :::warning
 
-:::
+   用 `print()`最大的坏处是将来还得删掉它，想想程序里到处都是 `print()`，运行结果也会包含很多垃圾信息。
 
-1. 断言
+   :::
 
-凡是用 `print()` 辅助查看的地方，都可以用断言（assert）来替代：
+2. 断言
 
-```python
-def foo(s):
-  n = int(s)
-  assert n != 0, 'n is zero!'
-  return 10 / n
-def main():
-  foo('0')
-main()
-# Traceback (most recent call last):
-#   File "<stdin>", line 7, in <module>
-#     main()
-#   File "<stdin>", line 6, in main
-#     foo('0')
-#   File "<stdin>", line 3, in foo
-#     assert n != 0, 'n is zero!'
-# AssertionError: n is zero!
-```
+   凡是用 `print()` 辅助查看的地方，都可以用断言（assert）来替代：
 
-`assert` 的意思是，表达式 `n != 0` 应该是 `True`，否则，根据程序运行的逻辑，后面的代码肯定会出错。如果断言失败，`assert` 语句本身就会抛出 `AssertionError`。
+   ```python
+   def foo(s):
+     n = int(s)
+     assert n != 0, 'n is zero!'
+     return 10 / n
+   def main():
+     foo('0')
+   main()
+   # Traceback (most recent call last):
+   #   File "<stdin>", line 7, in <module>
+   #     main()
+   #   File "<stdin>", line 6, in main
+   #     foo('0')
+   #   File "<stdin>", line 3, in foo
+   #     assert n != 0, 'n is zero!'
+   # AssertionError: n is zero!
+   ```
 
-:::warning
+   `assert` 的意思是，表达式 `n != 0` 应该是 `True`，否则，根据程序运行的逻辑，后面的代码肯定会出错。如果断言失败，`assert` 语句本身就会抛出 `AssertionError`。
 
-程序中如果到处充斥着 `assert`，和 `print()`相比也好不到哪去。不过，启动 Python 解释器时可以用 `-O` 参数来关闭 `assert`：
+   :::warning
 
-```python
-$ python -O test.py
+   程序中如果到处充斥着 `assert`，和 `print()`相比也好不到哪去。不过，启动 Python 解释器时可以用 `-O` 参数来关闭 `assert`：
 
-# Traceback (most recent call last):
-#   File "<stdin>", line 7, in <module>
-#     main()
-#   File "<stdin>", line 6, in main
-#     foo('0')
-#   File "<stdin>", line 4, in foo
-#     return 10 / n
-# ZeroDivisionError: division by zero
-```
+   ```python
+   $ python -O test.py
 
-> 注意：断言的开关“-O”是英文大写字母 O，不是数字 0。关闭后，你可以把所有的 `assert` 语句当成 `pass` 来看。
+   # Traceback (most recent call last):
+   #   File "<stdin>", line 7, in <module>
+   #     main()
+   #   File "<stdin>", line 6, in main
+   #     foo('0')
+   #   File "<stdin>", line 4, in foo
+   #     return 10 / n
+   # ZeroDivisionError: division by zero
+   ```
 
-:::
+   > 注意：断言的开关“-O”是英文大写字母 O，不是数字 0。关闭后，你可以把所有的 `assert` 语句当成 `pass` 来看。
+
+   :::
+
+3. logging
+
+把 `print()`替换为 `logging` 是第 3 种方式，和 `assert` 比，`logging` 不会抛出错误，而且可以输出到文件：
 
 ### 10.3 单元测试
 
