@@ -5494,41 +5494,112 @@ Python 内置了一套异常处理机制，来帮助我们进行错误处理。�
 
 3. logging
 
-把 `print()`替换为 `logging` 是第 3 种方式，和 `assert` 比，`logging` 不会抛出错误，而且可以输出到文件：
+   把 `print()`替换为 `logging` 是第 3 种方式，和 `assert` 比，`logging` 不会抛出错误，而且可以输出到文件：
 
-```python
-import logging
+   ```python
+   import logging
 
-s = '0'
-n = int(s)
-logging.info('n = %d', n)
-print(10 / n)
-# Traceback (most recent call last):
-#   File "<stdin>", line 6, in <module>
-#     print(10 / n)
-# ZeroDivisionError: division by zero
-```
+   s = '0'
+   n = int(s)
+   logging.info('n = %d', n)
+   print(10 / n)
+   # Traceback (most recent call last):
+   #   File "<stdin>", line 6, in <module>
+   #     print(10 / n)
+   # ZeroDivisionError: division by zero
+   ```
 
-`logging.info()`就可以输出一段文本。运行，发现除了 `ZeroDivisionError`，没有任何信息。怎么回事？别急，在`import logging`之后添加一行配置再试试：
+   `logging.info()`就可以输出一段文本。运行，发现除了 `ZeroDivisionError`，没有任何信息。怎么回事？别急，在`import logging`之后添加一行配置再试试：
 
-```python
-import logging
-logging.basicConfig(level=logging.INFO)
+   ```python
+   import logging
+   logging.basicConfig(level=logging.INFO)
 
-s = '0'
-n = int(s)
-logging.info('n = %d', n)
-print(10 / n)
-# INFO:root:n = 0
-# Traceback (most recent call last):
-#   File "E:\learn\learn-python\12\11.py", line 7, in <module>
-#     print(10 / n)
-# ZeroDivisionError: division by zero
-```
+   s = '0'
+   n = int(s)
+   logging.info('n = %d', n)
+   print(10 / n)
+   # INFO:root:n = 0
+   # Traceback (most recent call last):
+   #   File "E:\learn\learn-python\12\11.py", line 7, in <module>
+   #     print(10 / n)
+   # ZeroDivisionError: division by zero
+   ```
 
-这就是 `logging` 的好处，它允许你指定记录信息的级别，有 `debug`，`info`，`warning`，`error` 等几个级别，当我们指定 `level=INFO` 时，`logging.debug` 就不起作用了。同理，指定 `level=WARNING` 后，`debug` 和 `info` 就不起作用了。这样一来，你可以放心地输出不同级别的信息，也不用删除，最后统一控制输出哪个级别的信息。
+   这就是 `logging` 的好处，它允许你指定记录信息的级别，有 `DEBUG`，`INFO`，`WARNING`，`ERROR` 等几个级别，当我们指定 `level=INFO` 时，`logging.debug` 就不起作用了。同理，指定 `level=WARNING` 后，`debug` 和 `info` 就不起作用了。这样一来，你可以放心地输出不同级别的信息，也不用删除，最后统一控制输出哪个级别的信息。
 
-`logging` 的另一个好处是通过简单的配置，一条语句可以同时输出到不同的地方，比如 `console` 和文件。
+   `logging` 的另一个好处是通过简单的配置，一条语句可以同时输出到不同的地方，比如 `console` 和文件。
+
+4. pdb
+
+   第 4 种方式是启动 Python 的调试器 pdb，让程序以单步方式运行，可以随时查看运行状态。我们先准备好程序：
+
+   ```python
+   s = '0'
+   n = int(s)
+   print(10 / n)
+
+   $ python -m pdb 12.py
+   # > <stdin>(1)<module>()
+   # -> s = '0'
+   ```
+
+   以参数 `-m pdb` 启动后，`pdb` 定位到下一步要执行的代码`-> s = '0'`。输入命令 `l` 来查看代码：
+
+   ```python
+   # (Pdb) l
+   #   1  -> s = '0'
+   #   2     n = int(s)
+   #   3     print(10 / n)
+   # [EOF]
+   ```
+
+   输入命令 `n` 可以单步执行代码：
+
+   ```python
+   # (Pdb) n
+   # > <stdin>(2)<module>()
+   # -> n = int(s)
+   # (Pdb) n
+   # > <stdin>(3)<module>()
+   # -> print(10 / n)
+   ```
+
+   输入命令 `q` 结束调试，退出程序：
+
+   ```python
+   # (Pdb) q
+   ```
+
+   这种通过 pdb 在命令行调试的方法理论上是万能的，但实在是太麻烦了，如果有一千行代码，要运行到第 999 行得敲多少命令啊。还好，我们还有另一种调试方法 **pdb.set_trace()**。
+
+   这个方法也是用 pdb，但是不需要单步执行，我们只需要 `import pdb`，然后，在可能出错的地方放一个 `pdb.set_trace()`，就可以设置一个断点：
+
+   ```python
+   import pdb
+
+   s = '0'
+   n = int(s)
+   pdb.set_trace()
+   print(10 / n)
+   ```
+
+   运行代码，程序会自动在 `pdb.set_trace()`暂停并进入 pdb 调试环境，可以用命令 `p` 查看变量，或者用命令 `c` 继续运行：
+
+   ```python
+   $ python err.py
+   # > err.py(6)<module>()
+   # -> print(10 / n)
+   # (Pdb) p n
+   # 0
+   # (Pdb) c
+   # Traceback (most recent call last):
+   #   File "err.py", line 6, in <module>
+   #     print(10 / n)
+   # ZeroDivisionError: division by zero
+   ```
+
+   这个方式比直接启动 pdb 单步调试效率要高很多，但也高不到哪去。
 
 ### 10.3 单元测试
 
