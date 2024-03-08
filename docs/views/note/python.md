@@ -5496,6 +5496,40 @@ Python 内置了一套异常处理机制，来帮助我们进行错误处理。�
 
 把 `print()`替换为 `logging` 是第 3 种方式，和 `assert` 比，`logging` 不会抛出错误，而且可以输出到文件：
 
+```python
+import logging
+
+s = '0'
+n = int(s)
+logging.info('n = %d', n)
+print(10 / n)
+# Traceback (most recent call last):
+#   File "<stdin>", line 6, in <module>
+#     print(10 / n)
+# ZeroDivisionError: division by zero
+```
+
+`logging.info()`就可以输出一段文本。运行，发现除了 `ZeroDivisionError`，没有任何信息。怎么回事？别急，在`import logging`之后添加一行配置再试试：
+
+```python
+import logging
+logging.basicConfig(level=logging.INFO)
+
+s = '0'
+n = int(s)
+logging.info('n = %d', n)
+print(10 / n)
+# INFO:root:n = 0
+# Traceback (most recent call last):
+#   File "E:\learn\learn-python\12\11.py", line 7, in <module>
+#     print(10 / n)
+# ZeroDivisionError: division by zero
+```
+
+这就是 `logging` 的好处，它允许你指定记录信息的级别，有 `debug`，`info`，`warning`，`error` 等几个级别，当我们指定 `level=INFO` 时，`logging.debug` 就不起作用了。同理，指定 `level=WARNING` 后，`debug` 和 `info` 就不起作用了。这样一来，你可以放心地输出不同级别的信息，也不用删除，最后统一控制输出哪个级别的信息。
+
+`logging` 的另一个好处是通过简单的配置，一条语句可以同时输出到不同的地方，比如 `console` 和文件。
+
 ### 10.3 单元测试
 
 ### 10.4 文档测试
