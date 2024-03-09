@@ -5760,7 +5760,149 @@ class TestDict(unittest.TestCase):
 
 > - 单元测试可以有效地测试某个程序模块的行为，是未来重构代码的信心保证。
 > - 单元测试的测试用例要覆盖常用的输入组合、边界条件和异常。
-> - 单元测试代码要非常简单，如果测试代码太复杂，那么测试代码本身就可能有bug。
-> - 单元测试通过了并不意味着程序就没有bug了，但是不通过程序肯定有bug。
+> - 单元测试代码要非常简单，如果测试代码太复杂，那么测试代码本身就可能有 bug。
+> - 单元测试通过了并不意味着程序就没有 bug 了，但是不通过程序肯定有 bug。
 
 ### 10.4 文档测试
+
+如果你经常阅读 Python 的官方文档，可以看到很多文档都有示例代码。比如 `re` 模块就带了很多示例代码：
+
+```python
+import re
+m = re.search('(?<=abc)def', 'abcdef')
+print(m.group(0))
+# def
+```
+
+可以把这些示例代码在 Python 的交互式环境下输入并执行，结果与文档中的示例代码显示的一致。
+
+这些代码与其他说明可以写在注释中，然后，由一些工具来自动生成文档。既然这些代码本身就可以粘贴出来直接运行，那么，可不可以自动执行写在注释中的这些代码呢？答案是肯定的。
+
+当我们编写注释时，如果写上这样的注释：
+
+```python
+def abs(n):
+  '''
+  Function to get absolute value of number.
+  Example:
+  >>> abs(1)
+  1
+  >>> abs(-1)
+  1
+  >>> abs(0)
+  0
+  '''
+  return n if n >= 0 else (-n)
+```
+
+无疑更明确地告诉函数的调用者该函数的期望输入和输出。
+
+并且，Python 内置的“文档测试”（doctest）模块可以直接提取注释中的代码并执行测试。
+
+doctest 严格按照 Python 交互式命令行的输入和输出来判断测试结果是否正确。只有测试异常的时候，可以用`...`表示中间一大段烦人的输出。
+
+让我们用 doctest 来测试上次编写的 Dict 类：
+
+```python
+class Dict(dict):
+  '''
+  Simple dict but also support access as x.y style.
+
+  >>> d1 = Dict()
+  >>> d1['x'] = 100
+  >>> d1.x
+  100
+  >>> d1.y = 200
+  >>> d1['y']
+  200
+  >>> d2 = Dict(a=1, b=2, c='3')
+  >>> d2.c
+  '3'
+  >>> d2['empty']
+  Traceback (most recent call last):
+      ...
+  KeyError: 'empty'
+  >>> d2.empty
+  Traceback (most recent call last):
+      ...
+  AttributeError: 'Dict' object has no attribute 'empty'
+  '''
+  def __init__(self, **kw):
+    super(Dict, self).__init__(**kw)
+
+  def __getattr__(self, key):
+    try:
+      return self[key]
+    except KeyError:
+      raise AttributeError(r"'Dict' object has no attribute '%s'" % key)
+
+  def __setattr__(self, key, value):
+    self[key] = value
+
+if __name__=='__main__':
+  import doctest
+  doctest.testmod()
+```
+
+运行后发现无任何输出。这说明我们编写的 doctest 运行都是正确的。如果程序有问题，比如把 `__getattr__()`方法注释掉，再运行就会报错：
+
+```python
+# **********************************************************************
+# File "E:\learn\learn-python\12\16.py", line 7, in __main__.Dict
+# Failed example:
+#     d1.x
+# Exception raised:
+#     Traceback (most recent call last):
+#       File "C:\Users\DELL\AppData\Local\Programs\Python\Python312\Lib\doctest.py", line 1361, in __run
+#         exec(compile(example.source, filename, "single",
+#       File "<doctest __main__.Dict[2]>", line 1, in <module>
+#         d1.x
+#     AttributeError: 'Dict' object has no attribute 'x'
+# **********************************************************************
+# File "E:\learn\learn-python\12\16.py", line 13, in __main__.Dict
+# Failed example:
+#     d2.c
+# Exception raised:
+#     Traceback (most recent call last):
+#       File "C:\Users\DELL\AppData\Local\Programs\Python\Python312\Lib\doctest.py", line 1361, in __run
+#         exec(compile(example.source, filename, "single",
+#       File "<doctest __main__.Dict[6]>", line 1, in <module>
+#         d2.c
+#     AttributeError: 'Dict' object has no attribute 'c'
+# **********************************************************************
+# 1 items had failures:
+#    2 of   9 in __main__.Dict
+# ***Test Failed*** 2 failures.
+```
+
+注意到最后 3 行代码。当模块正常导入时，doctest 不会被执行。只有在命令行直接运行时，才执行 doctest。所以，不必担心 doctest 会在非测试环境下执行。
+
+:::details 小练习
+
+```python
+def fact(n):
+  '''
+  Calculate 1*2*...*n
+  >>> fact(1)
+  1
+  >>> fact(10)
+  3628800
+  >>> fact(-1)
+  Traceback (most recent call last):
+    ...
+  ValueError
+  '''
+  if n < 1:
+    raise ValueError()
+  if n == 1:
+    return 1
+  return n * fact(n - 1)
+
+if __name__ == '__main__':
+  import doctest
+  doctest.testmod()
+```
+
+:::
+
+> doctest 非常有用，不但可以用来测试，还可以直接作为示例代码。通过某些文档生成工具，就可以自动把包含 doctest 的注释提取出来。用户看文档的时候，同时也看到了 doctest。
