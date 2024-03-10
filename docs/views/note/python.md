@@ -5906,3 +5906,82 @@ if __name__ == '__main__':
 :::
 
 > doctest 非常有用，不但可以用来测试，还可以直接作为示例代码。通过某些文档生成工具，就可以自动把包含 doctest 的注释提取出来。用户看文档的时候，同时也看到了 doctest。
+
+## 11. IO 编程
+
+> IO 在计算机中指 Input/Output，也就是输入和输出。由于程序和运行时数据是在内存中驻留，由 CPU 这个超快的计算核心来执行，涉及到数据交换的地方，通常是磁盘、网络等，就需要 IO 接口。
+
+### 11.1 文件读写
+
+读写文件是最常见的 IO 操作。Python 内置了读写文件的函数，用法和 C 是兼容的。
+
+1. 读文件
+
+要以读文件的模式打开一个文件对象，使用 Python 内置的 open()函数，传入文件名和标示符：
+
+```python
+f = open('./filePath.txt', 'r')
+```
+
+标示符'r'表示读，这样，我们就成功地打开了一个文件。
+
+如果文件不存在，`open()`函数就会抛出一个 `IOError` 的错误，并且给出错误码和详细的信息告诉你文件不存在：
+
+```python
+f = open('./errFilePath.txt', 'r')
+# Traceback (most recent call last):
+#   File "<stdin>", line 1, in <module>
+#     f = open('./errFilePath.txt', 'r')
+# FileNotFoundError: [Errno 2] No such file or directory: './errFilePath.txt'
+```
+
+如果文件打开成功，接下来，调用 `read()` 方法可以一次读取文件的全部内容，Python 把内容读到内存，用一个 `str` 对象表示：
+
+```python
+f = open('./filePath.txt', 'r')
+print(f.read())
+# 文件内容
+```
+
+最后一步是调用`close()`方法关闭文件。文件使用完毕后必须关闭，因为文件对象会占用操作系统的资源，并且操作系统同一时间能打开的文件数量也是有限的：
+
+```python
+f = open('./filePath.txt', 'r')
+print(f.read())
+# 文件内容
+f.close()
+```
+
+由于文件读写时都有可能产生 `IOError`，一旦出错，后面的 `f.close()`就不会调用。所以，为了保证无论是否出错都能正确地关闭文件，我们可以使用 `try ... finally` 来实现：
+
+```python
+f = open('./filePath.txt', 'r')
+try:
+  print(f.read())
+finally:
+  if f:
+    f.close()
+# 文件内容
+```
+
+但是每次都这么写实在太繁琐，所以，Python 引入了 `with` 语句来自动帮我们调用 `close()`方法：
+
+```python
+with open('./filePath.txt', 'r') as f:
+  print(f.read())
+# 文件内容
+```
+
+这和前面的 `try ... finally` 是一样的，但是代码更佳简洁，并且不必调用 `f.close()`方法。
+
+调用 `read()`会一次性读取文件的全部内容，如果文件有 10G，内存就爆了，所以，要保险起见，可以反复调用 `read(size)`方法，每次最多读取 size 个字节的内容。另外，调用 `readline()`可以每次读取一行内容，调用 `readlines()`一次读取所有内容并按行返回 `list`。因此，要根据需要决定怎么调用。
+
+如果文件很小，`read()`一次性读取最方便；如果不能确定文件大小，反复调用 `read(size)`比较保险；如果是配置文件，调用 `readlines()`最方便：
+
+```python
+with open('./filePath.txt', 'r') as f:
+  # print(f.read())
+  # print(f.readlines())
+  for line in f.readlines():
+    print(line.strip()) # 把末尾的'\n'删掉
+```
