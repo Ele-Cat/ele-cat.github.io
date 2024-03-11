@@ -6016,28 +6016,28 @@ if __name__ == '__main__':
 
 2. 写文件
 
-写文件和读文件是一样的，唯一区别是调用 `open()`函数时，传入标识符`'w'`或者`'wb'`表示写文本文件或写二进制文件：
+   写文件和读文件是一样的，唯一区别是调用 `open()`函数时，传入标识符`'w'`或者`'wb'`表示写文本文件或写二进制文件【没有文件会创建新文件并写入】：
 
-```python
-f = open('./filePath.txt', 'w')
-f.write('Hello World!')
-f.close()
-```
+   ```python
+   f = open('./filePath.txt', 'w')
+   f.write('Hello World!')
+   f.close()
+   ```
 
-你可以反复调用 `write()`来写入文件，但是务必要调用 `f.close()`来关闭文件。当我们写文件时，操作系统往往不会立刻把数据写入磁盘，而是放到内存缓存起来，空闲的时候再慢慢写入。只有调用 `close()`方法时，操作系统才保证把没有写入的数据全部写入磁盘。忘记调用 `close()`的后果是数据可能只写了一部分到磁盘，剩下的丢失了。所以，还是用 `with` 语句来得保险：
+   你可以反复调用 `write()`来写入文件，但是务必要调用 `f.close()`来关闭文件。当我们写文件时，操作系统往往不会立刻把数据写入磁盘，而是放到内存缓存起来，空闲的时候再慢慢写入。只有调用 `close()`方法时，操作系统才保证把没有写入的数据全部写入磁盘。忘记调用 `close()`的后果是数据可能只写了一部分到磁盘，剩下的丢失了。所以，还是用 `with` 语句来得保险：
 
-```python
-with open('./filePath.txt', 'w') as f:
-  f.write('Test With')
-```
+   ```python
+   with open('./filePath.txt', 'w') as f:
+     f.write('Test With')
+   ```
 
-要写入特定编码的文本文件，请给 `open()`函数传入 `encoding` 参数，将字符串自动转换成指定编码。
+   要写入特定编码的文本文件，请给 `open()`函数传入 `encoding` 参数，将字符串自动转换成指定编码。
 
-细心的童鞋会发现，以`'w'`模式写入文件时，如果文件已存在，会直接覆盖（相当于删掉后新写入一个文件）。如果我们希望追加到文件末尾怎么办？可以传入`'a'`以追加（append）模式写入。
+   细心的童鞋会发现，以`'w'`模式写入文件时，如果文件已存在，会直接覆盖（相当于删掉后新写入一个文件）。如果我们希望追加到文件末尾怎么办？可以传入`'a'`以追加（append）模式写入。
 
-```python
-with open('./filePath.txt', 'a') as f:
-  f.write('\nTest Append')
-```
+   ```python
+   with open('./filePath.txt', 'a') as f:
+     f.write('\nTest Append')
+   ```
 
-所有模式的定义及含义可以参考 Python 的[官方文档](https://docs.python.org/zh-cn/3/library/functions.html#open)。
+   所有模式的定义及含义可以参考 Python 的[官方文档](https://docs.python.org/zh-cn/3/library/functions.html#open)。
