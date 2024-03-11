@@ -1,10 +1,24 @@
----
-outline: [2, 3]
----
+# JNPF 笔记
 
-# jnpf 笔记
-
-[操作视频](https://service.jnpfsoft.com/index/index/operate_video.html?is_single=1&product_id=89)
+1. JNPF 是什么
+   - 约定大于配置，egg、node→Node，springboot→Java，thinkphp→Php
+   - 引出下一个问题
+2. 研究方向问题
+   - 如何用，而不是如何实现
+3. 分级概念
+   - [分级](#46-分级管理)
+4. 在线开发与流程引擎异同
+   - 相同点
+   - 不同点
+5. 重点概念讲解
+   - [集成助手](#_1-5-集成助手)
+   - [系统调度](#_3-3-系统调度)
+   - [单据模板](#_3-8-3-单据模板)
+   - [数据建模](#_3-9-2-数据建模)
+   - [数据接口](#_3-9-4-数据接口)
+6. 未来研究方向
+   - [操作文档](https://service.jnpfsoft.com/index/index/operate.html?cid=184&product_id=89)
+   - [操作视频](https://service.jnpfsoft.com/index/index/operate_video.html?is_single=1&product_id=89)
 
 ## 01. 在线开发
 
