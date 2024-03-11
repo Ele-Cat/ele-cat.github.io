@@ -6108,4 +6108,59 @@ if __name__ == '__main__':
 
 ### 11.3 操作文件和目录
 
+:::tip 引子
+如果我们要操作文件、目录，可以在命令行下面输入操作系统提供的各种命令来完成。比如 dir、cp 等命令。
+
+如果要在 Python 程序中执行这些目录和文件的操作怎么办？其实操作系统提供的命令只是简单地调用了操作系统提供的接口函数，Python 内置的 os 模块也可以直接调用操作系统提供的接口函数。
+:::
+
+使用 os 模块的基本功能：
+
+```python
+import os
+print(os.name)
+# nt
+```
+
+如果是 `posix`，说明系统是 `Linux`、`Unix` 或 `Mac OS X`，如果是 `nt`，就是 `Windows` 系统。
+
+要获取详细的系统信息，可以调用 uname()函数：
+
+```python
+import os
+print(os.uname())
+```
+
+:::warning
+注意 `uname()`函数在 Windows 上不提供，也就是说，`os` 模块的某些函数是跟操作系统相关的。
+:::
+
+1. 环境变量
+
+   在操作系统中定义的环境变量，全部保存在`os.environ`这个变量中，可以直接查看：
+
+   ```python
+   import os
+   print(os.environ)
+   # environ({'123PAN': 'D:\\Program Files\\123pan\\123pan.exe', ...})
+   ```
+
+   要获取某个环境变量的值，可以调用 os.environ.get('key')：
+
+   ```python
+   import os
+   print(os.environ.get('PATH'))
+   # C:\ProgramData\Oracle\Java\javapath;...
+   print(os.environ.get('x', 'default'))
+   # default
+   ```
+
+2. 操作文件和目录
+
+操作文件和目录的函数一部分放在 `os` 模块中，一部分放在 `os.path` 模块中，这一点要注意一下。查看、创建和删除目录可以这么调用：
+
+```python
+
+```
+
 ### 11.4 序列化
