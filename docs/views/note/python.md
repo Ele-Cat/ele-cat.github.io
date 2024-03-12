@@ -6225,3 +6225,179 @@ print(os.uname())
    ```
 
 ### 11.4 序列化
+
+:::tip 引子
+
+在程序运行的过程中，所有的变量都是在内存中，比如，定义一个 dict：
+
+```python
+d = dict(name='Bob', age=20, score=88)
+```
+
+可以随时修改变量，比如把 name 改成'Bill'，但是一旦程序结束，变量所占用的内存就被操作系统全部回收。如果没有把修改后的'Bill'存储到磁盘上，下次重新运行程序，变量又被初始化为'Bob'。
+
+我们把变量从内存中变成可存储或传输的过程称之为序列化，在 Python 中叫 pickling，在其他语言中也被称之为 serialization，marshalling，flattening 等等，都是一个意思。
+
+序列化之后，就可以把序列化后的内容写入磁盘，或者通过网络传输到别的机器上。
+
+反过来，把变量内容从序列化的对象重新读到内存里称之为反序列化，即 unpickling。
+
+Python 提供了 `pickle` 模块来实现序列化。
+
+:::
+
+首先，我们尝试把一个对象序列化并写入文件：
+
+```python
+import pickle
+d = dict(name='Bob', age=20, score=88)
+print(pickle.dumps(d))
+# b'\x80\x04\x95$\x00\x00\x00\x00\x00\x00\x00}\x94(\x8c\x04name\x94\x8c\x03Bob\x94\x8c\x03age\x94K\x14\x8c\x05score\x94KXu.'
+```
+
+`pickle.dumps()`方法把任意对象序列化成一个 `bytes`，然后，就可以把这个 `bytes` 写入文件。或者用另一个方法 `pickle.dump()`直接把对象序列化后写入一个 file-like Object：
+
+```python
+import pickle
+d = dict(name='Bob', age=20, score=88)
+f = open("./dump.txt", "wb")
+pickle.dump(d, f)
+f.close()
+```
+
+写入的 `dump.txt` 文件是一堆乱七八糟的内容，这些都是 Python 保存的对象内部信息。
+
+当我们要把对象从磁盘读到内存时，可以先把内容读到一个 `bytes`，然后用 `pickle.loads()`方法反序列化出对象，也可以直接用 `pickle.load()`方法从一个 `file-like Object` 中直接反序列化出对象。我们打开另一个 Python 命令行来反序列化刚才保存的对象：
+
+```python
+import pickle
+f = open("./dump.txt", "rb")
+d = pickle.load(f)
+f.close()
+print(d)
+# {'name': 'Bob', 'age': 20, 'score': 88}
+```
+
+变量的内容又回来了！当然，这个变量和原来的变量是完全不相干的对象，它们只是内容相同而已。
+
+Pickle 的问题和所有其他编程语言特有的序列化问题一样，就是它只能用于 Python，并且可能不同版本的 Python 彼此都不兼容，因此，只能用 Pickle 保存那些不重要的数据，不能成功地反序列化也没关系。
+
+**JSON**
+
+如果我们要在不同的编程语言之间传递对象，就必须把对象序列化为标准格式，比如 XML，但更好的方法是序列化为 JSON，因为 JSON 表示出来就是一个字符串，可以被所有语言读取，也可以方便地存储到磁盘或者通过网络传输。JSON 不仅是标准格式，并且比 XML 更快，而且可以直接在 Web 页面中读取，非常方便。
+
+JSON 表示的对象就是标准的 JavaScript 语言的对象，JSON 和 Python 内置的数据类型对应如下：
+
+| JSON 类型  | PYTHON 类型  |
+| ---------- | ------------ |
+| {}         | dict         |
+| []         | list         |
+| "string"   | str          |
+| 1234.56    | int 或 float |
+| true/false | True/False   |
+| null       | None         |
+
+Python 内置的 `json` 模块提供了非常完善的 Python 对象到 JSON 格式的转换。我们先看看如何把 Python 对象变成一个 JSON：
+
+```python
+import json
+d = dict(name='Bob', age=20, score=88)
+print(json.dumps(d))
+# {"name": "Bob", "age": 20, "score": 88}
+```
+
+`dumps()`方法返回一个 `str`，内容就是标准的 JSON。类似的，`dump()`方法可以直接把 JSON 写入一个 `file-like Object`。
+
+要把 JSON 反序列化为 Python 对象，用 `loads()`或者对应的 `load()`方法，前者把 JSON 的字符串反序列化，后者从 `file-like Object` 中读取字符串并反序列化：
+
+```python
+import json
+json_str = '{"age": 20, "name": "Bob", "score": 88}'
+print(json.loads(json_str))
+# {'age': 20, 'name': 'Bob', 'score': 88}
+```
+
+由于 JSON 标准规定 JSON 编码是 UTF-8，所以我们总是能正确地在 Python 的 `str` 与 JSON 的字符串之间转换。
+
+**JSON 进阶**
+
+Python 的 `dict` 对象可以直接序列化为 JSON 的`{}`，不过，很多时候，我们更喜欢用 `class` 表示对象，比如定义 `Student` 类，然后序列化：
+
+```python
+import json
+
+class Student(object):
+  def __init__(self, name, age, score):
+    self.name = name
+    self.age = age
+    self.score = score
+
+s = Student('Bob', 20, 88)
+print(json.dumps(s))
+```
+
+运行代码，毫不留情地得到一个 `TypeError`：
+
+```python
+# Traceback (most recent call last):
+#   ...
+# TypeError: Object of type Student is not JSON serializable
+```
+
+错误的原因是 `Student` 对象不是一个可序列化为 JSON 的对象。如果连 `class` 的实例对象都无法序列化为 JSON，这肯定不合理！我们仔细看看 `dumps()`方法的参数列表，可以发现，除了第一个必须的 `obj` 参数外，`dumps()`方法还提供了一大堆的可选参数：[dumps](https://docs.python.org/zh-cn/3/library/json.html#json.dumps)
+
+这些可选参数就是让我们来定制 JSON 序列化。前面的代码之所以无法把 `Student` 类实例序列化为 JSON，是因为默认情况下，`dumps()`方法不知道如何将 `Student` 实例变为一个 JSON 的`{}`对象。
+
+可选参数 `default` 就是把任意一个对象变成一个可序列为 JSON 的对象，我们只需要为 `Student` 专门写一个转换函数，再把函数传进去即可：
+
+```python
+import json
+
+class Student(object):
+  def __init__(self, name, age, score):
+    self.name = name
+    self.age = age
+    self.score = score
+
+def student2dict(std):
+  return {
+    'name': std.name,
+    'age': std.age,
+    'score': std.score
+  }
+
+s = Student('Bob', 20, 88)
+print(json.dumps(s, default=student2dict))
+# {"name": "Bob", "age": 20, "score": 88}
+```
+
+`Student` 实例首先被 `student2dict()`函数转换成 `dict`，然后再被顺利序列化为 JSON。
+
+不过，下次如果遇到一个 `Teacher` 类的实例，照样无法序列化为 JSON。我们可以偷个懒，把任意 `class` 的实例变为 `dict`：
+
+```python
+print(json.dumps(s, default=lambda obj: obj.__dict__))
+```
+
+因为通常 class 的实例都有一个`__dict__`属性，它就是一个`dict`，用来存储实例变量。也有少数例外，比如定义了`__slots__`的 class。
+
+同样的道理，如果我们要把 JSON 反序列化为一个`Student`对象实例，`loads()`方法首先转换出一个`dict`对象，然后，我们传入的`object_hook`函数负责把`dict`转换为`Student`实例：
+
+```python
+import json
+
+class Student(object):
+  def __init__(self, name, age, score):
+    self.name = name
+    self.age = age
+    self.score = score
+
+def dict2student(d):
+  return Student(d['name'], d['age'], d['score'])
+
+json_str = '{"age": 20, "score": 88, "name": "Bob"}'
+print(json.loads(json_str, object_hook=dict2student))
+# <__main__.Student object at 0x0000026F5C5D1340>
+```
+
+打印出的是反序列化的 `Student` 实例对象。
