@@ -6666,6 +6666,43 @@ if __name__=='__main__':
 
 ### 12.2 多线程
 
+多任务可以由多进程完成，也可以由一个进程内的多线程完成，一个进程至少有一个线程。
+
+由于线程是操作系统直接支持的执行单元，因此，高级语言通常都内置多线程的支持，Python也不例外，并且，Python的线程是真正的Posix Thread，而不是模拟出来的线程。
+
+Python的标准库提供了两个模块：`_thread`和`threading`，`_thread`是低级模块，`threading`是高级模块，对`_thread`进行了封装。绝大多数情况下，我们只需要使用`threading`这个高级模块。
+
+启动一个线程就是把一个函数传入并创建`Thread`实例，然后调用`start()`开始执行：
+
+```python
+import time, threading
+
+# 新线程执行的代码:
+def loop():
+  print('thread %s is running...' % threading.current_thread().name)
+  n = 0
+  while n < 5:
+    n = n + 1
+    print('thread %s >>> %s' % (threading.current_thread().name, n))
+    time.sleep(1)
+  print('thread %s ended.' % threading.current_thread().name)
+
+print('thread %s is running...' % threading.current_thread().name)
+t = threading.Thread(target=loop, name='LoopThread')
+t.start()
+t.join()
+print('thread %s ended.' % threading.current_thread().name)
+# thread MainThread is running...
+# thread LoopThread is running...
+# thread LoopThread >>> 1        
+# thread LoopThread >>> 2
+# thread LoopThread >>> 3
+# thread LoopThread >>> 4
+# thread LoopThread >>> 5
+# thread LoopThread ended.
+# thread MainThread ended.
+```
+
 ### 12.3 ThreadLocal
 
 ### 12.4 进程 vs. 线程
