@@ -7109,7 +7109,7 @@ Python 的 `multiprocessing` 模块不但支持多进程，其中 `managers` 子
 
    ```python
    import re
-   re.match(r'^\d{3}\-\d{3,8}$','010-12345')
+   print(re.match(r'^\d{3}\-\d{3,8}$','010-12345'))
    # <re.Match object; span=(0, 9), match='010-12345'>
    ```
 
@@ -7123,10 +7123,42 @@ Python 的 `multiprocessing` 模块不但支持多进程，其中 `managers` 子
      print('ok')
    else:
      print('failed')
-   # failed
    ```
 
 3. 切分字符串
+
+   用正则表达式切分字符串比用固定的字符更灵活，请看正常的切分代码：
+
+   ```python
+   print('a b   c'.split(' '))
+   # ['a', 'b', '', '', 'c']
+   ```
+
+   嗯，无法识别连续的空格，用正则表达式试试：
+
+   ```python
+   import re
+   print(re.split(r'\s+', 'a b   c'))
+   # ['a', 'b', 'c']
+   ```
+
+   无论多少个空格都可以正常分割。加入`,`试试：
+
+   ```python
+   import re
+   print(re.split(r'[\s\,]+', 'a,b, c  d'))
+   # ['a', 'b', 'c', 'd']
+   ```
+
+   再加入`;`试试：
+
+   ```python
+   import re
+   print(re.split(r'[\s\,\;]+', 'a,b;; c  d'))
+   # ['a', 'b', 'c', 'd']
+   ```
+
+   如果用户输入了一组标签，下次记得用正则表达式来把不规范的输入转化成正确的数组。
 
 4. 分组
 
