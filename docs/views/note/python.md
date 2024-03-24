@@ -7243,3 +7243,31 @@ Python 的 `multiprocessing` 模块不但支持多进程，其中 `managers` 子
    ```
 
    编译后生成 Regular Expression 对象，由于该对象自己包含了正则表达式，所以调用对应的方法时不用给出正则字符串。
+
+## 14. 常用内建模块
+
+Python 之所以自称“batteries included”，就是因为内置了许多非常有用的模块，无需额外安装和配置，即可直接使用。
+
+### 14.1 datetime
+
+### 14.2 collections
+
+### 14.3 argparse
+
+### 14.4 base64
+
+### 14.5 struct
+
+### 14.6 hashlib
+
+### 14.7 hmac
+
+### 14.8 itertools
+
+### 14.9 contextlib
+
+### 14.10 urllib
+
+### 14.11 XML
+
+### 14.12 HTMLParser
