@@ -7512,12 +7512,12 @@ print(q)
 
 #### 14.2.3 defaultdict
 
-使用`dict`时，如果引用的Key不存在，就会抛出`KeyError`。如果希望key不存在时，返回一个默认值，就可以用`defaultdict`：
+使用`dict`时，如果引用的 Key 不存在，就会抛出`KeyError`。如果希望 key 不存在时，返回一个默认值，就可以用`defaultdict`：
 
 ```python
 from collections import defaultdict
 dd = defaultdict(lambda: 'N/A')
-dd['key1'] = 'abc'  
+dd['key1'] = 'abc'
 print(dd['key1'])
 # 'abc'
 print(dd['key2'])
@@ -7530,13 +7530,13 @@ print(isinstance(dd, dict))
 
 注意默认值是调用函数返回的，而函数在创建`defaultdict`对象时传入。
 
-除了在Key不存在时返回默认值，`defaultdict`的其他行为跟`dict`是完全一样的。
+除了在 Key 不存在时返回默认值，`defaultdict`的其他行为跟`dict`是完全一样的。
 
 #### 14.2.4 OrderedDict
 
-使用`dict`时，Key是无序的。在对`dict`做迭代时，我们无法确定Key的顺序。
+使用`dict`时，Key 是无序的。在对`dict`做迭代时，我们无法确定 Key 的顺序。
 
-如果要保持Key的顺序，可以用`OrderedDict`：
+如果要保持 Key 的顺序，可以用`OrderedDict`：
 
 ```python
 from collections import OrderedDict
@@ -7548,7 +7548,7 @@ print(od) # OrderedDict的Key是有序的
 # OrderedDict([('a', 1), ('b', 2), ('c', 3)])
 ```
 
-注意，`OrderedDict`的Key会按照插入的顺序排列，不是Key本身排序：
+注意，`OrderedDict`的 Key 会按照插入的顺序排列，不是 Key 本身排序：
 
 ```python
 from collections import OrderedDict
@@ -7564,7 +7564,7 @@ print(list(od.keys()))
 # ['z', 'y', 'x']
 ```
 
-`OrderedDict`可以实现一个FIFO（先进先出）的dict，当容量超出限制时，先删除最早添加的Key：
+`OrderedDict`可以实现一个 FIFO（先进先出）的 dict，当容量超出限制时，先删除最早添加的 Key：
 
 ```python
 from collections import OrderedDict
@@ -7589,7 +7589,7 @@ class LastUpdatedOrderedDict(OrderedDict):
 
 #### 14.2.5 ChainMap
 
-`ChainMap`可以把一组`dict`串起来并组成一个逻辑上的`dict`。`ChainMap`本身也是一个dict，但是查找的时候，会按照顺序在内部的dict依次查找。
+`ChainMap`可以把一组`dict`串起来并组成一个逻辑上的`dict`。`ChainMap`本身也是一个 dict，但是查找的时候，会按照顺序在内部的 dict 依次查找。
 
 什么时候使用`ChainMap`最合适？举个例子：应用程序往往都需要传入参数，参数可以通过命令行传入，可以通过环境变量传入，还可以有默认参数。我们可以用`ChainMap`实现参数的优先级查找，即先查命令行参数，如果没有传入，再查环境变量，如果没有，就使用默认参数。
 
@@ -7623,7 +7623,7 @@ print('user=%s' % combined['user'])
 没有任何参数时，打印出默认参数：
 
 ```sh
-$ python use_chainmap.py 
+$ python use_chainmap.py
 color=red
 user=guest
 ```
@@ -7655,6 +7655,93 @@ print(c)
 `Counter`实际上也是`dict`的一个子类，上面的结果可以看出每个字符出现的次数。
 
 ### 14.3 argparse
+
+在命令行程序中，经常需要获取命令行参数。Python 内置的`sys.argv`保存了完整的参数列表，我们可以从中解析出需要的参数：
+
+```python
+import sys
+print(sys.argv)
+# ['*.py']
+```
+
+运行上述 copy.py，并传入参数，打印如下：
+
+```
+['copy.py', 'source.txt', 'copy.txt']
+```
+
+这种方式能应付简单的参数，但参数稍微复杂点，比如可以使用`-d`复制目录，使用`--filename *.py`过滤文件名等，解析起来就非常麻烦。
+
+为了简化参数解析，我们可以使用内置的[argparse](https://docs.python.org/zh-cn/3/library/argparse.html)库，定义好各个参数类型后，它能直接返回有效的参数。
+
+假设我们想编写一个备份 MySQL 数据库的命令行程序，需要输入的参数如下：
+
+- host 参数：表示 MySQL 主机名或 IP，不输入则默认为`localhost`；
+- port 参数：表示 MySQL 的端口号，int 类型，不输入则默认为`3306`；
+- user 参数：表示登录 MySQL 的用户名，必须输入；
+- password 参数：表示登录 MySQL 的口令，必须输入；
+- gz 参数：表示是否压缩备份文件，不输入则默认为`False`；
+- outfile 参数：表示备份文件保存在哪，必须输入。
+
+其中，`outfile`是位置参数，而其他则是类似`--user root`这样的“关键字”参数。
+
+用 argparse 来解析参数，一个完整的示例如下：
+
+```python
+# backup.py
+import argparse
+
+def main():
+  # 定义一个ArgumentParser实例:
+  parser = argparse.ArgumentParser(
+    prog='backup', # 程序名
+    description='Backup MySQL database.', # 描述
+    epilog='Copyright(r), 2023' # 说明信息
+  )
+  # 定义位置参数:
+  parser.add_argument('outfile')
+  # 定义关键字参数:
+  parser.add_argument('--host', default='localhost')
+  # 此参数必须为int类型:
+  parser.add_argument('--port', default='3306', type=int)
+  # 允许用户输入简写的-u:
+  parser.add_argument('-u', '--user', required=True)
+  parser.add_argument('-p', '--password', required=True)
+  parser.add_argument('--database', required=True)
+  # gz参数不跟参数值，因此指定action='store_true'，意思是出现-gz表示True:
+  parser.add_argument('-gz', '--gzcompress', action='store_true', required=False, help='Compress backup files by gz.')
+
+
+  # 解析参数:
+  args = parser.parse_args()
+
+  # 打印参数:
+  print('parsed args:')
+  print(f'outfile = {args.outfile}')
+  print(f'host = {args.host}')
+  print(f'port = {args.port}')
+  print(f'user = {args.user}')
+  print(f'password = {args.password}')
+  print(f'database = {args.database}')
+  print(f'gzcompress = {args.gzcompress}')
+
+if __name__ == '__main__':
+  main()
+```
+
+输入有效的参数，则程序能解析出所需的所有参数：
+
+```sh
+$ python backup.py -u root -p 123456 --database testdb backup.sql
+parsed args:
+outfile = backup.sql
+host = localhost
+port = 3306
+user = root
+password = 123456
+database = testdb
+gzcompress = False
+```
 
 ### 14.4 base64
 
