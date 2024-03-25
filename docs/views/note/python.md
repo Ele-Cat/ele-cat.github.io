@@ -7443,13 +7443,80 @@ print(tokyo_dt2)
 # 2024-03-24 23:35:28.988413+09:00
 ```
 
-时区转换的关键在于，拿到一个 `datetime` 时，要获知其正确的时区，然后强制设置时区，作为基准时间。
-
-利用带时区的 `datetime`，通过 `astimezone()`方法，可以转换到任意时区。
+时区转换的关键在于，拿到一个 `datetime` 时，要获知其正确的时区，然后强制设置时区，作为基准时间。利用带时区的 `datetime`，通过 `astimezone()`方法，可以转换到任意时区。
 
 注：不是必须从 UTC+0:00 时区转换到其他时区，任何带时区的 `datetime` 都可以正确转换，例如上述 `bj_dt` 到 `tokyo_dt` 的转换。
 
 ### 14.2 collections
+
+collections 是 Python 内建的一个集合模块，提供了许多有用的集合类。
+
+#### 14.2.1 namedtuple
+
+我们知道 `tuple` 可以表示不变集合，例如，一个点的二维坐标就可以表示成：
+
+```python
+p = (1, 2)
+```
+
+但是，看到`(1, 2)`，很难看出这个 `tuple` 是用来表示一个坐标的。
+
+定义一个 class 又小题大做了，这时，`namedtuple` 就派上了用场：
+
+```python
+from collections import namedtuple
+Point = namedtuple('Point', ['x', 'y'])
+p = Point(1, 2)
+print(p.x, p.y)
+# 1 2
+print(p[0], p[1])
+# 1 2
+```
+
+`namedtuple` 是一个函数，它用来创建一个自定义的 `tuple` 对象，并且规定了 `tuple` 元素的个数，并可以用属性而不是索引来引用 `tuple` 的某个元素。
+
+这样一来，我们用 `namedtuple` 可以很方便地定义一种数据类型，它具备 tuple 的不变性，又可以根据属性来引用，使用十分方便。
+
+可以验证创建的 `Point` 对象是 `tuple` 的一种子类：
+
+```python
+print(isinstance(p, Point))
+True
+print(isinstance(p, tuple))
+True
+```
+
+类似的，如果要用坐标和半径表示一个圆，也可以用`namedtuple`定义：
+
+```python
+# namedtuple('名称', [属性list]):
+Circle = namedtuple('Circle', ['x', 'y', 'r'])
+```
+
+#### 14.2.2 deque
+
+使用`list`存储数据时，按索引访问元素很快，但是插入和删除元素就很慢了，因为`list`是线性存储，数据量大的时候，插入和删除效率很低。
+
+deque是为了高效实现插入和删除操作的双向列表，适合用于队列和栈：
+
+```python
+from collections import deque
+q = deque(['a', 'b', 'c'])
+q.append('x')
+q.appendleft('y')
+print(q)
+# deque(['y', 'a', 'b', 'c', 'x'])
+```
+
+`deque`除了实现list的`append()`和`pop()`外，还支持`appendleft()`和`popleft()`，这样就可以非常高效地往头部添加或删除元素。
+
+#### 14.2.3 defaultdict
+
+#### 14.2.4 OrderedDict
+
+#### 14.2.5 ChainMap
+
+#### 14.2.6 Counter
 
 ### 14.3 argparse
 
