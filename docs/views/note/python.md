@@ -7896,25 +7896,25 @@ print(struct.unpack('>IH', b'\xf0\xf0\xf0\xf0\x80\x80'))
 # (4042322160, 32896)
 ```
 
-根据`>IH`的说明，后面的`bytes`依次变为`I`：4字节无符号整数和`H`：2字节无符号整数。
+根据`>IH`的说明，后面的`bytes`依次变为`I`：4 字节无符号整数和`H`：2 字节无符号整数。
 
-所以，尽管Python不适合编写底层操作字节流的代码，但在对性能要求不高的地方，利用`struct`就方便多了。
+所以，尽管 Python 不适合编写底层操作字节流的代码，但在对性能要求不高的地方，利用`struct`就方便多了。
 
-`struct`模块定义的数据类型可以参考[Python官方文档](https://docs.python.org/zh-cn/3/library/struct.html#format-characters)。
+`struct`模块定义的数据类型可以参考[Python 官方文档](https://docs.python.org/zh-cn/3/library/struct.html#format-characters)。
 
-Windows的位图文件（.bmp）是一种非常简单的文件格式，我们来用`struct`分析一下。
+Windows 的位图文件（.bmp）是一种非常简单的文件格式，我们来用`struct`分析一下。
 
-首先找一个bmp文件，没有的话用“画图”画一个。
+首先找一个 bmp 文件，没有的话用“画图”画一个。
 
-读入前30个字节来分析：
+读入前 30 个字节来分析：
 
 ```python
 s = b'\x42\x4d\x38\x8c\x0a\x00\x00\x00\x00\x00\x36\x00\x00\x00\x28\x00\x00\x00\x80\x02\x00\x00\x68\x01\x00\x00\x01\x00\x18\x00'
 ```
 
-BMP格式采用小端方式存储数据，文件头的结构按顺序如下：
+BMP 格式采用小端方式存储数据，文件头的结构按顺序如下：
 
-两个字节：`'BM'`表示Windows位图，`'BA'`表示OS/2位图； 一个4字节整数：表示位图大小； 一个4字节整数：保留位，始终为0； 一个4字节整数：实际图像的偏移量； 一个4字节整数：Header的字节数； 一个4字节整数：图像宽度； 一个4字节整数：图像高度； 一个2字节整数：始终为1； 一个2字节整数：颜色数。
+两个字节：`'BM'`表示 Windows 位图，`'BA'`表示 OS/2 位图； 一个 4 字节整数：表示位图大小； 一个 4 字节整数：保留位，始终为 0； 一个 4 字节整数：实际图像的偏移量； 一个 4 字节整数：Header 的字节数； 一个 4 字节整数：图像宽度； 一个 4 字节整数：图像高度； 一个 2 字节整数：始终为 1； 一个 2 字节整数：颜色数。
 
 所以，组合起来用`unpack`读取：
 
@@ -7925,9 +7925,90 @@ print(struct.unpack('<ccIIIIIIHH', s))
 # (b'B', b'M', 691256, 0, 54, 40, 640, 360, 1, 24)
 ```
 
-结果显示，`b'B'`、`b'M'`说明是Windows位图，位图大小为640x360，颜色数为24。
+结果显示，`b'B'`、`b'M'`说明是 Windows 位图，位图大小为 640x360，颜色数为 24。
 
 ### 14.6 hashlib
+
+#### 14.6.1 摘要算法简介
+
+Python 的 hashlib 提供了常见的摘要算法，如 MD5，SHA1 等等。
+
+什么是摘要算法呢？摘要算法又称哈希算法、散列算法。它通过一个函数，把任意长度的数据转换为一个长度固定的数据串（通常用 16 进制的字符串表示）。
+
+举个例子，你写了一篇文章，内容是一个字符串`'how to use python hashlib - by Michael'`，并附上这篇文章的摘要是`'2d73d4f15c0db7f5ecb321b6a65e5d6d'`。如果有人篡改了你的文章，并发表为`'how to use python hashlib - by Bob'`，你可以一下子指出 Bob 篡改了你的文章，因为根据`'how to use python hashlib - by Bob'`计算出的摘要不同于原始文章的摘要。
+
+可见，摘要算法就是通过摘要函数`f()`对任意长度的数据`data`计算出固定长度的摘要`digest`，目的是为了发现原始数据是否被人篡改过。
+
+摘要算法之所以能指出数据是否被篡改过，就是因为摘要函数是一个单向函数，计算`f(data)`很容易，但通过`digest`反推`data`却非常困难。而且，对原始数据做一个 bit 的修改，都会导致计算出的摘要完全不同。
+
+我们以常见的摘要算法 MD5 为例，计算出一个字符串的 MD5 值：
+
+```python
+import hashlib
+
+md5 = hashlib.md5()
+md5.update('how to use python hashlib - by Michael'.encode('utf-8'))
+print(md5.hexdigest())
+# 2d73d4f15c0db7f5ecb321b6a65e5d6d
+```
+
+如果数据量很大，可以分块多次调用 update()，最后计算的结果是一样的：
+
+```python
+import hashlib
+
+md5 = hashlib.md5()
+md5.update('how to use python hashlib'.encode('utf-8'))
+md5.update(' - by Michael'.encode('utf-8'))
+print(md5.hexdigest())
+# 2d73d4f15c0db7f5ecb321b6a65e5d6d
+```
+
+试试改动一个字母，看看计算的结果是否完全不同。
+
+MD5 是最常见的摘要算法，速度很快，生成结果是固定的 128 bit/16 字节，通常用一个 32 位的 16 进制字符串表示。
+
+另一种常见的摘要算法是 SHA1，调用 SHA1 和调用 MD5 完全类似：
+
+```python
+import hashlib
+
+sha1 = hashlib.sha1()
+sha1.update('how to use python hashlib'.encode('utf-8'))
+sha1.update(' - by Michael'.encode('utf-8'))
+print(sha1.hexdigest())
+# a25d46b6323c18e119f19660b7ba61e770bb2109
+```
+
+SHA1 的结果是 160 bit/20 字节，通常用一个 40 位的 16 进制字符串表示。
+
+比 SHA1 更安全的算法是 SHA256 和 SHA512，不过越安全的算法不仅越慢，而且摘要长度更长。
+
+有没有可能两个不同的数据通过某个摘要算法得到了相同的摘要？完全有可能，因为任何摘要算法都是把无限多的数据集合映射到一个有限的集合中。这种情况称为碰撞，比如 Bob 试图根据你的摘要反推出一篇文章`'how to learn hashlib in python - by Bob'`，并且这篇文章的摘要恰好和你的文章完全一致，这种情况也并非不可能出现，但是非常非常困难。
+
+#### 14.6.2 摘要算法应用
+
+摘要算法能应用到什么地方？举个常用例子：
+
+任何允许用户登录的网站都会存储用户登录的用户名和口令。如何存储用户名和口令呢？方法是存到数据库表中：
+
+| name    | password  |
+| ------- | --------- |
+| michael | 123456    |
+| bob     | abc999    |
+| alice   | alice2008 |
+
+如果以明文保存用户口令，如果数据库泄露，所有用户的口令就落入黑客的手里。此外，网站运维人员是可以访问数据库的，也就是能获取到所有用户的口令。
+
+正确的保存口令的方式是不存储用户的明文口令，而是存储用户口令的摘要，比如 MD5：
+
+| name    | password                         |
+| ------- | -------------------------------- |
+| michael | e10adc3949ba59abbe56e057f20f883e |
+| bob     | 878ef96e86145580c38c87f0410ad153 |
+| alice   | 99b1c2188db85afee403b1536010c2c9 |
+
+当用户登录时，首先计算用户输入的明文口令的MD5，然后和数据库存储的MD5对比，如果一致，说明口令输入正确，如果不一致，口令肯定错误。
 
 ### 14.7 hmac
 
