@@ -8008,11 +8008,132 @@ SHA1 的结果是 160 bit/20 字节，通常用一个 40 位的 16 进制字符�
 | bob     | 878ef96e86145580c38c87f0410ad153 |
 | alice   | 99b1c2188db85afee403b1536010c2c9 |
 
-当用户登录时，首先计算用户输入的明文口令的MD5，然后和数据库存储的MD5对比，如果一致，说明口令输入正确，如果不一致，口令肯定错误。
+当用户登录时，首先计算用户输入的明文口令的 MD5，然后和数据库存储的 MD5 对比，如果一致，说明口令输入正确，如果不一致，口令肯定错误。
 
 ### 14.7 hmac
 
+通过哈希算法，我们可以验证一段数据是否有效，方法就是对比该数据的哈希值，例如，判断用户口令是否正确，我们用保存在数据库中的`password_md5`对比计算`md5(password)`的结果，如果一致，用户输入的口令就是正确的。
+
+为了防止黑客通过彩虹表根据哈希值反推原始口令，在计算哈希的时候，不能仅针对原始输入计算，需要增加一个 salt 来使得相同的输入也能得到不同的哈希，这样，大大增加了黑客破解的难度。
+
+如果 salt 是我们自己随机生成的，通常我们计算 MD5 时采用`md5(message + salt)`。但实际上，把 salt 看做一个“口令”，加 salt 的哈希就是：计算一段 message 的哈希时，根据不同口令计算出不同的哈希。要验证哈希值，必须同时提供正确的口令。
+
+这实际上就是 Hmac 算法：Keyed-Hashing for Message Authentication。它通过一个标准算法，在计算哈希的过程中，把 key 混入计算过程中。
+
+和我们自定义的加 salt 算法不同，Hmac 算法针对所有哈希算法都通用，无论是 MD5 还是 SHA-1。采用 Hmac 替代我们自己的 salt 算法，可以使程序算法更标准化，也更安全。
+
+Python 自带的 hmac 模块实现了标准的 Hmac 算法。我们来看看如何使用 hmac 实现带 key 的哈希。
+
+我们首先需要准备待计算的原始消息 message，随机 key，哈希算法，这里采用 MD5，使用 hmac 的代码如下：
+
+```python
+import hmac
+message = b'Hello, world!'
+key = b'secret'
+h = hmac.new(key, message, digestmod='MD5')
+print(h.hexdigest())
+# fa4ee7d173f2d97ee79022d1a7355bcf
+```
+
 ### 14.8 itertools
+
+Python 的内建模块`itertools`提供了非常有用的用于操作迭代对象的函数。
+
+首先，我们看看`itertools`提供的几个“无限”迭代器：
+
+```python
+import itertools
+natuals = itertools.count(1)
+for n in natuals:
+  print(n)
+# 1
+# 2
+# 3
+# ...
+```
+
+因为`count()`会创建一个无限的迭代器，所以上述代码会打印出自然数序列，根本停不下来，只能按`Ctrl+C`退出。
+
+`cycle()`会把传入的一个序列无限重复下去：
+
+```python
+import itertools
+cs = itertools.cycle('ABC')
+for c in cs:
+  print(c)
+# A
+# B
+# C
+# A
+# B
+# C
+# ...
+```
+
+同样停不下来。
+
+`repeat()`负责把一个元素无限重复下去，不过如果提供第二个参数就可以限定重复次数：
+
+```python
+import itertools
+ns = itertools.repeat('A', 3)
+for n in ns:
+  print(n)
+# A
+# A
+# A
+```
+
+无限序列只有在`for`迭代时才会无限地迭代下去，如果只是创建了一个迭代对象，它不会事先把无限个元素生成出来，事实上也不可能在内存中创建无限多个元素。
+
+无限序列虽然可以无限迭代下去，但是通常我们会通过`takewhile()`等函数根据条件判断来截取出一个有限的序列：
+
+```python
+import itertools
+natuals = itertools.count(1)
+ns = itertools.takewhile(lambda x: x <= 10, natuals)
+print(list(ns))
+# [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+```
+
+itertools 提供的几个迭代器操作函数更加有用：
+
+1. chain()
+
+   chain()可以把一组迭代对象串联起来，形成一个更大的迭代器：
+
+   ```python
+   import itertools
+   for c in itertools.chain('ABC', 'XYZ'):
+     print(c)
+   # 迭代效果：'A' 'B' 'C' 'X' 'Y' 'Z'
+   ```
+
+2. groupby()
+
+   groupby()把迭代器中相邻的重复元素挑出来放在一起：
+
+   ```python
+   import itertools
+   for key, group in itertools.groupby('AAABBBCCAAA'):
+     print(key, list(group))
+   # A ['A', 'A', 'A']
+   # B ['B', 'B', 'B']
+   # C ['C', 'C']
+   # A ['A', 'A', 'A']
+   ```
+
+   实际上挑选规则是通过函数完成的，只要作用于函数的两个元素返回的值相等，这两个元素就被认为是在一组的，而函数返回值作为组的 key。如果我们要忽略大小写分组，就可以让元素`'A'`和`'a'`都返回相同的 key：
+
+   ```python
+   import itertools
+   for key, group in itertools.groupby('AaaBBbcCAAa', lambda c: c.upper()):
+     print(key, list(group))
+   # A ['A', 'a', 'a']
+   # B ['B', 'B', 'b']
+   # C ['c', 'C']
+   # A ['A', 'A', 'a']
+   ```
 
 ### 14.9 contextlib
 
