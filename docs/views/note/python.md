@@ -8603,7 +8603,7 @@ width = 60 * 4
 height = 60
 image = Image.new('RGB', (width, height), (255, 255, 255))
 # 创建Font对象:
-font = ImageFont.truetype(r'C:\Windows\Fonts\Arial.ttf', 36)
+font = ImageFont.truetype('arial.ttf', 36)
 # 创建Draw对象:
 draw = ImageDraw.Draw(image)
 # 填充每个像素:
