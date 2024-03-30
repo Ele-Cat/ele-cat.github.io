@@ -8532,13 +8532,13 @@ parser.feed('''<html>
 
 ### 15.1 Pillow
 
-PIL：Python Imaging Library，已经是Python平台事实上的图像处理标准库了。PIL功能非常强大，但API却非常简单易用。
+PIL：Python Imaging Library，已经是 Python 平台事实上的图像处理标准库了。PIL 功能非常强大，但 API 却非常简单易用。
 
-由于PIL仅支持到Python 2.7，加上年久失修，于是一群志愿者在PIL的基础上创建了兼容的版本，名字叫[Pillow](https://github.com/python-pillow/Pillow)，支持最新Python 3.x，又加入了许多新特性，因此，我们可以直接安装使用Pillow。
+由于 PIL 仅支持到 Python 2.7，加上年久失修，于是一群志愿者在 PIL 的基础上创建了兼容的版本，名字叫[Pillow](https://github.com/python-pillow/Pillow)，支持最新 Python 3.x，又加入了许多新特性，因此，我们可以直接安装使用 Pillow。
 
-**安装Pillow**
+**安装 Pillow**
 
-如果安装了Anaconda，Pillow就已经可用了。否则，需要在命令行下通过pip安装：
+如果安装了 Anaconda，Pillow 就已经可用了。否则，需要在命令行下通过 pip 安装：
 
 ```sh
 $ pip install pillow
@@ -8579,7 +8579,7 @@ im2 = im.filter(ImageFilter.BLUR)
 im2.save('blur.jpg', 'jpeg')
 ```
 
-PIL的`ImageDraw`提供了一系列绘图方法，让我们可以直接绘图。比如要生成字母验证码图片：
+PIL 的`ImageDraw`提供了一系列绘图方法，让我们可以直接绘图。比如要生成字母验证码图片：
 
 ```python
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
@@ -8626,9 +8626,130 @@ image.save('code.jpg', 'jpeg')
 
 ![1711722671508](/images/1711722671508.jpg){data-zoomable}
 
-要详细了解PIL的强大功能，请请参考[Pillow官方文档](https://pillow.readthedocs.org/)。
+要详细了解 PIL 的强大功能，请请参考[Pillow 官方文档](https://pillow.readthedocs.org/)。
 
 ### 15.2 requests
+
+我们已经讲解了 Python 内置的 urllib 模块，用于访问网络资源。但是，它用起来比较麻烦，而且，缺少很多实用的高级功能。
+
+更好的方案是使用 requests。它是一个 Python 第三方库，处理 URL 资源特别方便。
+
+**安装 requests**
+
+如果安装了 Anaconda，requests 就已经可用了。否则，需要在命令行下通过 pip 安装：
+
+```sh
+$ pip install requests
+# 使用清华镜像源： 有时候使用清华镜像源可以解决安装问题：
+$ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple requests
+```
+
+**使用 requests**
+
+要通过 GET 访问一个页面，只需要几行代码：
+
+```python
+import requests
+
+headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'}
+url = 'https://www.douban.com/'
+r = requests.get(url, headers=headers)
+print(r.status_code)
+# 200
+print(r.text)
+# <!DOCTYPE HTML>
+# <html lang="zh-cmn-Hans" class="ua-windows ua-webkit">
+# <head>
+# <meta charset="UTF-8">
+# <meta name="google-site-verification" content="ok0wCgT20tBBgo9_zat2iAcimtN4Ftf5ccsh092Xeyw" />
+# <meta name="description" content="提供图书、电影、音乐唱片的推荐、评论和价格比较，以及城市独特的文化生活。">
+# ...
+```
+
+对于带参数的URL，传入一个dict作为`params`参数：
+
+```python
+import requests
+
+headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'}
+url = 'https://www.douban.com/search'
+params = {'q': 'python', 'cat': '1001'}
+r = requests.get(url, params = params, headers=headers)
+print(r.url) # 实际请求的URL
+# https://www.douban.com/search?q=python&cat=1001
+print(r.encoding) # requests自动检测编码
+# utf-8
+print(r.content) # 用content属性获得bytes对象
+# b'<!DOCTYPE html>\n<html lang="zh-CN" class="ua-windows ua-webkit">\n<head>\n    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">\n...
+```
+
+requests的方便之处还在于，对于特定类型的响应，例如JSON，可以直接获取：
+
+```python
+import requests
+
+url = 'https://v.api.aa1.cn/api/yiyan/index.php?type=json'
+r = requests.get(url)
+print(r.json())
+# {'yiyan': '问君能有几多愁，恰似一群太监上青楼。', 'from': '一言'}
+```
+
+要发送POST请求，只需要把`get()`方法变成`post()`，然后传入`data`参数作为POST请求的数据：
+
+```python
+import requests
+
+url = 'https://accounts.douban.com/login'
+data = {'form_email': 'abc@example.com', 'form_password': '123456'}
+r = requests.post(url, data)
+```
+
+requests默认使用`application/x-www-form-urlencoded`对POST数据编码。如果要传递JSON数据，可以直接传入json参数：
+
+```python
+params = {'key': 'value'}
+r = requests.post(url, json=params) # 内部自动序列化为JSON
+```
+
+类似的，上传文件需要更复杂的编码格式，但是requests把它简化成`files`参数：
+
+```python
+upload_files = {'file': open('report.xls', 'rb')}
+r = requests.post(url, files=upload_files)
+```
+
+在读取文件时，注意务必使用`'rb'`即二进制模式读取，这样获取的`bytes`长度才是文件的长度。
+
+把`post()`方法替换为`put()`，`delete()`等，就可以以PUT或DELETE方式请求资源。
+
+除了能轻松获取响应内容外，requests对获取HTTP响应的其他信息也非常简单。例如，获取响应头：
+
+```python
+print(r.headers)
+# {Content-Type': 'text/html; charset=utf-8', 'Transfer-Encoding': 'chunked', 'Content-Encoding': 'gzip', ...}
+print(r.headers['Content-Type'])
+# 'text/html; charset=utf-8'
+```
+
+requests对Cookie做了特殊处理，使得我们不必解析Cookie就可以轻松获取指定的Cookie：
+
+```python
+print(r.cookies['ts'])
+# 'example_cookie_12345'
+```
+
+要在请求中传入Cookie，只需准备一个dict传入cookies参数：
+
+```python
+cs = {'token': '12345', 'status': 'working'}
+r = requests.get(url, cookies=cs)
+```
+
+最后，要指定超时，传入以秒为单位的timeout参数：
+
+```python
+r = requests.get(url, timeout=2.5) # 2.5秒后超时
+```
 
 ### 15.3 chardet
 
