@@ -1,0 +1,21 @@
+.translate-layout {
+  /* 覆盖全局的 vp-layout-max-width（仅当前页面使用） */
+  --vp-layout-max-width: 1660px;
+
+  /* 修改 layout 最大宽度 */
+  .container {
+    max-width: var(--vp-layout-max-width) !important;
+    .aside {
+      display: none;
+    }
+  }
+  .content-container,
+  .content {
+    max-width: 100% !important;
+    padding-bottom: 0;
+  }
+
+  .vp-doc h2 {
+    margin-top: 24px;
+  }
+}

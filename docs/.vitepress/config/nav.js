@@ -39,16 +39,16 @@ const nav = [
     ],
   },
   {
-    text: "插件",
-    items: [
-      { text: "Moment", link: "/views/tools/moment" },
-      { text: "Vue Doc Preview", link: "/views/tools/vueDocPreview" },
-      { text: "Ace Editor", link: "/views/tools/aceEditor" },
-    ],
-  },
-  {
     text: "分享",
     items: [
+      {
+        text: "插件",
+        items: [
+          { text: "Moment", link: "/views/tools/moment" },
+          { text: "Vue Doc Preview", link: "/views/tools/vueDocPreview" },
+          { text: "Ace Editor", link: "/views/tools/aceEditor" },
+        ],
+      },
       {
         text: "Javascript",
         items: [
@@ -60,6 +60,10 @@ const nav = [
       {
         text: "Css",
         items: [{ text: "样式Cool", link: "/views/share/css/generate" }],
+      },
+      {
+        text: "应用",
+        items: [{ text: "翻译", link: "/views/apps/translate" }],
       },
     ],
   },
