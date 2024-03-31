@@ -2,12 +2,20 @@
   <div class="translate-box">
     <a-form
       :model="translateForm"
-      :label-col="{ span: 8 }"
+      :label-col="{ style: { width: '140px' } }"
       :wrapper-col="{ span: 16 }"
     >
       <a-row :gutter="20">
         <a-col :span="6">
-          <a-form-item label="译文模式">
+          <a-form-item label="自动粘贴至原文" tooltip="开启后，当鼠标聚焦至原文输入框时，会自动识别剪切板，将剪切板内容粘贴至原文处">
+            <a-radio-group
+              v-model:value="translateForm.autoPaste"
+              :options="autoCopyOptions"
+            />
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item label="译文模式" tooltip="以何种格式输出译文">
             <a-select
               v-model:value="translateForm.mode"
               :options="modeOptions"
@@ -16,7 +24,7 @@
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-form-item label="自动复制译文">
+          <a-form-item label="自动复制译文" tooltip="开启后，在切换模式、修改前后缀时，会自动复制译文到剪贴板">
             <a-radio-group
               v-model:value="translateForm.autoCopy"
               :options="autoCopyOptions"
@@ -24,19 +32,23 @@
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-form-item label="译文前缀">
-            <a-input
-              v-model:value="translateForm.prefix"
-              @change="handleChange"
-            ></a-input>
-          </a-form-item>
-        </a-col>
-        <a-col :span="6">
-          <a-form-item label="译文后缀">
-            <a-input
-              v-model:value="translateForm.suffix"
-              @change="handleChange"
-            ></a-input>
+          <a-form-item label="译文前后缀" tooltip="拼接在译文前后的内容，请酌情添加">
+            <a-row :gutter="6">
+              <a-col :span="12">
+                <a-input
+                  v-model:value="translateForm.prefix"
+                  placeholder="输入前缀"
+                  @change="handleChange"
+                ></a-input>
+              </a-col>
+              <a-col :span="12">
+                <a-input
+                  v-model:value="translateForm.suffix"
+                  placeholder="输入后缀"
+                  @change="handleChange"
+                ></a-input>
+              </a-col>
+            </a-row>
           </a-form-item>
         </a-col>
       </a-row>
@@ -48,8 +60,9 @@
         <a-textarea
           v-model:value="sourceText"
           placeholder="请输入、粘贴需要翻译的内容"
-          @change="handleSourceTextChange"
           :autoSize="{ minRows: 10, maxRows: 16 }"
+          @change="handleSourceTextChange"
+          @focus="handleSourceTextFocus"
         ></a-textarea>
         <a-button
           @click="handleCopy(sourceText)"
@@ -88,10 +101,12 @@
 import { ref, reactive } from "vue";
 import { useFetch, useClipboard, useStorage } from "@vueuse/core";
 import { message } from "ant-design-vue";
+import { QuestionCircleFilled } from "@ant-design/icons-vue";
 
 const translateDefault = {
   mode: "1",
   autoCopy: true,
+  autoPaste: false,
   prefix: "",
   suffix: "",
 };
@@ -141,6 +156,19 @@ const handleChange = () => {
   }
 };
 
+const handleSourceTextFocus = async () => {
+  if (!translateForm.value.autoPaste) return;
+  try {
+    const clipboardText = await navigator.clipboard.readText();
+    if (clipboardText) {
+      sourceText.value = clipboardText;
+      handleSourceTextChange();
+    }
+  } catch (err) {
+    console.error("无法读取剪贴板内容:", err);
+  }
+};
+
 // 原文修改
 const handleSourceTextChange = async (e) => {
   if (!sourceText.value) {
@@ -155,14 +183,18 @@ const handleSourceTextChange = async (e) => {
 
 // 调用接口
 const requestTarget = async () => {
-  const url = `https://api.oioweb.cn/api/txt/QQFanyi?sourceText=${sourceText.value}`;
-  const { isFetching, error, data } = await useFetch(url).get().json();
-  const { code, result, msg } = data?.value;
-  if (code === 200) {
-    targetTextCopy = result?.targetText.split("/")[0].replace(/[.-]/g, " ");
-    return resolveTarget(targetTextCopy) || "";
-  } else {
-    message.error(msg || "翻译失败");
+  try {
+    const url = `https://api.oioweb.cn/api/txt/QQFanyi?sourceText=${sourceText.value}`;
+    const { isFetching, error, data } = await useFetch(url).get().json();
+    const { code, result, msg } = data?.value;
+    if (code === 200) {
+      targetTextCopy = result?.targetText.split("/")[0].replace(/[.-]/g, " ");
+      return resolveTarget(targetTextCopy) || "";
+    } else {
+      message.error(msg || "翻译失败，请检查重试");
+    }
+  } catch (error) {
+    message.error("翻译失败，请检查重试");
   }
 };
 
