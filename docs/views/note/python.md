@@ -8666,7 +8666,7 @@ print(r.text)
 # ...
 ```
 
-对于带参数的URL，传入一个dict作为`params`参数：
+对于带参数的 URL，传入一个 dict 作为`params`参数：
 
 ```python
 import requests
@@ -8683,7 +8683,7 @@ print(r.content) # 用content属性获得bytes对象
 # b'<!DOCTYPE html>\n<html lang="zh-CN" class="ua-windows ua-webkit">\n<head>\n    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">\n...
 ```
 
-requests的方便之处还在于，对于特定类型的响应，例如JSON，可以直接获取：
+requests 的方便之处还在于，对于特定类型的响应，例如 JSON，可以直接获取：
 
 ```python
 import requests
@@ -8694,7 +8694,7 @@ print(r.json())
 # {'yiyan': '问君能有几多愁，恰似一群太监上青楼。', 'from': '一言'}
 ```
 
-要发送POST请求，只需要把`get()`方法变成`post()`，然后传入`data`参数作为POST请求的数据：
+要发送 POST 请求，只需要把`get()`方法变成`post()`，然后传入`data`参数作为 POST 请求的数据：
 
 ```python
 import requests
@@ -8704,14 +8704,14 @@ data = {'form_email': 'abc@example.com', 'form_password': '123456'}
 r = requests.post(url, data)
 ```
 
-requests默认使用`application/x-www-form-urlencoded`对POST数据编码。如果要传递JSON数据，可以直接传入json参数：
+requests 默认使用`application/x-www-form-urlencoded`对 POST 数据编码。如果要传递 JSON 数据，可以直接传入 json 参数：
 
 ```python
 params = {'key': 'value'}
 r = requests.post(url, json=params) # 内部自动序列化为JSON
 ```
 
-类似的，上传文件需要更复杂的编码格式，但是requests把它简化成`files`参数：
+类似的，上传文件需要更复杂的编码格式，但是 requests 把它简化成`files`参数：
 
 ```python
 upload_files = {'file': open('report.xls', 'rb')}
@@ -8720,9 +8720,9 @@ r = requests.post(url, files=upload_files)
 
 在读取文件时，注意务必使用`'rb'`即二进制模式读取，这样获取的`bytes`长度才是文件的长度。
 
-把`post()`方法替换为`put()`，`delete()`等，就可以以PUT或DELETE方式请求资源。
+把`post()`方法替换为`put()`，`delete()`等，就可以以 PUT 或 DELETE 方式请求资源。
 
-除了能轻松获取响应内容外，requests对获取HTTP响应的其他信息也非常简单。例如，获取响应头：
+除了能轻松获取响应内容外，requests 对获取 HTTP 响应的其他信息也非常简单。例如，获取响应头：
 
 ```python
 print(r.headers)
@@ -8731,26 +8731,91 @@ print(r.headers['Content-Type'])
 # 'text/html; charset=utf-8'
 ```
 
-requests对Cookie做了特殊处理，使得我们不必解析Cookie就可以轻松获取指定的Cookie：
+requests 对 Cookie 做了特殊处理，使得我们不必解析 Cookie 就可以轻松获取指定的 Cookie：
 
 ```python
 print(r.cookies['ts'])
 # 'example_cookie_12345'
 ```
 
-要在请求中传入Cookie，只需准备一个dict传入cookies参数：
+要在请求中传入 Cookie，只需准备一个 dict 传入 cookies 参数：
 
 ```python
 cs = {'token': '12345', 'status': 'working'}
 r = requests.get(url, cookies=cs)
 ```
 
-最后，要指定超时，传入以秒为单位的timeout参数：
+最后，要指定超时，传入以秒为单位的 timeout 参数：
 
 ```python
 r = requests.get(url, timeout=2.5) # 2.5秒后超时
 ```
 
 ### 15.3 chardet
+
+字符串编码一直是令人非常头疼的问题，尤其是我们在处理一些不规范的第三方网页的时候。虽然 Python 提供了 Unicode 表示的 str 和 bytes 两种数据类型，并且可以通过`encode()`和`decode()`方法转换，但是，在不知道编码的情况下，对`bytes`做`decode()`不好做。
+
+对于未知编码的`bytes`，要把它转换成`str`，需要先“猜测”编码。猜测的方式是先收集各种编码的特征字符，根据特征字符判断，就能有很大概率“猜对”。
+
+当然，我们肯定不能从头自己写这个检测编码的功能，这样做费时费力。chardet 这个第三方库正好就派上了用场。用它来检测编码，简单易用。
+
+**安装 chardet**
+
+如果安装了 Anaconda，chardet 就已经可用了。否则，需要在命令行下通过 pip 安装：
+
+```sh
+$ pip install chardet
+# 使用清华镜像源： 有时候使用清华镜像源可以解决安装问题：
+$ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple chardet
+```
+
+**使用 chardet**
+
+当我们拿到一个`bytes`时，就可以对其检测编码。用 chardet 检测编码，只需要一行代码：
+
+```python
+import chardet
+
+print(chardet.detect(b'Hello, world!'))
+# {'encoding': 'ascii', 'confidence': 1.0, 'language': ''}
+```
+
+检测出的编码是`ascii`，注意到还有个`confidence`字段，表示检测的概率是 1.0（即 100%）。
+
+我们来试试检测 GBK 编码的中文：
+
+```python
+import chardet
+
+data = '离离原上草，一岁一枯荣'.encode('gbk')
+print(chardet.detect(data))
+# {'encoding': 'GB2312', 'confidence': 0.7407407407407407, 'language': 'Chinese'}
+```
+
+检测的编码是`GB2312`，注意到 GBK 是 GB2312 的超集，两者是同一种编码，检测正确的概率是 74%，`language`字段指出的语言是`'Chinese'`。
+
+对 UTF-8 编码进行检测：
+
+```python
+import chardet
+
+data = '离离原上草，一岁一枯荣'.encode('utf-8')
+print(chardet.detect(data))
+# {'encoding': 'utf-8', 'confidence': 0.99, 'language': ''}
+```
+
+我们再试试对日文进行检测：
+
+```python
+import chardet
+
+data = '最新の主要ニュース'.encode('euc-jp')
+print(chardet.detect(data))
+# {'encoding': 'EUC-JP', 'confidence': 0.99, 'language': 'Japanese'}
+```
+
+可见，用chardet检测编码，使用简单。获取到编码后，再转换为`str`，就可以方便后续处理。
+
+chardet支持检测的编码列表请参考官方文档[Supported encodings](https://chardet.readthedocs.io/en/latest/supported-encodings.html)。
 
 ### 15.4 psutil
