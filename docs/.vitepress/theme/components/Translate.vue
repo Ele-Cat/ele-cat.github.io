@@ -7,10 +7,14 @@
     >
       <a-row :gutter="20">
         <a-col :span="6">
-          <a-form-item label="自动粘贴至原文" tooltip="开启后，当鼠标聚焦至原文输入框时，会自动识别剪切板，将剪切板内容粘贴至原文处">
+          <a-form-item
+            label="自动粘贴至原文"
+            tooltip="开启后，当鼠标聚焦至原文输入框时，会自动识别剪切板，将剪切板内容粘贴至原文处"
+          >
             <a-radio-group
               v-model:value="translateForm.autoPaste"
               :options="autoCopyOptions"
+              @change="handleAutoPasteChange"
             />
           </a-form-item>
         </a-col>
@@ -24,7 +28,10 @@
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-form-item label="自动复制译文" tooltip="开启后，在切换模式、修改前后缀时，会自动复制译文到剪贴板">
+          <a-form-item
+            label="自动复制译文"
+            tooltip="开启后，在切换模式、修改前后缀时，会自动复制译文到剪贴板"
+          >
             <a-radio-group
               v-model:value="translateForm.autoCopy"
               :options="autoCopyOptions"
@@ -32,7 +39,10 @@
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-form-item label="译文前后缀" tooltip="拼接在译文前后的内容，请酌情添加">
+          <a-form-item
+            label="译文前后缀"
+            tooltip="拼接在译文前后的内容，请酌情添加"
+          >
             <a-row :gutter="6">
               <a-col :span="12">
                 <a-input
@@ -100,13 +110,14 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { useFetch, useClipboard, useStorage } from "@vueuse/core";
-import { message } from "ant-design-vue";
+import { message, notification } from "ant-design-vue";
 import { QuestionCircleFilled } from "@ant-design/icons-vue";
 
 const translateDefault = {
   mode: "1",
   autoCopy: true,
   autoPaste: false,
+  hasSelectedPaste: false,
   prefix: "",
   suffix: "",
 };
@@ -148,6 +159,19 @@ const targetText = ref("");
 let targetTextCopy = "";
 const { text, copy, copied, isSupported } = useClipboard();
 
+// 切换是否自动粘贴至原文
+const handleAutoPasteChange = (e) => {
+  if (e.target.value && !translateForm.value.hasSelectedPaste) {
+    translateForm.value.hasSelectedPaste = true;
+    notification.warning({
+      message: "通知",
+      description: "请在浏览器中允许查看复制到剪贴板的文本和图像",
+      duration: 10,
+    });
+    navigator.clipboard.readText();
+  }
+};
+
 // 切换选项
 const handleChange = () => {
   targetText.value = resolveTarget(targetTextCopy);
@@ -156,6 +180,7 @@ const handleChange = () => {
   }
 };
 
+// 原文输入框聚焦时
 const handleSourceTextFocus = async () => {
   if (!translateForm.value.autoPaste) return;
   try {
