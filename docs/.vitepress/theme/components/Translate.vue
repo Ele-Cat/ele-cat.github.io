@@ -11,7 +11,7 @@
             <a-select
               v-model:value="translateForm.mode"
               :options="modeOptions"
-              @change="handleModeChange"
+              @change="handleChange"
             ></a-select>
           </a-form-item>
         </a-col>
@@ -21,6 +21,22 @@
               v-model:value="translateForm.autoCopy"
               :options="autoCopyOptions"
             />
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item label="译文前缀">
+            <a-input
+              v-model:value="translateForm.prefix"
+              @change="handleChange"
+            ></a-input>
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item label="译文后缀">
+            <a-input
+              v-model:value="translateForm.suffix"
+              @change="handleChange"
+            ></a-input>
           </a-form-item>
         </a-col>
       </a-row>
@@ -76,6 +92,8 @@ import { message } from "ant-design-vue";
 const translateDefault = {
   mode: "1",
   autoCopy: true,
+  prefix: "",
+  suffix: "",
 };
 const translateForm = useStorage("translate", translateDefault);
 const modeOptions = reactive([
@@ -115,13 +133,15 @@ const targetText = ref("");
 let targetTextCopy = "";
 const { text, copy, copied, isSupported } = useClipboard();
 
-const handleModeChange = () => {
+// 切换选项
+const handleChange = () => {
   targetText.value = resolveTarget(targetTextCopy);
   if (targetText.value && translateForm.value.autoCopy) {
     handleCopy(targetText.value);
   }
 };
 
+// 原文修改
 const handleSourceTextChange = async (e) => {
   if (!sourceText.value) {
     targetText.value = "";
@@ -133,19 +153,22 @@ const handleSourceTextChange = async (e) => {
   }
 };
 
+// 调用接口
 const requestTarget = async () => {
   const url = `https://api.oioweb.cn/api/txt/QQFanyi?sourceText=${sourceText.value}`;
   const { isFetching, error, data } = await useFetch(url).get().json();
   const { code, result, msg } = data?.value;
   if (code === 200) {
-    targetTextCopy = result?.targetText.split("/")[0].replace(/\./g, "");
+    targetTextCopy = result?.targetText.split("/")[0].replace(/[.-]/g, " ");
     return resolveTarget(targetTextCopy) || "";
   } else {
     message.error(msg || "翻译失败");
   }
 };
 
+// 翻译结果处理
 const resolveTarget = (text) => {
+  text = resolveFix(text);
   const { mode } = translateForm.value;
   if (mode === "1") {
     return toLowerCamelCase(text);
@@ -161,65 +184,63 @@ const resolveTarget = (text) => {
   return text;
 };
 
+// 处理前后缀
+const resolveFix = (text) => {
+  const { prefix, suffix } = translateForm.value;
+  const trimPrefix = prefix.replace(/\./g, "");
+  const trimSuffix = suffix.replace(/\./g, "");
+  if (trimPrefix && trimSuffix) {
+    return `${trimPrefix} ${text} ${trimSuffix}`;
+  } else if (trimPrefix) {
+    return `${trimPrefix} ${text}`;
+  } else if (trimSuffix) {
+    return `${text} ${trimSuffix}`;
+  } else {
+    return text;
+  }
+};
+
+// 复制
 const handleCopy = (text) => {
   copy(text);
   copied && message.success("复制成功");
 };
 
+// 清空
 const handleClear = () => {
   sourceText.value = "";
   targetText.value = "";
 };
 
+// 小驼峰
 function toLowerCamelCase(str) {
-  // 将字符串中的空格和下划线替换为驼峰分隔符
   const camelCaseStr = str.replace(/[\s_]+(\w)/g, (_, char) =>
     char.toUpperCase()
   );
-  // 将首字母转换为小写
   const lowerCamelCaseStr =
     camelCaseStr.charAt(0).toLowerCase() + camelCaseStr.slice(1);
   return lowerCamelCaseStr;
 }
 
+// 大驼峰
 function toUpperCamelCase(str) {
-  // 将字符串中的空格和下划线替换为驼峰分隔符
   const camelCaseStr = str.replace(/[\s_]+(\w)/g, (_, char) =>
     char.toUpperCase()
   );
-  // 将首字母转换为大写
   const upperCamelCaseStr =
     camelCaseStr.charAt(0).toUpperCase() + camelCaseStr.slice(1);
   return upperCamelCaseStr;
 }
 
+// 小写+下划线
 function toLowerCaseWithUnderscore(str) {
-  // 将字符串中的空格和驼峰分隔符替换为下划线
-  const underscoreStr = str.replace(
-    /[\sA-Z]/g,
-    (match) => "_" + match.toLowerCase()
-  );
-
-  // 将首字符转换为小写
-  const lowerCaseWithUnderscoreStr = underscoreStr
-    .toLowerCase()
-    .replace(/\s/g, "");
-
+  const lowerCaseWithUnderscoreStr = str.toLowerCase().replace(/\s+/g, "_");
   return lowerCaseWithUnderscoreStr;
 }
 
+// 大写+下划线
 function toUpperCaseWithUnderscore(str) {
-  // 将字符串中的空格和驼峰分隔符替换为下划线
-  const underscoreStr = str.replace(
-    /[\sA-Z]/g,
-    (match) => "_" + match.toUpperCase()
-  );
-
-  // 将字符串转换为大写形式
-  const upperCaseWithUnderscoreStr = underscoreStr
-    .toUpperCase()
-    .replace(/\s/g, "");
-
+  const upperCaseWithUnderscoreStr = str.toUpperCase().replace(/\s+/g, "_");
   return upperCaseWithUnderscoreStr;
 }
 </script>

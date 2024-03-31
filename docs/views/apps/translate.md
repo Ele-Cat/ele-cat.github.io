@@ -7,6 +7,7 @@ prev: false # 上一页
 next: false # 下一页
 pageClass: translate-layout # 自定义页面类名
 editLink: false
+lastUpdated: false
 ---
 
 # 翻译
