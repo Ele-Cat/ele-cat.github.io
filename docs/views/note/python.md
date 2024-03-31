@@ -8814,8 +8814,194 @@ print(chardet.detect(data))
 # {'encoding': 'EUC-JP', 'confidence': 0.99, 'language': 'Japanese'}
 ```
 
-可见，用chardet检测编码，使用简单。获取到编码后，再转换为`str`，就可以方便后续处理。
+可见，用 chardet 检测编码，使用简单。获取到编码后，再转换为`str`，就可以方便后续处理。
 
-chardet支持检测的编码列表请参考官方文档[Supported encodings](https://chardet.readthedocs.io/en/latest/supported-encodings.html)。
+chardet 支持检测的编码列表请参考官方文档[Supported encodings](https://chardet.readthedocs.io/en/latest/supported-encodings.html)。
 
 ### 15.4 psutil
+
+用 Python 来编写脚本简化日常的运维工作是 Python 的一个重要用途。在 Linux 下，有许多系统命令可以让我们时刻监控系统运行的状态，如`ps`，`top`，`free`等等。要获取这些系统信息，Python 可以通过`subprocess`模块调用并获取结果。但这样做显得很麻烦，尤其是要写很多解析代码。
+
+在 Python 中获取系统信息的另一个好办法是使用`psutil`这个第三方模块。顾名思义，psutil = process and system utilities，它不仅可以通过一两行代码实现系统监控，还可以跨平台使用，支持 Linux／UNIX／OSX／Windows 等，是系统管理员和运维小伙伴不可或缺的必备模块。
+
+#### 15.4.1 安装 psutil
+
+如果安装了 Anaconda，psutil 就已经可用了。否则，需要在命令行下通过 pip 安装：
+
+```sh
+$ pip install psutil
+# 使用清华镜像源： 有时候使用清华镜像源可以解决安装问题：
+$ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple psutil
+```
+
+#### 15.4.2 获取 CPU 信息
+
+我们先来获取 CPU 的信息：
+
+```python
+import psutil
+
+print(psutil.cpu_count()) # CPU逻辑数量
+# 8
+print(psutil.cpu_count(logical=False)) # CPU物理核心
+# 4
+```
+
+统计 CPU 的用户／系统／空闲时间：
+
+```python
+import psutil
+
+print(psutil.cpu_times())
+# scputimes(user=16961.515625, system=11126.875, idle=179432.78125, interrupt=835.234375, dpc=457.46875)
+```
+
+再实现类似`top`命令的 CPU 使用率，每秒刷新一次，累计 10 次：
+
+```python
+import psutil
+
+for x in range(10):
+  print(psutil.cpu_percent(interval=1, percpu=True))
+# [33.3, 6.2, 27.7, 10.9, 19.7, 7.8, 12.5, 17.2]
+# [10.6, 9.4, 10.9, 9.5, 14.1, 7.8, 14.1, 12.5]
+# [18.2, 10.9, 14.1, 14.3, 17.2, 12.5, 9.4, 17.2]
+# [16.4, 7.9, 4.7, 6.2, 10.8, 6.3, 7.9, 12.7]
+# [14.9, 10.9, 7.8, 1.6, 9.4, 1.5, 3.1, 9.4]
+# [12.3, 7.7, 4.7, 0.0, 6.2, 0.0, 3.1, 10.9]
+# [10.6, 4.7, 9.4, 1.6, 10.9, 6.2, 3.1, 14.1]
+# [27.9, 10.9, 32.3, 12.5, 25.0, 15.6, 14.1, 14.1]
+# [21.7, 3.1, 15.6, 9.4, 18.8, 7.8, 15.6, 7.8]
+# [18.2, 7.8, 6.2, 9.4, 9.4, 6.2, 14.1, 18.8]
+```
+
+#### 15.4.3 获取内存信息
+
+使用 psutil 获取物理内存和交换内存信息，分别使用：
+
+```python
+import psutil
+
+print(psutil.virtual_memory())
+# svmem(total=17017184256, available=4252200960, percent=75.0, used=12764983296, free=4252200960)
+print(psutil.swap_memory())
+# sswap(total=9663676416, used=666046464, free=8997629952, percent=6.9, sin=0, sout=0)
+```
+
+返回的是字节为单位的整数，可以看到，总内存大小是 17017184256 = 16 GB，已用 12764983296 = 12 GB，使用了 75.0%。
+
+而交换区大小是 9663676416 = 9 GB。
+
+#### 15.4.4 获取磁盘信息
+
+可以通过psutil获取磁盘分区、磁盘使用率和磁盘IO信息：
+
+```python
+import psutil
+
+print(psutil.disk_partitions()) # 磁盘分区信息
+# [sdiskpart(device='C:\\', mountpoint='C:\\', fstype='NTFS', opts='rw,fixed', maxfile=255, maxpath=260), sdiskpart(device='D:\\', mountpoint='D:\\', fstype='NTFS', opts='rw,fixed', maxfile=255, maxpath=260), sdiskpart(device='E:\\', mountpoint='E:\\', fstype='NTFS', opts='rw,fixed', maxfile=255, maxpath=260)]
+print(psutil.disk_usage('/')) # 磁盘使用情况
+# sdiskusage(total=500912091136, used=117538414592, free=383373676544, percent=23.5)
+print(psutil.disk_io_counters()) # 磁盘IO
+# sdiskio(read_count=469167, write_count=498359, read_bytes=16005703680, write_bytes=13544224768, read_time=2301, write_time=534)
+```
+
+可以看到，磁盘`'/'`的总容量是500912091136 = 466 GB，使用了23.5%。文件格式是HFS，`opts`中包含`rw`表示可读写，`journaled`表示支持日志。
+
+#### 15.4.5 获取网络信息
+
+psutil可以获取网络接口和网络连接信息：
+
+```python
+import psutil
+
+print(psutil.net_io_counters()) # 获取网络读写字节／包的个数
+# snetio(bytes_sent=120359855, bytes_recv=3105930685, packets_sent=1331352, packets_recv=2190432, errin=0, errout=0, dropin=0, dropout=0)
+print(psutil.net_if_addrs()) # 获取网络接口信息
+# {'WLAN': [snicaddr(family=<AddressFamily.AF_LINK: -1>, address='8C-C8-4B-9D-FA-BD', netmask=None, broadcast=None, ptp=None), snicaddr(family=<AddressFamily.AF_INET: 2>, address='169.254.51.81', netmask='255.255.0.0', broadcast=None, ptp=None), snicaddr(family=<AddressFamily.AF_INET6: 23>, address='fe80::b828:89cd:82e1:3351', netmask=None, broadcast=None, ptp=None)], '本地连接* 1': [snicaddr(family=<AddressFamily.AF_LINK: -1>, address='8E-C8-4B-9D-FA-BD', netmask=None, broadcast=None, ptp=None), snicaddr(family=<AddressFamily.AF_INET: 2>, address='169.254.156.133', netmask='255.255.0.0', broadcast=None, ptp=None), snicaddr(family=<AddressFamily.AF_INET6: 23>, address='fe80::712d:1bde:39c3:9c85', netmask=None, broadcast=None, ptp=None)], '本地连接* 2': [snicaddr(family=<AddressFamily.AF_LINK: -1>, address='9E-C8-4B-9D-FA-BD', netmask=None, broadcast=None, ptp=None), snicaddr(family=<AddressFamily.AF_INET: 2>, address='169.254.29.25', netmask='255.255.0.0', broadcast=None, ptp=None), snicaddr(family=<AddressFamily.AF_INET6: 23>, address='fe80::b1b5:3073:6a0a:1d19', netmask=None, broadcast=None, ptp=None)], '以太网': [snicaddr(family=<AddressFamily.AF_LINK: -1>, address='70-B5-E8-8F-ED-77', netmask=None, broadcast=None, ptp=None), snicaddr(family=<AddressFamily.AF_INET: 2>, address='192.168.1.4', netmask='255.255.255.0', broadcast=None, ptp=None), snicaddr(family=<AddressFamily.AF_INET6: 23>, address='2409:8a02:3033:3a20:d130:f27d:9908:35fd', netmask=None, broadcast=None, ptp=None), snicaddr(family=<AddressFamily.AF_INET6: 23>, address='2409:8a02:3033:3a20:9038:8e2a:a73b:d8f7', netmask=None, broadcast=None, ptp=None), snicaddr(family=<AddressFamily.AF_INET6: 23>, address='fe80::d130:f27d:9908:35fd', netmask=None, broadcast=None, ptp=None)], 'Loopback Pseudo-Interface 1': [snicaddr(family=<AddressFamily.AF_INET: 2>, address='127.0.0.1', netmask='255.0.0.0', broadcast=None, ptp=None), snicaddr(family=<AddressFamily.AF_INET6: 23>, address='::1', netmask=None, broadcast=None, ptp=None)]}
+print(psutil.net_if_stats()) # 获取网络接口状态
+# {'以太网': snicstats(isup=True, duplex=<NicDuplex.NIC_DUPLEX_FULL: 2>, speed=100, mtu=1500, flags=''), 'Loopback Pseudo-Interface 1': snicstats(isup=True, duplex=<NicDuplex.NIC_DUPLEX_FULL: 2>, speed=1073, mtu=1500, flags=''), 'WLAN': snicstats(isup=False, duplex=<NicDuplex.NIC_DUPLEX_FULL: 2>, speed=0, mtu=1500, flags=''), '本地连接* 1': snicstats(isup=False, duplex=<NicDuplex.NIC_DUPLEX_FULL: 2>, speed=0, mtu=1500, flags=''), '本地连接* 2': snicstats(isup=False, duplex=<NicDuplex.NIC_DUPLEX_FULL: 2>, speed=0, mtu=1500, flags='')}
+```
+
+要获取当前网络连接信息，使用`net_connections()`：
+
+```python
+import psutil
+
+print(psutil.net_connections())
+# [sconn(fd=-1, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_STREAM: 1>, laddr=addr(ip='127.0.0.1', port=9210), raddr=(), status='LISTEN', pid=16884), sconn(fd=-1, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_STREAM: 1>, laddr=addr(ip='0.0.0.0', port=49666), raddr=(), status='LISTEN', pid=1840), sconn(fd=-1, family=<AddressFamily.AF_INET6: 23>, type=<SocketKind.SOCK_DGRAM: 2>, laddr=addr(ip='::', port=63892), raddr=(), status='NONE', pid=17252), sconn(fd=-1, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_STREAM: 1>, laddr=addr(ip='192.168.1.4', port=57307), raddr=addr(ip='40.70.161.7', port=443), status='CLOSE_WAIT', pid=10532), sconn(fd=-1, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_DGRAM: 2>, laddr=addr(ip='0.0.0.0', port=63131), raddr=(), status='NONE', pid=6036), sconn(fd=-1, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_STREAM: 1>, laddr=addr(ip='127.0.0.1', port=8884), raddr=(), status='LISTEN', pid=4), ...
+```
+
+#### 15.4.6 获取进程信息
+
+通过psutil可以获取到所有进程的详细信息：
+
+```python
+import psutil
+
+print(psutil.pids()) # 所有进程ID
+# [0, 4, 124, 288, 584, 608, 624, 688, 768, ..., 23020, 23080, 23216, 23224, 23256, 23324, 23336, 23748, 24648, 24656]
+p = psutil.Process(23080) # 获取指定进程ID=23080
+print(p.name()) # 进程名称
+# node.exe
+print(p.exe()) # 进程exe路径
+# C:\Users\DELL\AppData\Roaming\nvm\v16.17.0\node.exe
+print(p.cwd()) # 进程工作目录
+# E:\learn\ele-cat
+print(p.cmdline()) # 进程启动的命令行
+# ['C:\\Program Files\\nodejs\\node.exe', 'E:\\learn\\ele-cat\\node_modules\\.bin\\\\..\\vitepress\\bin\\vitepress.js', 'dev', 'docs', '--port', '9527']
+print(p.ppid()) # 父进程ID
+# 23224
+print(p.parent()) # 父进程
+# psutil.Process(pid=23224, name='cmd.exe', status='running', started='16:15:19')
+print(p.children()) # 子进程列表
+# [psutil.Process(pid=17136, name='esbuild.exe', status='running', started='16:15:21')]
+print(p.status()) # 进程状态
+# running
+print(p.username()) # 进程用户名
+# DESKTOP-O7HH2ET\DELL
+print(p.create_time()) # 进程创建时间
+# 1711872919.9083652
+print(p.cpu_times()) # 进程使用的CPU时间
+# pcputimes(user=42.46875, system=2.625, children_user=0.0, children_system=0.0)
+print(p.memory_info()) # 进程使用的内存
+# pmem(rss=861229056, vms=874156032, num_page_faults=694267, peak_wset=1134194688, wset=861229056, peak_paged_pool=345528, paged_pool=283512, peak_nonpaged_pool=4527496, nonpaged_pool=305120, pagefile=874156032, peak_pagefile=1160323072, private=874156032)
+print(p.open_files()) # 进程打开的文件
+# [popenfile(path='C:\\Windows\\System32\\en-US\\KernelBase.dll.mui', fd=-1)]
+print(p.connections()) # 进程相关网络连接
+# [pconn(fd=-1, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_STREAM: 1>, laddr=addr(ip='127.0.0.1', port=9527), raddr=(), status='LISTEN'), pconn(fd=-1, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_STREAM: 1>, laddr=addr(ip='127.0.0.1', port=9527), raddr=addr(ip='127.0.0.1', port=49668), status='ESTABLISHED')]
+print(p.num_threads()) # 进程的线程数量
+# 13
+print(p.threads())
+# [pthread(id=24152, user_time=25.03125, system_time=1.546875), pthread(id=25056, user_time=0.0, system_time=0.0), pthread(id=20088, user_time=0.0, system_time=0.0), pthread(id=3640, user_time=0.0, system_time=0.0), pthread(id=18264, user_time=4.453125, system_time=0.15625), pthread(id=19280, user_time=4.125, system_time=0.21875), pthread(id=25552, user_time=4.515625, system_time=0.171875), pthread(id=23604, user_time=4.265625, system_time=0.1875), pthread(id=14464, user_time=0.03125, system_time=0.078125), pthread(id=11744, user_time=0.046875, system_time=0.078125), pthread(id=24244, user_time=0.0, system_time=0.109375), pthread(id=21708, user_time=0.0, system_time=0.078125), pthread(id=13400, user_time=0.0, system_time=0.0)]
+print(p.environ())
+# {'123PAN': 'D:\\Program Files\\123pan\\123pan.exe', 'ALLUSERSPROFILE': 'C:\\ProgramData', 'APPDATA': 'C:\\Users\\DELL\\AppData\\Roaming', 'CHROME_CRASHPAD_PIPE_NAME': '\\\\.\\pipe\\crashpad_12768_PBZOGYKGXPYQFVHG', 'CLASSPATH': '.;...}
+print(p.terminate()) # 结束进程
+# Terminated: 22544 <-- 自己把自己结束了
+```
+
+和获取网络连接类似，获取一个root用户的进程需要root权限，启动Python交互环境或者`.py`文件时，需要`sudo`权限。
+
+psutil还提供了一个`test()`函数，可以模拟出`ps`命令的效果：
+
+```python
+import psutil
+
+print(psutil.test())
+# USER         PID  %MEM     VSZ     RSS  NICE STATUS  START   TIME  CMDLINE
+# SYSTEM         0   0.0   60.0K    8.0K        runni         39:04  System Idle Process
+# SYSTEM         4   0.0  196.0K  148.0K        runni         20:53  System
+#              124   0.6    9.4M   91.9M        runni  Mar31  00:00  Registry
+#              288   0.1    2.4M    8.8M        runni  Mar31  00:00  svchost.exe
+#              584   0.0    1.0M    1.0M        runni  Mar31  00:00  smss.exe
+#              608   0.0   11.8M    4.6M        runni  Mar31  00:00  fontdrvhost.exe
+# ...
+# None
+```
+
+:::tip 小结
+psutil使得Python程序获取系统信息变得易如反掌。
+
+psutil还可以获取用户信息、Windows服务等很多有用的系统信息，具体请参考[psutil官网](https://psutil.readthedocs.io/en/latest/)。
+:::
