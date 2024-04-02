@@ -8894,7 +8894,7 @@ print(psutil.swap_memory())
 
 #### 15.4.4 获取磁盘信息
 
-可以通过psutil获取磁盘分区、磁盘使用率和磁盘IO信息：
+可以通过 psutil 获取磁盘分区、磁盘使用率和磁盘 IO 信息：
 
 ```python
 import psutil
@@ -8907,11 +8907,11 @@ print(psutil.disk_io_counters()) # 磁盘IO
 # sdiskio(read_count=469167, write_count=498359, read_bytes=16005703680, write_bytes=13544224768, read_time=2301, write_time=534)
 ```
 
-可以看到，磁盘`'/'`的总容量是500912091136 = 466 GB，使用了23.5%。文件格式是HFS，`opts`中包含`rw`表示可读写，`journaled`表示支持日志。
+可以看到，磁盘`'/'`的总容量是 500912091136 = 466 GB，使用了 23.5%。文件格式是 HFS，`opts`中包含`rw`表示可读写，`journaled`表示支持日志。
 
 #### 15.4.5 获取网络信息
 
-psutil可以获取网络接口和网络连接信息：
+psutil 可以获取网络接口和网络连接信息：
 
 ```python
 import psutil
@@ -8935,7 +8935,7 @@ print(psutil.net_connections())
 
 #### 15.4.6 获取进程信息
 
-通过psutil可以获取到所有进程的详细信息：
+通过 psutil 可以获取到所有进程的详细信息：
 
 ```python
 import psutil
@@ -8981,9 +8981,9 @@ print(p.terminate()) # 结束进程
 # Terminated: 22544 <-- 自己把自己结束了
 ```
 
-和获取网络连接类似，获取一个root用户的进程需要root权限，启动Python交互环境或者`.py`文件时，需要`sudo`权限。
+和获取网络连接类似，获取一个 root 用户的进程需要 root 权限，启动 Python 交互环境或者`.py`文件时，需要`sudo`权限。
 
-psutil还提供了一个`test()`函数，可以模拟出`ps`命令的效果：
+psutil 还提供了一个`test()`函数，可以模拟出`ps`命令的效果：
 
 ```python
 import psutil
@@ -9001,7 +9001,237 @@ print(psutil.test())
 ```
 
 :::tip 小结
-psutil使得Python程序获取系统信息变得易如反掌。
+psutil 使得 Python 程序获取系统信息变得易如反掌。
 
-psutil还可以获取用户信息、Windows服务等很多有用的系统信息，具体请参考[psutil官网](https://psutil.readthedocs.io/en/latest/)。
+psutil 还可以获取用户信息、Windows 服务等很多有用的系统信息，具体请参考[psutil 官网](https://psutil.readthedocs.io/en/latest/)。
 :::
+
+## 17. 图形界面
+
+Python 支持多种图形界面的第三方库，包括：
+
+- Tk
+- wxWidgets
+- Qt
+- GTK
+
+等等。
+
+但是 Python 自带的库是支持 Tk 的 Tkinter，使用 Tkinter，无需安装任何包，就可以直接使用。
+
+### 17.1 Tkinter
+
+我们编写的 Python 代码会调用内置的 Tkinter，Tkinter 封装了访问 Tk 的接口；Tk 是一个图形库，支持多个操作系统，使用 Tcl 语言开发；Tk 会调用操作系统提供的本地 GUI 接口，完成最终的 GUI。所以，我们的代码只需要调用 Tkinter 提供的接口就可以了。
+
+1. 编写一个 GUI 版本的“Hello, world!”
+
+   第一步是导入 Tkinter 包的所有内容：
+
+   ```python
+   from tkinter import *
+   ```
+
+   第二步是从`Frame`派生一个`Application`类，这是所有 Widget 的父容器：
+
+   ```python
+   class Application(Frame):
+     def __init__(self, master=None):
+       Frame.__init__(self, master)
+       self.pack()
+       self.createWidgets()
+
+     def createWidgets(self):
+       self.helloLabel = Label(self, text='Hello, world!')
+       self.helloLabel.pack()
+       self.quitButton = Button(self, text='Quit', command=self.quit)
+       self.quitButton.pack()
+   ```
+
+   在 GUI 中，每个 Button、Label、输入框等，都是一个 Widget。Frame 则是可以容纳其他 Widget 的 Widget，所有的 Widget 组合起来就是一棵树。
+
+   `pack()`方法把 Widget 加入到父容器中，并实现布局。`pack()`是最简单的布局，`grid()`可以实现更复杂的布局。
+
+   在`createWidgets()`方法中，我们创建一个`Label`和一个`Button`，当 Button 被点击时，触发`self.quit()`使程序退出。
+
+   第三步，实例化`Application`，并启动消息循环：
+
+   ```python
+   app = Application()
+   # 设置窗口标题:
+   app.master.title('Hello World')
+   # 主消息循环:
+   app.mainloop()
+   ```
+
+   GUI 程序的主线程负责监听来自操作系统的消息，并依次处理每一条消息。因此，如果消息处理非常耗时，就需要在新线程中处理。
+
+   运行这个 GUI 程序，可以看到运行窗口。点击“Quit”按钮或者窗口的“x”结束程序。
+
+2. 输入文本
+
+   我们再对这个 GUI 程序改进一下，加入一个文本框，让用户可以输入文本，然后点按钮后，弹出消息对话框。
+
+   ```python
+   from tkinter import *
+   import tkinter.messagebox as messagebox
+
+   class Application(Frame):
+     def __init__(self, master=None):
+       Frame.__init__(self, master)
+       self.pack()
+       self.createWidgets()
+
+     def createWidgets(self):
+       self.nameInput = Entry(self)
+       self.nameInput.pack()
+       self.alertButton = Button(self, text='Hello', command=self.hello)
+       self.alertButton.pack()
+
+     def hello(self):
+       name = self.nameInput.get() or 'world'
+       messagebox.showinfo('Message', 'Hello, %s' % name)
+
+   app = Application()
+   # 设置窗口标题:
+   app.master.title('Hello World')
+   # 主消息循环:
+   app.mainloop()
+   ```
+
+   当用户点击按钮时，触发`hello()`，通过`self.nameInput.get()`获得用户输入的文本后，使用`tkMessageBox.showinfo()`可以弹出消息对话框。
+
+:::tip 小结
+Python 内置的 Tkinter 可以满足基本的 GUI 程序的要求，如果是非常复杂的 GUI 程序，建议用操作系统原生支持的语言和库来编写。
+:::
+
+### 17.2 海龟绘图
+
+在 1966 年，Seymour Papert 和 Wally Feurzig 发明了一种专门给儿童学习编程的语言——LOGO 语言，它的特色就是通过编程指挥一个小海龟（turtle）在屏幕上绘图。
+
+海龟绘图（Turtle Graphics）后来被移植到各种高级语言中，Python 内置了 turtle 库，基本上 100%复制了原始的 Turtle Graphics 的所有功能。
+
+我们来看一个指挥小海龟绘制一个长方形的简单代码：
+
+```python
+# 导入turtle包的所有内容:
+from turtle import *
+
+# 设置笔刷宽度:
+width(4)
+
+# 前进:
+forward(200)
+# 右转90度:
+right(90)
+
+# 笔刷颜色:
+pencolor('red')
+forward(100)
+right(90)
+
+pencolor('green')
+forward(200)
+right(90)
+
+pencolor('blue')
+forward(100)
+right(90)
+
+# 调用done()使得窗口等待被关闭，否则将立刻关闭窗口:
+done()
+```
+
+在命令行运行上述代码，会自动弹出一个绘图窗口，然后绘制出一个长方形。
+
+从程序代码可以看出，海龟绘图就是指挥海龟前进、转向，海龟移动的轨迹就是绘制的线条。要绘制一个长方形，只需要让海龟前进、右转90度，反复4次。
+
+调用`width()`函数可以设置笔刷宽度，调用`pencolor()`函数可以设置颜色。更多操作请参考[turtle库](https://docs.python.org/3.3/library/turtle.html#turtle-methods)的说明。
+
+绘图完成后，记得调用`done()`函数，让窗口进入消息循环，等待被关闭。否则，由于Python进程会立刻结束，将导致窗口被立刻关闭。
+
+`turtle`包本身只是一个绘图库，但是配合Python代码，就可以绘制各种复杂的图形。例如，通过循环绘制5个五角星：
+
+```python
+from turtle import *
+
+def drawStar(x, y):
+  pu()
+  goto(x, y)
+  pd()
+  # set heading: 0
+  seth(0)
+  for i in range(5):
+    fd(40)
+    rt(144)
+
+for x in range(0, 250, 50):
+  drawStar(x, 0)
+
+done()
+```
+
+使用递归，可以绘制出非常复杂的图形。例如，下面的代码可以绘制一棵分型树：
+
+```python
+from turtle import *
+
+# 设置色彩模式是RGB:
+colormode(255)
+
+lt(90)
+
+lv = 14
+l = 120
+s = 45
+
+width(lv)
+
+# 初始化RGB颜色:
+r = 0
+g = 0
+b = 0
+pencolor(r, g, b)
+
+penup()
+bk(l)
+pendown()
+fd(l)
+
+def draw_tree(l, level):
+  global r, g, b
+  # save the current pen width
+  w = width()
+
+  # narrow the pen width
+  width(w * 3.0 / 4.0)
+  # set color:
+  r = r + 1
+  g = g + 2
+  b = b + 3
+  pencolor(r % 200, g % 200, b % 200)
+
+  l = 3.0 / 4.0 * l
+
+  lt(s)
+  fd(l)
+
+  if level < lv:
+    draw_tree(l, level + 1)
+  bk(l)
+  rt(2 * s)
+  fd(l)
+
+  if level < lv:
+    draw_tree(l, level + 1)
+  bk(l)
+  lt(s)
+
+  # restore the previous pen width
+  width(w)
+
+speed("fastest")
+
+draw_tree(l, 4)
+
+done()
+```
