@@ -9006,7 +9006,7 @@ psutil 使得 Python 程序获取系统信息变得易如反掌。
 psutil 还可以获取用户信息、Windows 服务等很多有用的系统信息，具体请参考[psutil 官网](https://psutil.readthedocs.io/en/latest/)。
 :::
 
-## 17. 图形界面
+## 16. 图形界面
 
 Python 支持多种图形界面的第三方库，包括：
 
@@ -9019,7 +9019,7 @@ Python 支持多种图形界面的第三方库，包括：
 
 但是 Python 自带的库是支持 Tk 的 Tkinter，使用 Tkinter，无需安装任何包，就可以直接使用。
 
-### 17.1 Tkinter
+### 16.1 Tkinter
 
 我们编写的 Python 代码会调用内置的 Tkinter，Tkinter 封装了访问 Tk 的接口；Tk 是一个图形库，支持多个操作系统，使用 Tcl 语言开发；Tk 会调用操作系统提供的本地 GUI 接口，完成最终的 GUI。所以，我们的代码只需要调用 Tkinter 提供的接口就可以了。
 
@@ -9104,7 +9104,7 @@ Python 支持多种图形界面的第三方库，包括：
 Python 内置的 Tkinter 可以满足基本的 GUI 程序的要求，如果是非常复杂的 GUI 程序，建议用操作系统原生支持的语言和库来编写。
 :::
 
-### 17.2 海龟绘图
+### 16.2 海龟绘图
 
 在 1966 年，Seymour Papert 和 Wally Feurzig 发明了一种专门给儿童学习编程的语言——LOGO 语言，它的特色就是通过编程指挥一个小海龟（turtle）在屏幕上绘图。
 
