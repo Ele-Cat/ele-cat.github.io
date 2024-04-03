@@ -9238,6 +9238,7 @@ done()
 
 ## 17. 电子邮件
 
+:::tip 引子
 假设我们自己的电子邮件地址是`me@163.com`，对方的电子邮件地址是`friend@sina.com`（地址都是虚构的），现在我们用`Outlook`或者`Foxmail`之类的软件写好邮件，填上对方的 Email 地址，点“发送”，电子邮件就发出去了。这些电子邮件软件被称为**MUA**：Mail User Agent——邮件用户代理。
 
 Email 从 MUA 发出去，不是直接到达对方电脑，而是发到**MTA**：Mail Transfer Agent——邮件传输代理，就是那些 Email 服务提供商，比如网易、新浪等等。由于我们自己的电子邮件是`163.com`，所以，Email 首先被投递到网易提供的 MTA，再由网易的 MTA 发到对方服务商，也就是新浪的 MTA。这个过程中间可能还会经过别的 MTA，但是我们不关心具体路线，我们只关心速度。
@@ -9256,6 +9257,7 @@ Email 到达新浪的 MTA 后，由于对方使用的是`@sina.com`的邮箱，�
 
 1. 编写 MUA 把邮件发到 MTA；
 2. 编写 MUA 从 MDA 上收邮件。
+   :::
 
 发邮件时，MUA 和 MTA 使用的协议就是 `SMTP`：Simple Mail Transfer Protocol，后面的 MTA 到另一个 MTA 也是用 SMTP 协议。
 
@@ -9268,3 +9270,56 @@ Email 到达新浪的 MTA 后，由于对方使用的是`@sina.com`的邮箱，�
 在使用 Python 收发邮件前，请先准备好至少两个电子邮件，如`xxx@163.com`，`xxx@sina.com`，`xxx@qq.com`等，注意两个邮箱不要用同一家邮件服务商。
 
 最后特别注意，目前大多数邮件服务商都需要手动打开 SMTP 发信和 POP 收信的功能，否则只允许在网页登录。
+
+### 17.1 SMTP 发送邮件
+
+SMTP 是发送邮件的协议，Python 内置对 SMTP 的支持，可以发送纯文本邮件、HTML 邮件以及带附件的邮件。
+
+Python 对 SMTP 支持有`smtplib`和`email`两个模块，`email`负责构造邮件，`smtplib`负责发送邮件。
+
+1. 发送普通邮件
+
+   ```python
+   import smtplib
+   from email.mime.text import MIMEText
+   from email.header import Header
+   from email.utils import formataddr
+
+   # 设置发件人和收件人
+   sender = input('Sender: ')
+   password = input('Password: ')
+   receiver = input('Receiver: ')
+
+   # 创建邮件内容
+   message = MIMEText('This is the body of the email', 'plain', 'utf-8')
+   message['From'] = formataddr((str(Header('Your Name', 'utf-8')), sender))
+   message['To'] = receiver
+   message['Subject'] = 'Subject of the Email'
+
+   # 连接到SMTP服务器并发送邮件
+   server = smtplib.SMTP('smtp.qq.com', 25)
+   server.set_debuglevel(1)
+   server.login(sender, password)
+   server.sendmail(sender, [receiver], message.as_string())
+   server.quit()
+   ```
+
+   注意到构造`MIMEText`对象时，第一个参数就是邮件正文，第二个参数是 MIME 的 subtype，传入`'plain'`表示纯文本，最终的 MIME 就是`'text/plain'`，最后一定要用`utf-8`编码保证多语言兼容性。
+
+   我们用`set_debuglevel(1)`就可以打印出和 SMTP 服务器交互的所有信息。SMTP 协议就是简单的文本命令和响应。`login()`方法用来登录 SMTP 服务器，`sendmail()`方法就是发邮件，由于可以一次发给多个人，所以传入一个`list`，邮件正文是一个`str`，`as_string()`把`MIMEText`对象变成`str`。
+
+2. 发送 HTML 邮件
+
+   如果我们要发送 HTML 邮件，而不是普通的纯文本文件怎么办？方法很简单，在构造`MIMEText`对象时，把 HTML 字符串传进去，再把第二个参数由`plain`变为`html`就可以了：
+
+   ```python
+   msg = MIMEText('<html><body><h1>Hello</h1>' +
+       '<p>send by <a href="http://www.python.org">Python</a>...</p>' +
+       '</body></html>', 'html', 'utf-8')
+   ```
+
+3. 发送附件
+
+如果Email中要加上附件怎么办？带附件的邮件可以看做包含若干部分的邮件：文本和各个附件本身，所以，可以构造一个`MIMEMultipart`对象代表邮件本身，然后往里面加上一个`MIMEText`作为邮件正文，再继续往里面加上表示附件的`MIMEBase`对象即可：
+
+### 17.2 POP3 收取邮件
