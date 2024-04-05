@@ -9313,13 +9313,110 @@ Python 对 SMTP 支持有`smtplib`和`email`两个模块，`email`负责构造�
    如果我们要发送 HTML 邮件，而不是普通的纯文本文件怎么办？方法很简单，在构造`MIMEText`对象时，把 HTML 字符串传进去，再把第二个参数由`plain`变为`html`就可以了：
 
    ```python
-   msg = MIMEText('<html><body><h1>Hello</h1>' +
-       '<p>send by <a href="http://www.python.org">Python</a>...</p>' +
-       '</body></html>', 'html', 'utf-8')
+   message = MIMEText('<html><body><h1>Hello</h1>' +
+     '<p>send by <a href="http://www.python.org">Python</a>...</p>' +
+     '</body></html>', 'html', 'utf-8')
    ```
 
 3. 发送附件
 
-如果Email中要加上附件怎么办？带附件的邮件可以看做包含若干部分的邮件：文本和各个附件本身，所以，可以构造一个`MIMEMultipart`对象代表邮件本身，然后往里面加上一个`MIMEText`作为邮件正文，再继续往里面加上表示附件的`MIMEBase`对象即可：
+   如果 Email 中要加上附件怎么办？带附件的邮件可以看做包含若干部分的邮件：文本和各个附件本身，所以，可以构造一个`MIMEMultipart`对象代表邮件本身，然后往里面加上一个`MIMEText`作为邮件正文，再继续往里面加上表示附件的`MIMEBase`对象即可：
+
+   ```python
+   import smtplib
+   from email import encoders
+   from email.mime.text import MIMEText
+   from email.mime.base import MIMEBase
+   from email.mime.multipart import MIMEMultipart
+   from email.header import Header
+   from email.utils import formataddr
+
+   # 设置发件人和收件人
+   sender = input('Sender: ')
+   password = input('Password: ')
+   receivers = ["lijiamao0525@163.com", "951572198@qq.com"]
+
+   # 创建邮件内容
+   message = MIMEMultipart()
+   message['From'] = formataddr((str(Header('Your Name', 'utf-8')), sender))
+   message['To'] = ','.join(receivers)
+   message['Subject'] = 'Subject of the Email'
+
+   # 邮件正文是MIMEText:
+   message.attach(MIMEText('Send with file', 'plain', 'utf-8'))
+
+   # 添加附件就是加上一个MIMEBase，从本地读取一个图片:
+   with open('../16/001.jpg', 'rb') as f:
+     # 设置附件的MIME和文件名，这里是png类型:
+     mime = MIMEBase('image', 'png', filename='test.png')
+     # 加上必要的头信息:
+     mime.add_header('Content-Disposition', 'attachment', filename='test.png')
+     mime.add_header('Content-ID', '<0>')
+     mime.add_header('X-Attachment-Id', '0')
+     # 把附件的内容读进来:
+     mime.set_payload(f.read())
+     # 用Base64编码:
+     encoders.encode_base64(mime)
+     # 添加到MIMEMultipart:
+     message.attach(mime)
+
+   # 连接到SMTP服务器并发送邮件
+   server = smtplib.SMTP('smtp.qq.com', 25)
+   server.set_debuglevel(1)
+   server.login(sender, password)
+   server.sendmail(sender, receivers, message.as_string())
+   server.quit()
+   ```
+
+   注意：`message`类型已变为`MIMEMultipart`。
+
+4. 发送图片
+
+   如果要把一个图片嵌入到邮件正文中怎么做？直接在 HTML 邮件中链接图片地址行不行？答案是，大部分邮件服务商都会自动屏蔽带有外链的图片，因为不知道这些链接是否指向恶意网站。
+
+   要把图片嵌入到邮件正文中，我们只需按照发送附件的方式，先把邮件作为附件添加进去，然后，在 HTML 中通过引用 src="cid:0"就可以把附件作为图片嵌入了。如果有多个图片，给它们依次编号，然后引用不同的 cid:x 即可。
+
+   把上面代码加入 MIMEMultipart 的 MIMEText 从 plain 改为 html，然后在适当的位置引用图片：
+
+   ```python
+   message.attach(MIMEText('<html><body><h1>Hello</h1>' +
+     '<p><img src="cid:0"></p>' +
+     '</body></html>', 'html', 'utf-8'))
+   ```
+
+5. 同时支持 HTML 和 Plain 格式
+
+   如果我们发送 HTML 邮件，收件人通过浏览器或者 Outlook 之类的软件是可以正常浏览邮件内容的，但是，如果收件人使用的设备太古老，查看不了 HTML 邮件怎么办？
+
+   办法是在发送 HTML 的同时再附加一个纯文本，如果收件人无法查看 HTML 格式的邮件，就可以自动降级查看纯文本邮件。
+
+   利用`MIMEMultipart`就可以组合一个 HTML 和 Plain，要注意指定 subtype 是`alternative`：
+
+   ```python
+   message = MIMEMultipart('alternative')
+   message['From'] = ...
+   message['To'] = ...
+   message['Subject'] = ...
+
+   message.attach(MIMEText('hello', 'plain', 'utf-8'))
+   message.attach(MIMEText('<html><body><h1>Hello</h1></body></html>', 'html', 'utf-8'))
+   ```
+
+:::tip 小结
+使用Python的smtplib发送邮件十分简单，只要掌握了各种邮件类型的构造方法，正确设置好邮件头，就可以顺利发出。
+
+构造一个邮件对象就是一个Messag对象，如果构造一个MIMEText对象，就表示一个文本邮件对象，如果构造一个MIMEImage对象，就表示一个作为附件的图片，要把多个对象组合起来，就用MIMEMultipart对象，而MIMEBase可以表示任何对象。它们的继承关系如下：
+
+```
+Message
++- MIMEBase
+  +- MIMEMultipart
+  +- MIMENonMultipart
+    +- MIMEMessage
+    +- MIMEText
+    +- MIMEImage
+```
+这种嵌套关系就可以构造出任意复杂的邮件。你可以通过[email.mime文档](https://docs.python.org/zh-cn/3/library/email.mime.html)查看它们所在的包以及详细的用法。
+:::
 
 ### 17.2 POP3 收取邮件
