@@ -13,10 +13,15 @@ outline: [2, 3]
 ```js
 let str = "123";
 console.log(parseInt(str)); // 123
+
 let floatStr = "3.14";
 console.log(parseFloat(floatStr)); // 3.14
-let numStr = "42";
-console.log(Number(numStr)); // 42
+
+console.log(Number(str)); // 123
+console.log(Number(floatStr)); // 3.14
+
+console.log(str * 1); // 123
+console.log(floatStr * 1); // 3.14
 ```
 
 ### 02-数字格式化
@@ -35,11 +40,14 @@ console.log(num.toExponential(2)); // "3.14e+0"
 使用 Math 对象提供的方法，如 `​Math.round()`​（四舍五入）、`​Math.floor()`​（向下取整）、`​Math.ceil()`​（向上取整）、`​Math.abs()`​（绝对值）等。
 
 ```js
+console.log(Math.round(3.4)); // 3
 console.log(Math.round(3.5)); // 4
 console.log(Math.floor(3.9)); // 3
 console.log(Math.ceil(3.1)); // 4
 console.log(Math.abs(-4)); // 4
 ```
+
+## 字符串
 
 ## 数组
 
