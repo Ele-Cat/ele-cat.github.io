@@ -151,17 +151,17 @@ ES6 新加了箭头函数
 const fn = (a, b) => {};
 
 // 如果只有一个参数，可以省略括号
-const fn = (name) => {};
+const fn = name => {};
 
 // 如果函数体里只有一句return
-const fn = (name) => {
+const fn = name => {
   return 2 * name;
 };
 // 可简写为
-const fn = (name) => 2 * name;
+const fn = name => 2 * name;
 
 // 如果返回的是对象
-const fn = (name) => ({ name: name });
+const fn = name => ({ name: name });
 ```
 
 ::: tip 普通函数和箭头函数的区别：
