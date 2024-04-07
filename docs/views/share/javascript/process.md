@@ -60,8 +60,6 @@ console.log(str.length); // 11
 
 ## 数组
 
-> 数组是 Javascript 最常见的概念之一，它为我们提供了处理数据的许多可能性，熟悉数组的一些常用操作是很有必要的。
-
 ### 01-数组去重
 
 1、Array.from()叠加 new Set()方法
