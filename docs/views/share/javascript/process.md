@@ -51,11 +51,140 @@ console.log(Math.abs(-4)); // 4
 
 ### 01-获取字符串长度
 
-使用字符串的length属性。
+使用字符串的 `length` 属性。
 
 ```js
 let str = "Hello World";
 console.log(str.length); // 11
+```
+
+### 02-字符串连接
+
+使用`+`运算符、`concat()`、`${}`方法。
+
+```js
+let str1 = "Hello";
+let str2 = "World";
+console.log(str1 + " " + str2); // "Hello World"
+```
+
+```js
+let str1 = "Hello";
+let str2 = " ";
+let str3 = "World";
+console.log(str1.concat(str2, str3)); // "Hello World"
+```
+
+```js
+let str1 = "Hello";
+let str2 = "World";
+console.log(`${str1} ${str2}`); // "Hello World"
+```
+
+### 03-字符串截取
+
+使用 `substring()`、`substr()`或 `slice()`方法。
+
+```js
+let str = "Hello World";
+console.log(str.substring(0, 5)); // "Hello"
+console.log(str.substr(6, 5)); // "World"
+console.log(str.slice(-5)); // "World"
+```
+
+:::tip 区别
+
+1. `substring(startIndex, endIndex) `方法：
+
+   - 描述：返回一个新的字符串，包括从 `startIndex` 到 `endIndex - 1`（不包括 `endIndex`）之间所有的字符。
+   - 参数：
+     - `startIndex`：必需，要提取的子字符串的起始位置的索引。如果是负数，则视为 0。
+     - `endIndex`：可选，要提取的子字符串的结束位置的索引。如果省略该参数，则提取到字符串的末尾。
+   - 返回值：返回截取的子字符串。
+
+2. `substr(startIndex, length) `方法：
+
+   - 描述：返回一个新的字符串，从 `startIndex` 开始，长度为 `length` 的字符子串。
+   - 参数：
+     - `startIndex`：必需，要从该索引开始提取子字符串。如果是负数，则表示从末尾倒数索引。
+     - `length`：可选，指定要提取的字符数。如果省略或超出字符串长度，则提取到字符串的末尾。
+   - 返回值：返回截取的子字符串。
+
+3. `slice(startIndex, endIndex) `方法：
+
+   - 描述：返回一个新的字符串，包括从 `startIndex` 到 `endIndex - 1`（不包括 `endIndex`）之间所有的字符。
+   - 参数：
+     - `startIndex`：可选，要提取的子字符串的起始位置的索引。如果是负数，则从末尾开始计数。
+     - `endIndex`：可选，要提取的子字符串的结束位置的索引。如果省略该参数，则提取到字符串的末尾。
+   - 返回值：返回截取的子字符串。
+
+这三个方法有一些区别：
+
+- `substring()` 方法将 `startIndex` 和 `endIndex` 作为参数，并根据这两个索引提取字符。如果 `startIndex` 大于 `endIndex`，则交换这两个值。
+- `substr()` 方法将 `startIndex` 和 `length` 作为参数，并提取从 `startIndex` 开始指定长度的字符。
+- `slice()` 方法使用 `startIndex` 和 `endIndex` 作为参数，并提取从 `startIndex` 到 `endIndex - 1`（不包括 `endIndex`）之间的字符。
+
+:::
+
+### 04-字符串查找
+
+使用`indexOf()`、`lastIndexOf()`、`startsWith()`、`endsWith()`或`includes()`等方法。
+
+```js
+let str = "Hello World";
+console.log(str.indexOf("o")); // 4
+console.log(str.lastIndexOf("o")); // 7
+console.log(str.startsWith("Hello")); // true
+console.log(str.endsWith("World")); // true
+console.log(str.includes("llo")); // true
+```
+
+:::tip
+
+- **indexOf(searchValue, startIndex)​:** 返回指定字符或子字符串在原字符串中从 startIndex 开始第一次出现的位置的索引。如果未找到，则返回-1。
+- **​lastIndexOf(searchValue, startIndex)​:** 返回指定字符或子字符串在原字符串中从 startIndex 开始最后一次出现的位置的索引。如果未找到，则返回-1。
+- ​**​startsWith(searchValue, startIndex)​:** 检查字符串是否以指定的字符或子字符串在 startIndex 位置开始。返回布尔值。
+- **endsWith(searchValue, endIndex)​:** 检查字符串是否以指定的字符或子字符串在 endIndex 位置结尾。返回布尔值。
+- **​includes(searchValue, startIndex):​** 检查字符串是否包含指定的字符或子字符串。返回布尔值。
+  :::
+
+### 05-字符串替换
+
+使用`replace()`或正则表达式的`replace()`方法。
+
+```js
+let str = "Hello World";
+console.log(str.replace("Hello", "Hi")); // "Hi World"
+console.log(str.replace(/o/g, "e")); // "Helle Werld"
+```
+
+:::tip
+
+`replace()` 方法用于在字符串中替换指定的字符或子字符串。
+
+语法：`string.replace(searchValue, replaceValue)`
+
+参数：
+
+- `searchValue`：必需，要被替换的字符或子字符串。
+- `replaceValue`：必需，替换 `searchValue` 的新字符或子字符串。
+
+返回值：一个新的字符串，其中所有的 `searchValue` 都被 `replaceValue` 替换。
+
+注意事项：
+
+- `replace()` 方法只会替换第一个匹配到的字符或子字符串。如果需要替换所有匹配到的字符或子字符串，可以使用正则表达式，并且使用全局(g)标志。
+- `replace()` 方法不会修改原始字符串，而是返回一个新的字符串作为结果。
+
+:::
+
+### 06-字符串分割
+
+使用`split()`方法将字符串拆分成数组。
+
+```js
+let str = "Hello,World";
+console.log(str.split(",")); // ["Hello", "World"]
 ```
 
 ## 数组
