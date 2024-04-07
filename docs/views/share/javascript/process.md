@@ -49,6 +49,15 @@ console.log(Math.abs(-4)); // 4
 
 ## 字符串
 
+### 01-获取字符串长度
+
+使用字符串的length属性。
+
+```js
+let str = "Hello World";
+console.log(str.length); // 11
+```
+
 ## 数组
 
 > 数组是 Javascript 最常见的概念之一，它为我们提供了处理数据的许多可能性，熟悉数组的一些常用操作是很有必要的。
