@@ -14,6 +14,7 @@ import VPExample from './components/vp-demo/example.vue'
 import NavLinks from './components/NavLinks.vue'
 import Comment from './components/Comment.vue'
 import Translate from './components/Translate.vue'
+import Girls from './components/Girls.vue'
 
 export default {
   ...DefaultTheme,
@@ -25,6 +26,7 @@ export default {
     app.component('NavLinks', NavLinks)
     app.component('Comment', Comment)
     app.component('Translate', Translate)
+    app.component('Girls', Girls)
   },
   setup() {
     const route = useRoute();

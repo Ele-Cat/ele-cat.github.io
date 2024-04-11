@@ -19,3 +19,13 @@
     margin-top: 24px;
   }
 }
+
+.girls-layout {
+  .VPContent {
+    padding-top: 0;
+    margin: 0;
+    .VPHome {
+      padding-bottom: 0 !important;
+    }
+  }
+}
