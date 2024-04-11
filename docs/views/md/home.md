@@ -37,7 +37,7 @@ example/vue3/02
 
 &emsp;
 
-捐赠 ![捐赠](https://img.shields.io/badge/%E2%98%95-Buy%20Me%20A%20Coffee-%23be4141.svg?colorB=00A862)
+捐赠 ![捐赠](https://img.shields.io/badge/%E2%98%95-Buy%20Me%20A%20Coffee-%23be4141.svg?colorB=00A862) ![visitor badge](https://visitor-badge.laobi.icu/badge?page_id=ele-cat.gitee.io&left_text=Contributors&left_color=%23595959&right_color=%231283c3&query_only=false&format=true)
 
 <span class="donate">如果你觉得本项目对你有帮助，或者想对我微小的工作表示一点资瓷，你可以请我喝一杯可乐，感谢! :pray: :vulcan_salute:</span>
 
