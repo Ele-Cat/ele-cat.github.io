@@ -143,7 +143,7 @@ import { ref, onMounted, nextTick } from "vue";
 // 樱道 https://img.r10086.com/
 
 // Tab的位置
-const activeTab = ref("0");
+const activeTab = ref("1");
 
 // https://imgapi.cn/
 
