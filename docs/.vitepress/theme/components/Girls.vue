@@ -169,8 +169,8 @@ const picSourceOptions = [
     value: "https://imgapi.cn/cos2.php",
   },
   {
-    label: '听风过畔',
-    value: 'https://api.osgz.com'
+    label: "听风过畔",
+    value: "https://api.osgz.com",
   },
   // {
   //   label: '二次元',
@@ -187,7 +187,7 @@ const isMuted = ref(false);
 
 const next = () => {
   if (activeTab.value == "0") {
-    getVideos()
+    getVideos();
     // bind(get("next"), "click", randomm(player.value));
   } else {
     let newPicSourceValue =
@@ -227,22 +227,22 @@ const bind = (element, event, callback) => {
 onMounted(() => {
   nextTick(() => {
     getVideos();
-  })
+  });
   document.onkeydown = function (e) {
-    let key = window.event["keyCode"];
-    if (key == "32") {
+    const { keyCode } = e;
+    if (keyCode === 32) {
       playClick();
-    } else if (key == "37") {
+    } else if (keyCode === 37) {
       if (activeTab.value == "0") return;
       activeTab.value = "0";
       player.value.play();
-    } else if (key == "39") {
+    } else if (keyCode === 39) {
       if (activeTab.value == "1") return;
       activeTab.value = "1";
       player.value.pause();
-    } else if (key == "40") {
+    } else if (keyCode === 40) {
       next();
-    } else if (key == "77") {
+    } else if (keyCode === 77) {
       loopClick();
     }
   };
@@ -325,7 +325,12 @@ const activeTabChange = (e) => {
       max-height: 100%;
     }
   }
-  :deep(.ant-tabs-top > .ant-tabs-nav, .ant-tabs-bottom > .ant-tabs-nav, .ant-tabs-top > div > .ant-tabs-nav, .ant-tabs-bottom > div > .ant-tabs-nav) {
+  :deep(
+      .ant-tabs-top > .ant-tabs-nav,
+      .ant-tabs-bottom > .ant-tabs-nav,
+      .ant-tabs-top > div > .ant-tabs-nav,
+      .ant-tabs-bottom > div > .ant-tabs-nav
+    ) {
     margin: 0 !important;
     .ant-tabs-nav-list {
       width: 100%;
@@ -339,7 +344,6 @@ const activeTabChange = (e) => {
     }
   }
 }
-
 
 .btns {
   position: fixed;
