@@ -165,6 +165,11 @@ export const NAV_DATA = [
         link: "https://ele-cat.gitee.io/vue3-wechat/",
       },
       {
+        title: "小姐姐",
+        desc: "心旷神怡",
+        link: "https://ele-cat.gitee.io/views/apps/girls.html",
+      },
+      {
         icon: 'https://qwerty.fe-mm.com/apple-touch-icon.png',
         title: 'Qwerty Learner',
         desc: '为键盘工作者设计的单词记忆与英语肌肉记忆锻炼软件',

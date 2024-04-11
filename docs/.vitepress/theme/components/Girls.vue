@@ -1,15 +1,15 @@
 <template>
   <div class="cute-girl">
-    <!-- <div class="box-height box-height-full">
+    <div class="box-height box-height-full">
       <img :src="picSourceValue" />
-    </div> -->
+    </div>
 
-    <div class="box-height" v-show="activeTab === '0'">
+    <!-- <div class="box-height" v-show="activeTab === '0'">
       <video
         id="player"
         ref="player"
         :muted="isMuted"
-        src="http://lx.linxi.icu/API/xjj.php"
+        src="https://lx.linxi.icu/API/xjj.php"
         :poster="picSourceOptions[0].value"
         autoplay
         :loop="isLoop"
@@ -35,7 +35,7 @@
       <a-tab-pane key="1">
         <template #tab> <FileImageFilled />图片 </template>
       </a-tab-pane>
-    </a-tabs>
+    </a-tabs> -->
 
     <div class="btns">
       <!-- 换源按钮 -->
@@ -265,6 +265,7 @@ const getVideos = () => {
 
   bind(videoPlayer, "error", () => {
     console.log("error");
+    if (activeTab.value == "1") return;
     randomm(videoPlayer);
   });
   bind(videoPlayer, "ended", () => {
