@@ -9,7 +9,7 @@
         id="player"
         ref="player"
         :muted="isMuted"
-        src="https://lx.linxi.icu/API/xjj.php"
+        :src="videoSource"
         :poster="picSourceOptions[0].value"
         autoplay
         :loop="isLoop"
@@ -142,10 +142,14 @@ import { ref, onMounted, nextTick } from "vue";
 
 // 樱道 https://img.r10086.com/
 
-// Tab的位置
 const activeTab = ref("1");
 
 // https://imgapi.cn/
+// const videoSource = ref("https://tucdn.wpon.cn/api-girl/index.php");
+// const videoSource = ref("http://api.yujn.cn/api/zzxjj.php?type=video");
+// const videoSource = ref("http://lx.linxi.icu/API/xjj.php");
+const videoSource = ref("https://777.cam/api/M/?type=302");
+
 
 const picSourceOptions = [
   {
@@ -172,6 +176,10 @@ const picSourceOptions = [
     label: "听风过畔",
     value: "https://api.osgz.com",
   },
+  {
+    label: "嗨丝",
+    value: "https://v2.api-m.com/api/heisi?return=302",
+  }
   // {
   //   label: '二次元',
   //   value: 'https://api.nmb.show/1985acg.php'
@@ -194,7 +202,7 @@ const next = () => {
       picSourceValue.value.indexOf("?") >= 0
         ? picSourceValue.value.split("?")[0]
         : picSourceValue.value;
-    picSourceValue.value = newPicSourceValue + "?id=" + Math.random();
+    picSourceValue.value = `${picSourceValue.value.indexOf("?") >= 0 ? picSourceValue.value + '&' : picSourceValue.value + '?'}id=${Math.random()}`;
     picSourceOptions.map((item) => {
       let picItemValue =
         item.value.indexOf("?") >= 0 ? item.value.split("?")[0] : item.value;
@@ -216,6 +224,8 @@ const sourceChange = () => {
 };
 
 const player = ref(null);
+const videoRef = ref(null);
+const sourceRef = ref(null);
 
 const get = (id) => {
   return document.getElementById(id);
@@ -249,10 +259,12 @@ onMounted(() => {
 });
 
 const randomm = function (videoPlayer) {
-  videoPlayer["src"] = "http://lx.linxi.icu/API/xjj.php?_t=" + Math.random();
+  videoPlayer["src"] = `${videoSource.value}?_t=${Math.random()}`;
   videoPlayer.load();
-  videoPlayer.play();
-  isMuted.value = false;
+  bind(videoPlayer, "canplay", () => {
+    videoPlayer.play();
+    isMuted.value = false;
+  });
 };
 
 // 获取视频
@@ -266,9 +278,10 @@ const getVideos = () => {
   bind(videoPlayer, "error", () => {
     console.log("error");
     if (activeTab.value == "1") return;
-    randomm(videoPlayer);
+    // randomm(videoPlayer);
   });
   bind(videoPlayer, "ended", () => {
+    if (activeTab.value == "1") return;
     if (!isLoop.value) randomm(videoPlayer);
   });
   bind(videoPlayer, "playing", () => {
