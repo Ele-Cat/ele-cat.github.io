@@ -1,5 +1,5 @@
 ---
-layout: home # 布局
+layout: page # 布局
 navbar: false
 sidebar: false # 侧边栏
 outline: 0 # 侧边栏深度

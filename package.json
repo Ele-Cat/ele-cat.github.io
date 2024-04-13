@@ -14,7 +14,7 @@
     "markdown-it-container": "^4.0.0",
     "prismjs": "^1.29.0",
     "sass": "^1.69.7",
-    "vitepress": "^1.0.0-rc.35"
+    "vitepress": "^1.1.0"
   },
   "dependencies": {
     "@vueuse/core": "^10.9.0",

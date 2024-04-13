@@ -1,7 +1,7 @@
 <template>
   <div class="cute-girl">
     <div class="box-height box-height-full" v-show="onlyImg">
-      <img :src="picSourceValue" onerror="next()" />
+      <img :src="picSourceValue" @error="next" />
     </div>
 
     <div v-show="!onlyImg">

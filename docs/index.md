@@ -4,7 +4,7 @@ layout: home
 
 title: 可樂の學習站點
 titleTemplate: 由 Vite 和 Vue 驱动的静态站点生成器
-
+pageClass: homepage-layout # 自定义页面类名
 hero:
   name: "可樂の學習站點"
   tagline: 一只站在树上的鸟儿，从不担心脚下树枝断裂，因为它相信的不是树枝，而是它的翅膀。
