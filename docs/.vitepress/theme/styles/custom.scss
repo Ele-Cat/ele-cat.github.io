@@ -51,11 +51,11 @@
   --vp-c-brand-dark: var(--vp-c-purple-dark);
   --vp-c-brand-darker: var(--vp-c-purple-darker);
 
-  --vp-c-code-bg: rgb(31, 243, 253);
+  --vp-c-code-bg: rgb(31, 243, 253, 0.6);
 }
 
 html.dark {
-  --vp-c-code-bg: rgb(31, 233, 233);
+  --vp-c-code-bg: rgb(31, 233, 233, 0.4);
 
   --vp-c-bg-opacity: rgb(27, 27, 31, 0.6);
 }
