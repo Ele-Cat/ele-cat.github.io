@@ -199,7 +199,6 @@ const next = () => {
     // bind(get("next"), "click", randomm(player.value));
   } else {
     let picSourceValue = picSourceOptions[picSourceIdx.value]['value']
-    console.log('picSourceValue: ', picSourceValue);
     if (picSourceValue.indexOf("_t") >= 0) {
       let flag = picSourceValue.indexOf("?_t") >= 0 ? '?' : '&';
       picSourceValue =  `${picSourceValue.split(flag)[0]}${flag}_t=${new Date().getTime()}`;
