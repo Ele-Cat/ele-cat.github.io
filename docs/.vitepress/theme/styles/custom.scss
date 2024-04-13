@@ -69,7 +69,9 @@ html.dark {
 // 顶部菜单
 $menu-gap: 6px;
 .VPMenu {
+  min-width: 100px !important;
   padding: $menu-gap !important;
+  overflow: hidden;
   .VPMenuGroup {
     margin: 0 (-$menu-gap) !important;
     padding: 10px $menu-gap 8px;
