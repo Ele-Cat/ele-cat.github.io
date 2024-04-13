@@ -1,41 +1,43 @@
 <template>
   <div class="cute-girl">
-    <div class="box-height box-height-full">
-      <img :src="picSourceValue" />
+    <div class="box-height box-height-full" v-show="onlyImg">
+      <img :src="picSourceValue" onerror="next()" />
     </div>
 
-    <!-- <div class="box-height" v-show="activeTab === '0'">
-      <video
-        id="player"
-        ref="player"
-        :muted="isMuted"
-        :src="videoSource"
-        :poster="picSourceOptions[0].value"
-        autoplay
-        :loop="isLoop"
-        webkit-playsinline
-        playsinline
-      ></video>
-    </div>
+    <div v-show="!onlyImg">
+      <div class="box-height" v-show="activeTab === '0'">
+        <video
+          id="player"
+          ref="player"
+          :muted="videoOptions.isMuted"
+          :src="videoSource"
+          :poster="picSourceOptions[0].value"
+          autoplay
+          :loop="videoOptions.isLoop"
+          webkit-playsinline
+          playsinline
+        ></video>
+      </div>
 
-    <div class="box-height" v-show="activeTab === '1'">
-      <img :src="picSourceValue" />
-    </div>
+      <div class="box-height" v-show="activeTab === '1'">
+        <img :src="picSourceValue" />
+      </div>
 
-    <a-tabs
-      v-model:activeKey="activeTab"
-      tab-position="top"
-      tabBarGutter="0"
-      centered
-      @change="activeTabChange"
-    >
-      <a-tab-pane key="0">
-        <template #tab> <VideoCameraFilled />视频 </template>
-      </a-tab-pane>
-      <a-tab-pane key="1">
-        <template #tab> <FileImageFilled />图片 </template>
-      </a-tab-pane>
-    </a-tabs> -->
+      <a-tabs
+        v-model:activeKey="activeTab"
+        tab-position="top"
+        tabBarGutter="0"
+        centered
+        @change="activeTabChange"
+      >
+        <a-tab-pane key="0">
+          <template #tab> <VideoCameraFilled />视频 </template>
+        </a-tab-pane>
+        <a-tab-pane key="1">
+          <template #tab> <FileImageFilled />图片 </template>
+        </a-tab-pane>
+      </a-tabs>
+    </div>
 
     <div class="btns">
       <!-- 换源按钮 -->
@@ -58,7 +60,7 @@
               style="width: 100%"
               v-model:value="picSourceValue"
               placeholder="请选择"
-              @change="sourceChange()"
+              @change="sourceChange"
             >
               <a-select-option
                 v-for="item in picSourceOptions"
@@ -80,7 +82,7 @@
       <!--循环模式？ -->
       <a-tooltip placement="left">
         <template #title>
-          <span>{{ isLoop ? "循环模式" : "随机模式" }}</span>
+          <span>{{ videoOptions.isLoop ? "循环模式" : "随机模式" }}</span>
         </template>
         <a-button
           type="primary"
@@ -89,7 +91,7 @@
           @click="loopClick()"
         >
           <template #icon>
-            <RedoOutlined v-if="isLoop" />
+            <RedoOutlined v-if="videoOptions.isLoop" />
             <DoubleRightOutlined v-else />
           </template>
         </a-button>
@@ -108,7 +110,7 @@
       <!-- 暂停/继续 -->
       <a-tooltip placement="left">
         <template #title>
-          <span>{{ isPlaying ? "点击暂停" : "点击播放" }}</span>
+          <span>{{ videoOptions.isPlaying ? "点击暂停" : "点击播放" }}</span>
         </template>
         <a-button
           type="primary"
@@ -117,7 +119,7 @@
           @click="playClick()"
         >
           <template #icon>
-            <PauseCircleOutlined v-if="isPlaying" />
+            <PauseCircleOutlined v-if="videoOptions.isPlaying" />
             <PlayCircleOutlined v-else />
           </template>
         </a-button>
@@ -127,6 +129,7 @@
 </template>
 
 <script setup>
+import { useStorage } from "@vueuse/core";
 import {
   VideoCameraFilled,
   FileImageFilled,
@@ -138,20 +141,21 @@ import {
   PlayCircleOutlined,
 } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
-import { ref, onMounted, nextTick } from "vue";
+import { ref, reactive, computed, onMounted, nextTick } from "vue";
 
 // 樱道 https://img.r10086.com/
+// 买家秀 http://jiuli.xiaoapi.cn/i/img/ikmjx.php
 
-const activeTab = ref("1");
+const onlyImg = ref(true);
+const activeTab = useStorage("activeTab", "1");
 
 // https://imgapi.cn/
 // const videoSource = ref("https://tucdn.wpon.cn/api-girl/index.php");
 // const videoSource = ref("http://api.yujn.cn/api/zzxjj.php?type=video");
-// const videoSource = ref("http://lx.linxi.icu/API/xjj.php");
-const videoSource = ref("https://777.cam/api/M/?type=302");
+// const videoSource = ref("https://777.cam/api/M/?type=302");
+const videoSource = ref("http://lx.linxi.icu/API/xjj.php");
 
-
-const picSourceOptions = [
+const picSourceOptions = reactive([
   {
     label: "小姐姐1",
     value: "https://imgapi.cn/api.php?fl=meizi",
@@ -160,10 +164,6 @@ const picSourceOptions = [
     label: "小姐姐2",
     value: "https://tuapi.eees.cc/api.php?category=meinv",
   },
-  // {
-  //   label: '买家秀1',
-  //   value: 'http://jiuli.xiaoapi.cn/i/img/ikmjx.php'
-  // },
   {
     label: "cosplay1",
     value: "https://imgapi.cn/cos.php",
@@ -179,43 +179,44 @@ const picSourceOptions = [
   {
     label: "嗨丝",
     value: "https://v2.api-m.com/api/heisi?return=302",
-  }
-  // {
-  //   label: '二次元',
-  //   value: 'https://api.nmb.show/1985acg.php'
-  // },
-];
-// 图片地址
-const picSourceValue = ref(picSourceOptions[0].value);
-
-const isLoop = ref(true);
-const isPlaying = ref(false);
+  },
+]);
+const picSourceIdx = useStorage("picSourceIdx", 0);
 const sourceVisible = ref(false);
-const isMuted = ref(false);
+const picSourceValue = computed(() => {
+  return picSourceOptions[picSourceIdx.value]['value'];
+});
+
+let videoOptions = reactive({
+  isLoop: true,
+  isPlaying: false,
+  isMuted: false,
+})
 
 const next = () => {
   if (activeTab.value == "0") {
     getVideos();
     // bind(get("next"), "click", randomm(player.value));
   } else {
-    let newPicSourceValue =
-      picSourceValue.value.indexOf("?") >= 0
-        ? picSourceValue.value.split("?")[0]
-        : picSourceValue.value;
-    picSourceValue.value = `${picSourceValue.value.indexOf("?") >= 0 ? picSourceValue.value + '&' : picSourceValue.value + '?'}id=${Math.random()}`;
-    picSourceOptions.map((item) => {
-      let picItemValue =
-        item.value.indexOf("?") >= 0 ? item.value.split("?")[0] : item.value;
-      if (picItemValue == newPicSourceValue) {
-        item.value = picSourceValue.value;
+    let picSourceValue = picSourceOptions[picSourceIdx.value]['value']
+    console.log('picSourceValue: ', picSourceValue);
+    if (picSourceValue.indexOf("_t") >= 0) {
+      let flag = picSourceValue.indexOf("?_t") >= 0 ? '?' : '&';
+      picSourceValue =  `${picSourceValue.split(flag)[0]}${flag}_t=${new Date().getTime()}`;
+    } else {
+      picSourceValue += `${picSourceValue.indexOf("?") >= 0 ? '&' : '?'}_t=${Date.now()}`;
+    }
+    picSourceOptions.map((item, index) => {
+      if (picSourceIdx.value === index) {
+        item.value = picSourceValue;
       }
     });
   }
 };
 
 const key = "updatable";
-
-const sourceChange = () => {
+const sourceChange = (e) => {
+  picSourceIdx.value = picSourceOptions.findIndex(item => item.value === e)
   message.loading({ content: "切换中...", key });
   setTimeout(() => {
     message.success({ content: "切换成功", key, duration: 2 });
@@ -224,8 +225,6 @@ const sourceChange = () => {
 };
 
 const player = ref(null);
-const videoRef = ref(null);
-const sourceRef = ref(null);
 
 const get = (id) => {
   return document.getElementById(id);
@@ -259,43 +258,46 @@ onMounted(() => {
 });
 
 const randomm = function (videoPlayer) {
-  videoPlayer["src"] = `${videoSource.value}?_t=${Math.random()}`;
+  videoPlayer["src"] = `${videoSource.value}?_t=${new Date().getTime()}`;
   videoPlayer.load();
   bind(videoPlayer, "canplay", () => {
     videoPlayer.play();
-    isMuted.value = false;
+    videoOptions.isMuted = false;
   });
 };
 
 // 获取视频
 const getVideos = () => {
-  if (activeTab.value == "1") return;
+  if (onlyImg.value) activeTab.value = "1"
+  if (activeTab.value == "1") {
+    player.value.pause();
+    return
+  };
 
   const videoPlayer = player.value;
   randomm(videoPlayer);
-  // console.log(videoPlayer)
 
   bind(videoPlayer, "error", () => {
     console.log("error");
     if (activeTab.value == "1") return;
-    // randomm(videoPlayer);
+    randomm(videoPlayer);
   });
   bind(videoPlayer, "ended", () => {
     if (activeTab.value == "1") return;
-    if (!isLoop.value) randomm(videoPlayer);
+    if (!videoOptions.isLoop) randomm(videoPlayer);
   });
   bind(videoPlayer, "playing", () => {
-    isPlaying.value = true;
+    videoOptions.isPlaying = true;
   });
   bind(videoPlayer, "pause", () => {
-    isPlaying.value = false;
+    videoOptions.isPlaying = false;
   });
 };
 
 // 播放、暂停
 const playClick = () => {
-  isPlaying.value = !isPlaying.value;
-  if (isPlaying.value) {
+  videoOptions.isPlaying = !videoOptions.isPlaying;
+  if (videoOptions.isPlaying) {
     player.value.play();
   } else {
     player.value.pause();
@@ -304,8 +306,8 @@ const playClick = () => {
 
 // 切换循环模式
 const loopClick = () => {
-  isLoop.value = !isLoop.value;
-  message.success(isLoop.value ? "已开启循环模式" : "已开启随机模式");
+  videoOptions.isLoop = !videoOptions.isLoop;
+  message.success(videoOptions.isLoop ? "已开启循环模式" : "已开启随机模式");
 };
 
 // Tab切换
@@ -338,6 +340,10 @@ const activeTabChange = (e) => {
       max-width: 100%;
       max-height: 100%;
     }
+  }
+  .box-height-full {
+    height: 100vh;
+    background-color: transparent;
   }
   :deep(
       .ant-tabs-top > .ant-tabs-nav,
@@ -377,9 +383,5 @@ const activeTabChange = (e) => {
   .ant-btn + .ant-btn {
     margin-left: 0;
   }
-}
-.box-height-full {
-  height: 100vh;
-  background-color: transparent;
 }
 </style>
