@@ -6,7 +6,7 @@ outline: 0 # 侧边栏深度
 footer: false # 页脚
 prev: false # 上一页
 next: false # 下一页
-pageClass: translate-layout girls-layout # 自定义页面类名
+pageClass: girls-layout # 自定义页面类名
 editLink: false
 lastUpdated: false
 ---
@@ -15,4 +15,18 @@ lastUpdated: false
 
 <!-- <Comment /> -->
 
-<style src="./index.scss"></style>
+<script setup>
+import Girls from './components/Girls.vue'
+</script>
+
+<style lang="scss">
+.girls-layout {
+  .VPContent {
+    padding-top: 0;
+    margin: 0;
+    .VPHome {
+      padding-bottom: 0 !important;
+    }
+  }
+}
+</style>

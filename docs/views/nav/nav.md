@@ -17,6 +17,7 @@ pageClass: nav-layout # 自定义页面类名
 <Comment />
 
 <script setup>
+import NavLinks from './NavLinks.vue'
 import { NAV_DATA } from './data.js'
 </script>
 

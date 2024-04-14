@@ -16,4 +16,26 @@ lastUpdated: false
 
 <!-- <Comment /> -->
 
-<style src="./index.scss"></style>
+<script setup>
+import Translate from './components/Translate.vue'
+</script>
+
+<style lang="scss">
+.translate-layout {
+  /* 覆盖全局的 vp-layout-max-width（仅当前页面使用） */
+  --vp-layout-max-width: 1660px;
+
+  /* 修改 layout 最大宽度 */
+  .container {
+    max-width: var(--vp-layout-max-width) !important;
+    .aside {
+      display: none;
+    }
+  }
+  .content-container,
+  .content {
+    max-width: 100% !important;
+    padding-bottom: 0;
+  }
+}
+</style>
