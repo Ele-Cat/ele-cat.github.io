@@ -4,6 +4,7 @@ const nav = [
   {
     text: "笔记",
     items: [
+      { text: "博客", link: "/views/daily-notes/daily-notes", activeMatch: '^/views/daily-notes' },
       {
         text: "工具",
         items: [
@@ -59,7 +60,7 @@ const nav = [
       },
       {
         text: "Css",
-        items: [{ text: "样式Cool", link: "/views/share/css/generate" }],
+        items: [{ text: "样式Cool", link: "/views/share/css/generate", activeMatch: '^/views/share/css' }],
       },
       {
         text: "应用",

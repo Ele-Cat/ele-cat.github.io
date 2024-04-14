@@ -1,9 +1,25 @@
 const sidebar = {
-  // 当用户位于 `guide` 目录时，会显示此侧边栏
+  "/views/daily-notes/": [
+    { text: "返回目录", link: "/views/daily-notes/daily-notes" },
+    {
+      text: "2024",
+      collapsed: false,
+      items: [
+        { text: "从零快速编写油猴脚本", link: "/views/daily-notes/2024/001" },
+      ],
+    },
+    // {
+    //   text: "2023",
+    //   collapsed: false,
+    //   items: [
+    //     { text: "Git", link: "/views/daily-notes/2023/001.md" },
+    //   ],
+    // },
+  ],
   "/views/note/": [
     {
       text: "工具",
-      collapsed: true,
+      collapsed: false,
       items: [
         { text: "Git", link: "/views/note/git" },
         { text: "VuePress2", link: "/views/note/vuePress" },
@@ -12,7 +28,7 @@ const sidebar = {
     },
     {
       text: "前端",
-      collapsed: true,
+      collapsed: false,
       items: [
         { text: "Sass", link: "/views/note/sass" },
         { text: "UnoCSS", link: "/views/note/unocss" },
@@ -24,7 +40,7 @@ const sidebar = {
     },
     {
       text: "后端",
-      collapsed: true,
+      collapsed: false,
       items: [
         { text: "Node", link: "/views/note/node" },
         { text: "Python", link: "/views/note/python" },
@@ -35,7 +51,7 @@ const sidebar = {
   "/views/tools/": [
     {
       text: "实用插件",
-      collapsed: true,
+      collapsed: false,
       items: [
         { text: "Moment", link: "/views/tools/moment" },
         { text: "Vue Doc Preview", link: "/views/tools/vueDocPreview" },
@@ -47,7 +63,7 @@ const sidebar = {
   "/views/share/javascript/": [
     {
       text: "Javascript",
-      collapsed: true,
+      collapsed: false,
       items: [
         { text: "ES6-ES12", link: "/views/share/javascript/skill" },
         { text: "数据处理", link: "/views/share/javascript/process" },
@@ -59,7 +75,7 @@ const sidebar = {
   "/views/share/css/": [
     {
       text: "Css知识点",
-      collapsed: true,
+      collapsed: false,
       items: [
         {
           text: "Flex 详解",
@@ -73,7 +89,7 @@ const sidebar = {
     },
     {
       text: "Css效果",
-      collapsed: true,
+      collapsed: false,
       items: [
         {
           text: "工具",
