@@ -148,14 +148,19 @@ $menu-gap: 6px;
     }
     .level-0 {
       > .item {
+        margin-bottom: 4px;
         .text {
           font-size: 16px;
+          display: flex;
+          align-items: center;
+          margin-bottom: 0;
         }
       }
       .items {
         .VPLink {
           p {
-            padding: 0;
+            // padding: 0;
+            line-height: 16px;
           }
         }
       }
@@ -267,5 +272,11 @@ blockquote {
   z-index: 90;
   & + .medium-zoom-image {
     z-index: 91;
+  }
+}
+
+.no-sidebar-layout {
+  .aside {
+    width: 0;
   }
 }

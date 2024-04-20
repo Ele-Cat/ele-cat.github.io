@@ -8,13 +8,38 @@ const sidebar = {
         { text: "从零快速编写油猴脚本", link: "/views/daily-notes/2024/001" },
       ],
     },
-    // {
-    //   text: "2023",
-    //   collapsed: false,
-    //   items: [
-    //     { text: "Git", link: "/views/daily-notes/2023/001.md" },
-    //   ],
-    // },
+    {
+      text: "2021",
+      collapsed: false,
+      items: [
+        { text: "禁止右键、审查元素、复制功能", link: "/views/daily-notes/2021/001.md" },
+      ],
+    },
+    {
+      text: "2020",
+      collapsed: false,
+      items: [
+        { text: "VSCode 编辑器插件整理", link: "/views/daily-notes/2020/002.md" },
+        { text: "设定浏览器滚动条样式", link: "/views/daily-notes/2020/001.md" },
+      ],
+    },
+    {
+      text: "2019",
+      collapsed: false,
+      items: [
+        { text: "纯 JS 实现 3D 心形+图片旋转", link: "/views/daily-notes/2019/001.md" },
+      ],
+    },
+    {
+      text: "2018",
+      collapsed: false,
+      items: [
+        { text: "Vue 打包后本地预览", link: "/views/daily-notes/2018/004.md" },
+        { text: "CSS 实现单行、多行文本溢出显示省略号", link: "/views/daily-notes/2018/003.md" },
+        { text: "常用正则表达式", link: "/views/daily-notes/2018/002.md" },
+        { text: "原生 js 去掉所有的 html 标签", link: "/views/daily-notes/2018/001.md" },
+      ],
+    },
   ],
   "/views/note/": [
     {

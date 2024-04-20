@@ -61,7 +61,7 @@ export default defineConfig({
     },
     footer: {
       message: "<a href='https://gitee.com/ele-cat/ele-cat/blob/master/LICENSE' target='_blank'>MIT Licensed</a>",
-      copyright: "Copyright © 2023-present <a href='https://gitee.com/ele-cat' target='_blank'>Cola</a>",
+      copyright: "Copyright © 2018-present <a href='https://gitee.com/ele-cat' target='_blank'>Cola</a>",
     },
     outline: {
       label: "目录",
