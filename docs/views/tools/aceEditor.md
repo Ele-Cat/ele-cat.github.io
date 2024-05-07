@@ -11,14 +11,14 @@
 ## 预览
 
 - [代码地址](https://gitee.com/ele-cat/ace-editor)
-- [演示地址](https://ele-cat.gitee.io/ace-editor)
+- [演示地址](https://ele-cat.github.io/ace-editor)
 - **效果演示**：
 
 1. 基础功能为官方示例，仅用到 `vue2-ace-editor`
 2. 在封装中，为了更好的展示 UI【Ps：懒得写样式】，引入了 `ant-design-vue@1.7.8`
 
 <div class="iframe-box">
-  <iframe style="height:520px;" src="https://ele-cat.gitee.io/ace-editor"></iframe>
+  <iframe style="height:520px;" src="https://ele-cat.github.io/ace-editor"></iframe>
 </div>
 
 ## 安装

@@ -41,15 +41,15 @@ features:
     title: 代码同步展示
     details: 使用组件化开发思想，演示代码同时展示实际效果。
   - icon: 📇
-    link: https://ele-cat.gitee.io/views/nav/nav.html
+    link: https://ele-cat.github.io/views/nav/nav.html
     title: 网址导航
     details: 丰富的书签导航，更加方便快捷的学习、查找资源。
   - icon: 🛠️
-    link: https://ele-cat.gitee.io/views/share/css/generate.html
+    link: https://ele-cat.github.io/views/share/css/generate.html
     title: 个人资源存储
     details: 代码片段、CSS储备、JS逻辑，应有尽有。
   - icon: 📺
-    link: https://ele-cat.gitee.io/views/nav/nav.html#%E6%91%B8%E9%B1%BC%E4%B8%93%E7%94%A8
+    link: https://ele-cat.github.io/views/nav/nav.html#%E6%91%B8%E9%B1%BC%E4%B8%93%E7%94%A8
     title: 休闲娱乐
     details: 包含图文、视频、小游戏等，码农休息站。
 ---
@@ -88,7 +88,7 @@ example/vue3/02
 </div>
 </details>
 
-捐赠 ![捐赠](https://img.shields.io/badge/%E2%98%95-Buy%20Me%20A%20Coffee-%23be4141.svg?colorB=00A862) ![visitor badge](https://visitor-badge.laobi.icu/badge?page_id=ele-cat.gitee.io&left_text=Contributors&left_color=%23595959&right_color=%231283c3&query_only=false&format=true)
+捐赠 ![捐赠](https://img.shields.io/badge/%E2%98%95-Buy%20Me%20A%20Coffee-%23be4141.svg?colorB=00A862) ![visitor badge](https://visitor-badge.laobi.icu/badge?page_id=ele-cat.github.io&left_text=Contributors&left_color=%23595959&right_color=%231283c3&query_only=false&format=true)
 
 <span class="donate">如果你觉得本项目对你有帮助，或者想对我微小的工作表示一点资瓷，你可以请我喝一杯可乐，感谢! :pray: :vulcan_salute:</span>
 

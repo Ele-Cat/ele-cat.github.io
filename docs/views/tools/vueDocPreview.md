@@ -15,11 +15,11 @@
 ## 预览
 
 - [代码地址](https://gitee.com/ele-cat/vue-doc-preview)
-- [演示地址](https://ele-cat.gitee.io/vue-doc-preview)
+- [演示地址](https://ele-cat.github.io/vue-doc-preview)
 - **效果演示**：
 
 <div class="iframe-box">
-  <iframe style="height:520px;" src="https://ele-cat.gitee.io/vue-doc-preview"></iframe>
+  <iframe style="height:520px;" src="https://ele-cat.github.io/vue-doc-preview"></iframe>
 </div>
 
 ## 安装

@@ -142,32 +142,32 @@ export const NAV_DATA = [
       {
         title: '聚合GPT',
         desc: '整合在线可用、免注册、免费的GPT网站',
-        link: 'https://ele-cat.gitee.io/comp-gpt',
+        link: 'https://ele-cat.github.io/comp-gpt',
       },
       {
         title: '聚合盘搜',
         desc: '整合可用的网盘搜搜',
-        link: 'https://ele-cat.gitee.io/comp-pan',
+        link: 'https://ele-cat.github.io/comp-pan',
       },
       {
         title: '爱摸鱼',
         desc: '爱摸鱼，一款免费的软件，在线摸鱼的最好选择',
-        link: 'https://ele-cat.gitee.io/ifish',
+        link: 'https://ele-cat.github.io/ifish',
       },
       {
         title: '微信对话生成器',
         desc: '在线生成微信对话',
-        link: 'https://ele-cat.gitee.io/vue3-wechat-tool',
+        link: 'https://ele-cat.github.io/vue3-wechat-tool',
       },
       {
         title: "仿PC端微信",
         desc: "复刻新版微信项目",
-        link: "https://ele-cat.gitee.io/vue3-wechat/",
+        link: "https://ele-cat.github.io/vue3-wechat/",
       },
       {
         title: "小姐姐",
         desc: "心旷神怡",
-        link: "https://ele-cat.gitee.io/views/apps/girls.html",
+        link: "https://ele-cat.github.io/views/apps/girls.html",
       },
       {
         icon: 'https://qwerty.fe-mm.com/apple-touch-icon.png',
@@ -1059,7 +1059,7 @@ export const NAV_DATA = [
       {
         title: '爱摸鱼',
         desc: '爱摸鱼，一款免费的软件，在线摸鱼的最好选择',
-        link: 'https://ele-cat.gitee.io/ifish',
+        link: 'https://ele-cat.github.io/ifish',
       },
       {
         icon: 'https://static.hdslb.com/mobile/img/512.png',

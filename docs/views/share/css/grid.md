@@ -318,7 +318,7 @@ example/grid/20
 
 ### 解决空缺问题
 
-> 实现[爱摸鱼主页](https://ele-cat.gitee.io/ifish/)，让不同宽高的App，自动填充
+> 实现[爱摸鱼主页](https://ele-cat.github.io/ifish/)，让不同宽高的App，自动填充
 
 ```css
 /* 关键代码 */

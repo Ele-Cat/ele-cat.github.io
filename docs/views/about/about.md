@@ -37,12 +37,12 @@ pageClass: nav-layout # 自定义页面类名
 
 ### 个人项目
 
-- [聚合 GPT](https://ele-cat.gitee.io/comp-gpt) - 整合在线可用、免注册、免费的 GPT 网站
-- [爱摸鱼](https://ele-cat.gitee.io/ifish/) - 使用 Vite + Vue3 + AntDesignVue + Pinia 搭建的在线摸鱼网站
-- [在线微信对话生成器](https://ele-cat.gitee.io/vue3-wechat-tool/) - 使用 Vite + Vue3 + AntDesignVue + Pinia 搭建的在线微信对话生成器
-- [仿网页版微信](https://ele-cat.gitee.io/vue3-wechat/) - 使用 Vite + Vue3 + AntDesignVue + Pinia + MockJS 搭建的复刻微信客户端项目
-- [Color Select](https://ele-cat.gitee.io/color-select/) - RGB 与 HEX 互转工具，还有好看的背景色
-- [Node 爬虫](https://ele-cat.gitee.io/ace-editor/) - 使用 nodejs + axios + cheerio 搭建的爬取情侣头像、套图、短视频的脚本
+- [聚合 GPT](https://ele-cat.github.io/comp-gpt) - 整合在线可用、免注册、免费的 GPT 网站
+- [爱摸鱼](https://ele-cat.github.io/ifish/) - 使用 Vite + Vue3 + AntDesignVue + Pinia 搭建的在线摸鱼网站
+- [在线微信对话生成器](https://ele-cat.github.io/vue3-wechat-tool/) - 使用 Vite + Vue3 + AntDesignVue + Pinia 搭建的在线微信对话生成器
+- [仿网页版微信](https://ele-cat.github.io/vue3-wechat/) - 使用 Vite + Vue3 + AntDesignVue + Pinia + MockJS 搭建的复刻微信客户端项目
+- [Color Select](https://ele-cat.github.io/color-select/) - RGB 与 HEX 互转工具，还有好看的背景色
+- [Node 爬虫](https://ele-cat.github.io/ace-editor/) - 使用 nodejs + axios + cheerio 搭建的爬取情侣头像、套图、短视频的脚本
 
 ### 联系我
 
