@@ -6,7 +6,7 @@ outline: [2, 3]
 
 - [Electron 官网地址](https://www.electronjs.org/zh/)
 - [Electron 文档地址](https://www.electronjs.org/zh/docs/latest/)
-- [项目地址](https://gitee.com/ele-cat/electron-quick-start)
+- [项目地址](https://github.com/ele-cat/electron-quick-start)
 
 :::tip 参考博客
 
@@ -30,7 +30,7 @@ outline: [2, 3]
 
 ## 03. 起步
 
-> 对应[项目](https://gitee.com/ele-cat/electron-quick-start)的[master 分支](https://gitee.com/ele-cat/electron-quick-start/tree/master/)，与 Vue 一致的开发体验
+> 对应[项目](https://github.com/ele-cat/electron-quick-start)的[master 分支](https://github.com/ele-cat/electron-quick-start/tree/master/)，与 Vue 一致的开发体验
 
 ### 3.1 初始化 Vue3 项目
 
@@ -378,7 +378,7 @@ publish: [
 
 ## 04. 项目渐进式
 
-> 对应[项目](https://gitee.com/ele-cat/electron-quick-start)的[master 分支](https://gitee.com/ele-cat/electron-quick-start/tree/master/)，与 Vue 一致的开发体验
+> 对应[项目](https://github.com/ele-cat/electron-quick-start)的[master 分支](https://github.com/ele-cat/electron-quick-start/tree/master/)，与 Vue 一致的开发体验
 
 ### 4.1 Vuex 以及数据持久化
 
@@ -509,7 +509,7 @@ export default store;
 1. 书接上题，已经做好全局状态管理以及数据持久化，那就可以开始扩展其他功能
 2. 移除默认 frame，`background.ts` 中，设定 `frame: false`，electron 的默认顶部菜单就消失了
 3. 添加 layout 样式，`src\layout\index.vue` `src\layout\common\header.vue` `src\layout\common\sidebar.vue`，并添加基础路由，这时候页面框架就出来了
-4. 添加全局设定 `settings.vue` 组件，表单修改时，将数据保存至 Vuex 中，具体代码参考：[Settings.vue](https://gitee.com/ele-cat/electron-quick-start/blob/master/src/components/Settings.vue)
+4. 添加全局设定 `settings.vue` 组件，表单修改时，将数据保存至 Vuex 中，具体代码参考：[Settings.vue](https://github.com/ele-cat/electron-quick-start/blob/master/src/components/Settings.vue)
 5. 同时配置 styles 相关样式，整体系统就支持主题切换、暗黑模式了
 
 ### 4.3 ipcRenderer 事件总线
@@ -529,7 +529,7 @@ ipcRenderer.on("Fn", (event, value) => {});
 
 ## 05. Electron 的 API
 
-> 学习一个框架最主要的就是看[官方文档](https://www.electronjs.org/zh/docs/latest/api/app)，对应[项目](https://gitee.com/ele-cat/electron-quick-start)的[feat-api 分支](https://gitee.com/ele-cat/electron-quick-start/tree/feat-api/)
+> 学习一个框架最主要的就是看[官方文档](https://www.electronjs.org/zh/docs/latest/api/app)，对应[项目](https://github.com/ele-cat/electron-quick-start)的[feat-api 分支](https://github.com/ele-cat/electron-quick-start/tree/feat-api/)
 
 ### 5.1 app
 
@@ -537,6 +537,6 @@ ipcRenderer.on("Fn", (event, value) => {});
 
 ### 6.1 即时提醒
 
-1. [代码地址](https://gitee.com/ele-cat/electron-quick-start/tree/feat-remind/)
+1. [代码地址](https://github.com/ele-cat/electron-quick-start/tree/feat-remind/)
 
 <Comment />

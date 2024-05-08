@@ -14,7 +14,7 @@
 
 ## 预览
 
-- [代码地址](https://gitee.com/ele-cat/vue-doc-preview)
+- [代码地址](https://github.com/ele-cat/vue-doc-preview)
 - [演示地址](https://ele-cat.github.io/vue-doc-preview)
 - **效果演示**：
 

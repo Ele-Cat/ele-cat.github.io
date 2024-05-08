@@ -56,12 +56,12 @@ export default defineConfig({
       },
     ],
     editLink: {
-      pattern: "https://gitee.com/ele-cat/ele-cat/edit/master/docs/:path",
-      text: "在Gitee上编辑此页",
+      pattern: "https://github.com/ele-cat/ele-cat/edit/master/docs/:path",
+      text: "在GitHub上编辑此页",
     },
     footer: {
-      message: "<a href='https://gitee.com/ele-cat/ele-cat/blob/master/LICENSE' target='_blank'>MIT Licensed</a>",
-      copyright: "Copyright © 2018-present <a href='https://gitee.com/ele-cat' target='_blank'>Cola</a>",
+      message: "<a href='https://github.com/ele-cat/ele-cat/blob/master/LICENSE' target='_blank'>MIT Licensed</a>",
+      copyright: "Copyright © 2018-present <a href='https://github.com/ele-cat' target='_blank'>Cola</a>",
     },
     outline: {
       label: "目录",

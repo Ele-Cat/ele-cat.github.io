@@ -10,7 +10,7 @@
 
 ## 预览
 
-- [代码地址](https://gitee.com/ele-cat/ace-editor)
+- [代码地址](https://github.com/ele-cat/ace-editor)
 - [演示地址](https://ele-cat.github.io/ace-editor)
 - **效果演示**：
 
@@ -84,7 +84,7 @@ export default {
 
 2. 封装编辑器
 
-- [代码地址](https://gitee.com/ele-cat/ace-editor/blob/master/src/components/Editor.vue)
+- [代码地址](https://github.com/ele-cat/ace-editor/blob/master/src/components/Editor.vue)
 
 ## 参考资料
 

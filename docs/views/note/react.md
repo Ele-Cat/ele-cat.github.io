@@ -5,7 +5,7 @@ outline: [2, 3]
 # React 全家桶（技术栈）
 
 - [学习地址](https://www.gulixueyuan.com/goods/show/517)
-- [示例地址](https://gitee.com/ele-cat/react-basic)
+- [示例地址](https://github.com/ele-cat/react-basic)
 
 ## 01. React 入门
 
@@ -956,7 +956,7 @@ src ---- 源码文件夹
 - 父传子 props【字符串、布尔值、对象】
 - 子传父 props【函数】
 - uuid【安装：`yarn add nanoid`】【使用：`nanoid()`】
-- [TodoList 案例](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/03.src_TodoList%E6%A1%88%E4%BE%8B)
+- [TodoList 案例](https://github.com/ele-cat/learn-react/tree/master/react-staging/03.src_TodoList%E6%A1%88%E4%BE%8B)
 
 ## 04. React ajax
 
@@ -1083,7 +1083,7 @@ axios
 ### 4.4 案例—github 用户搜索
 
 - [请求地址](https://api.github.com/search/users?q=xxxxxx)
-- [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/05.src_axios%E6%A1%88%E4%BE%8Bgithub%E6%90%9C%E7%B4%A2)
+- [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/05.src_axios%E6%A1%88%E4%BE%8Bgithub%E6%90%9C%E7%B4%A2)
 
 ### 4.5 消息订阅-发布机制
 
@@ -1095,7 +1095,7 @@ axios
    > - PubSub.publish('delete', data) //发布消息
    > - PubSub.unsubscribe(token) //移除
 
-- [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/06.src_pubsub%E6%A1%88%E4%BE%8Bgithub%E6%90%9C%E7%B4%A2)
+- [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/06.src_pubsub%E6%A1%88%E4%BE%8Bgithub%E6%90%9C%E7%B4%A2)
 
 ### 4.6 扩展：Fetch
 
@@ -1103,7 +1103,7 @@ axios
 
 1. [官方文档](https://github.github.io/fetch/)
 2. [思否文档](https://segmentfault.com/a/1190000003810652)
-3. [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/07.src_fetch%E6%A1%88%E4%BE%8Bgithub%E6%90%9C%E7%B4%A2)
+3. [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/07.src_fetch%E6%A1%88%E4%BE%8Bgithub%E6%90%9C%E7%B4%A2)
 
 #### 4.6.2 特点
 
@@ -1201,7 +1201,7 @@ fetch(url, {
 3. 内容区的展示组件改为`<Route path="" component={} />`标签
 4. 在`<App />`标签外包裹`<BrowserRouter>`或`<HashRouter>`
 
-- [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/08.src_%E8%B7%AF%E7%94%B1%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8)
+- [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/08.src_%E8%B7%AF%E7%94%B1%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8)
 
 #### 5.3.2 路由组件与一般组件的差异
 
@@ -1260,10 +1260,10 @@ fetch(url, {
 />
 ```
 
-4. [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/09.src_NavLink%E7%9A%84%E4%BD%BF%E7%94%A8)
+4. [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/09.src_NavLink%E7%9A%84%E4%BD%BF%E7%94%A8)
    > 可通过`this.props.children`来获取组件标签体内容
 
-- [封装 NavLink 案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/10.src_NavLink%E5%B0%81%E8%A3%85)
+- [封装 NavLink 案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/10.src_NavLink%E5%B0%81%E8%A3%85)
 
 #### 5.3.4 Switch 使用
 
@@ -1278,7 +1278,7 @@ fetch(url, {
 </Switch>
 ```
 
-- [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/11.Switch%E7%9A%84%E4%BD%BF%E7%94%A8)
+- [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/11.Switch%E7%9A%84%E4%BD%BF%E7%94%A8)
 
 #### 5.3.5 样式缺失修复
 
@@ -1302,7 +1302,7 @@ fetch(url, {
 </HashRouter>
 ```
 
-- [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/12.src_%E6%A0%B7%E5%BC%8F%E7%BC%BA%E5%A4%B1%E4%BF%AE%E5%A4%8D)
+- [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/12.src_%E6%A0%B7%E5%BC%8F%E7%BC%BA%E5%A4%B1%E4%BF%AE%E5%A4%8D)
 
 #### 5.3.6 路由的严格匹配和模糊匹配
 
@@ -1310,7 +1310,7 @@ fetch(url, {
 2. 开启严格模式`<Route exact path="" component={} />`
 3. 严格模式不要随意开启，需要再打开，否则会导致无法匹配二级路由
 
-- [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/13.src_%E7%B2%BE%E5%87%86%E5%8C%B9%E9%85%8D%E4%B8%8E%E6%A8%A1%E7%B3%8A%E5%8C%B9%E9%85%8D)
+- [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/13.src_%E7%B2%BE%E5%87%86%E5%8C%B9%E9%85%8D%E4%B8%8E%E6%A8%A1%E7%B3%8A%E5%8C%B9%E9%85%8D)
 
 #### 5.3.7 Redirect 使用
 
@@ -1325,14 +1325,14 @@ fetch(url, {
 </Switch>
 ```
 
-- [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/14.src_Redirect%E4%BD%BF%E7%94%A8)
+- [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/14.src_Redirect%E4%BD%BF%E7%94%A8)
 
 #### 5.3.8 嵌套路由
 
 1. 注册子路由时要写上父路由的 path 值
 2. 路由的匹配是按照路由注册的顺序进行的
 
-- [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/15.src_%E5%B5%8C%E5%A5%97%E8%B7%AF%E7%94%B1)
+- [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/15.src_%E5%B5%8C%E5%A5%97%E8%B7%AF%E7%94%B1)
 
 ### 5.4 路由传参
 
@@ -1356,7 +1356,7 @@ fetch(url, {
 const { id } = this.props.match.params;
 ```
 
-- [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/16.src_%E4%BC%A0%E5%8F%82params)
+- [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/16.src_%E4%BC%A0%E5%8F%82params)
 
 #### 5.4.2 search 参数
 
@@ -1380,7 +1380,7 @@ import qs from "querystringify";
 const { id } = qs.parse(this.props.location.search);
 ```
 
-- [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/17.src_%E4%BC%A0%E5%8F%82search)
+- [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/17.src_%E4%BC%A0%E5%8F%82search)
 
 #### 5.4.3 state 参数
 
@@ -1404,7 +1404,7 @@ const { id } = qs.parse(this.props.location.search);
 const { id } = this.props.location.state;
 ```
 
-- [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/18.src_%E4%BC%A0%E5%8F%82state)
+- [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/18.src_%E4%BC%A0%E5%8F%82state)
 
 ### 5.5 路由跳转模式
 
@@ -1424,7 +1424,7 @@ const { id } = this.props.location.state;
 </Link>
 ```
 
-- [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/19.src_push&replace)
+- [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/19.src_push&replace)
 
 ### 5.6 编程式路由
 
@@ -1438,7 +1438,7 @@ this.props.history.goForward(); // 前进
 this.props.history.go(); // 前进||后退
 ```
 
-- [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/20.src_%E7%BC%96%E7%A8%8B%E5%BC%8F%E8%B7%AF%E7%94%B1)
+- [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/20.src_%E7%BC%96%E7%A8%8B%E5%BC%8F%E8%B7%AF%E7%94%B1)
 
 ### 5.7 withRouter
 
@@ -1479,7 +1479,7 @@ class Header extends Component {
 export default withRouter(Header);
 ```
 
-- [案例地址](https://gitee.com/ele-cat/react-basic/tree/master/react-staging/21.src_withRouter)
+- [案例地址](https://github.com/ele-cat/learn-react/tree/master/react-staging/21.src_withRouter)
 
 ### 5.8 BrowserRouter 与 HashRouter 的区别
 

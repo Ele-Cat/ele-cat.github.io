@@ -6,7 +6,7 @@ outline: [2, 3, 4] # 侧边栏深度
 
 - [Angular 官网](https://angular.cn/quick-start)
 - [Material Design 组件库](https://material.angular.cn/)
-- [跟随项目](https://gitee.com/ele-cat/angular-app)
+- [跟随项目](https://github.com/ele-cat/learn-angular)
 
 ## 01. Angular 简介
 

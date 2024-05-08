@@ -6,7 +6,7 @@ outline: [2, 3]
 
 - [学习地址](https://coding.imooc.com/class/320.html)
 - [文档地址](https://github.com/Eished/node_blog_notes/blob/master/Node.js%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2.md)
-- [代码地址](https://gitee.com/ele-cat/learn-node)
+- [代码地址](https://github.com/ele-cat/learn-node)
 
 ## 01. 开发接口（不使用框架）
 
@@ -3121,7 +3121,7 @@ app.listen(8088, () => {
 - Express 中间件是异步回调，Koa2 原生支持 async/await
 - 新开发的框架和系统，都是开始基于 Koa2，例如 egg.js
 - Express 虽然未过时，但是 Koa2 肯定是未来的趋势
-- 后端 Koa2 + MongoDB，前端 Vue3 + Element-Plus 编写的简书，[项目地址](https://gitee.com/ele-cat/jianshu)
+- 后端 Koa2 + MongoDB，前端 Vue3 + Element-Plus 编写的简书，[项目地址](https://github.com/ele-cat/vue3-jianshu)
 
 ```js
 // async await 获取内容
