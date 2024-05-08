@@ -5,6 +5,7 @@ const sidebar = {
       text: "2024",
       collapsed: false,
       items: [
+        { text: "Github Actions自动部署vue项目", link: "/views/daily-notes/2024/002" },
         { text: "从零快速编写油猴脚本", link: "/views/daily-notes/2024/001" },
       ],
     },
