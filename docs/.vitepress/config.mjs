@@ -56,7 +56,7 @@ export default defineConfig({
       },
     ],
     editLink: {
-      pattern: "https://github.com/ele-cat/ele-cat/edit/master/docs/:path",
+      pattern: "https://github.com/ele-cat/ele-cat.github.io/edit/master/docs/:path",
       text: "在GitHub上编辑此页",
     },
     footer: {
