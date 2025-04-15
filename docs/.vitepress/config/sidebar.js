@@ -160,6 +160,19 @@ const sidebar = {
       ],
     },
   ],
+  "/views/interview": [
+    { text: "Html", link: "/views/interview/html" },
+    { text: "Css", link: "/views/interview/css" },
+    { text: "Javascript", link: "/views/interview/javascript" },
+    { text: "Vue", link: "/views/interview/vue" },
+    { text: "React", link: "/views/interview/react" },
+    { text: "Node", link: "/views/interview/node" },
+    { text: "Git", link: "/views/interview/git" },
+    { text: "Webpack", link: "/views/interview/webpack" },
+    { text: "Vite", link: "/views/interview/vite" },
+    { text: "Typescript", link: "/views/interview/typescript" },
+    { text: "Http", link: "/views/interview/http" },
+  ],
 };
 
 export default sidebar;
