@@ -172,6 +172,9 @@ const sidebar = {
     { text: "Vite", link: "/views/interview/vite" },
     { text: "Typescript", link: "/views/interview/typescript" },
     { text: "Http", link: "/views/interview/http" },
+    { text: "微信小程序", link: "/views/interview/weapp" },
+    { text: "算法与数据结构", link: "/views/interview/algorithm" },
+    { text: "设计模式", link: "/views/interview/design-pattern" },
   ],
 };
 

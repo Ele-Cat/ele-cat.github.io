@@ -69,7 +69,7 @@ const nav = [
     ],
   },
   { 
-    text: "面试题",
+    text: "面试",
     items: [
       {
         text: "Html",
