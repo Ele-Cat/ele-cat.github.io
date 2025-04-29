@@ -72,61 +72,66 @@ const nav = [
     text: "面试",
     items: [
       {
-        text: "Html",
-        link: "/views/interview/html",
+        text: "基础",
+        items: [
+          { 
+            text: "Html", 
+            link: "/views/interview/html",
+          },
+          {
+            text: "Css",
+            link: "/views/interview/css",
+          },
+          {
+            text: "Javascript",
+            link: "/views/interview/javascript",
+          },
+          {
+            text: "Vue",
+            link: "/views/interview/vue",
+          },
+          {
+            text: "React",
+            link: "/views/interview/react",
+          },
+          {
+            text: "Node",
+            link: "/views/interview/node",
+          },
+          {
+            text: "Git",
+            link: "/views/interview/git",
+          },
+          {
+            text: "Webpack",
+            link: "/views/interview/webpack",
+          },
+          {
+            text: "Vite",
+            link: "/views/interview/vite",
+          },
+          {
+            text: "Typescript",
+            link: "/views/interview/typescript",
+          },
+          {
+            text: "Http",
+            link: "/views/interview/http",
+          },
+          {
+            text: "微信小程序",
+            link: "/views/interview/weapp",
+          },
+          {
+            text: "算法与数据结构",
+            link: "/views/interview/algorithm",
+          },
+          {
+            text: "设计模式",
+            link: "/views/interview/design-pattern",
+          }
+        ],
       },
-      {
-        text: "Css",
-        link: "/views/interview/css",
-      },
-      {
-        text: "Javascript",
-        link: "/views/interview/javascript",
-      },
-      {
-        text: "Vue",
-        link: "/views/interview/vue",
-      },
-      {
-        text: "React",
-        link: "/views/interview/react",
-      },
-      {
-        text: "Node",
-        link: "/views/interview/node",
-      },
-      {
-        text: "Git",
-        link: "/views/interview/git",
-      },
-      {
-        text: "Webpack",
-        link: "/views/interview/webpack",
-      },
-      {
-        text: "Vite",
-        link: "/views/interview/vite",
-      },
-      {
-        text: "Typescript",
-        link: "/views/interview/typescript",
-      },
-      {
-        text: "Http",
-        link: "/views/interview/http",
-      },
-      {
-        text: "微信小程序",
-        link: "/views/interview/weapp",
-      },
-      {
-        text: "算法与数据结构",
-        link: "/views/interview/algorithm",
-      },
-      {
-        text: "设计模式",
-        link: "/views/interview/design-pattern",
-      }
     ]
   },
   { text: "关于", link: "/views/about/about" },
