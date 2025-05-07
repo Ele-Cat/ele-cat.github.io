@@ -1,41 +1,43 @@
 # Vue 面试题
 
-## ​1、什么是前端构建工具?比如（Vue2的webpack，Vue3的Vite）
+## Vue2
 
-## ​2、Vue 组件之间的通信方式
+## ​1、什么是前端构建工具?比如（Vue2 的 webpack，Vue3 的 Vite）
 
-## ​3、Vuex的理解及使用场景
+## 2、简述 MVVM 和 MVC 的原理以及区别
 
-## 4、vue 的生命周期 八个阶段
+## 3、vue 的生命周期八个阶段，具体适合哪些场景
 
-## 5、简述Vue每个周期具体适合哪些场景？
+## 4、vue 中的 data 为什么是一个函数？起到什么作用
 
-## 6、简述MVVM 和MVC的原理以及区别？
+## 5、vue 常见指令
 
-## 7、vue常见指令
+## 6、v-show 与 v-if 的区别
 
-## 5、v-show 与 v-if 的区别？
+## 7、Vue 组件之间的通信方式
 
-## 6、keep-alive 的作用是什么?
+## 8、Vuex 的理解及使用场景
 
-## 8、vue中的data为什么是一个函数？起到什么作用？ 
+## 9、keep-alive 的作用是什么
 
-## 9、vue中ref的作用？  
+## 10、vue 中 ref 的作用
 
-## 10、vue中hash和history的区别 ？  
+## 11、vue 中 hash 和 history 的区别
 
-## 9、nextTick的实现？
+## 12、nextTick 的实现
 
-## 10、混入mixin的原理？
+## 13、混入 mixin 的原理
 
-## 1、Vue2.0和Vue3.0的区别？
+## Vue3
 
-## 2、Vue3带来了什么改变？ 
+## 1、Vue2.0 和 Vue3.0 的区别
 
-## 3、生命周期（vue2和vue3的生命周期对比）有哪些？
+## 2、Vue3 带来了什么改变？
 
-## 4、Vue3.0中的响应式原理是什么？vue2的响应式原理是什么？
+## 3、生命周期（vue2 和 vue3 的生命周期对比）有哪些
 
-## 5、vue3的常用 Composition API有哪些？
+## 4、Vue3.0 中的响应式原理与 vue2 的响应式原理区别
 
-## 6、Vue3中的ref函数
+## 5、vue3 的常用 Composition API 有哪些
+
+## 6、Vue3 中的 ref 函数
