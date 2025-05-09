@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { slugify } from '@mdit-vue/shared'
 
+
 const props = defineProps({
   icon: "",
   title: "",
@@ -18,9 +19,9 @@ const svg = computed(() => {
   return ''
 })
 
+const icoLink = 'https://ico.n3v.cn/get.php?url='
 const realIcon = computed(() => {
-  // return `https://api.iowen.cn/favicon/${props.link.replace("http://", "").replace("https://", "")}.png`;
-  return `https://icon.7udh.com/${props.link.replace("http://", "").replace("https://", "").split('/')[0]}.png`
+  return `${icoLink}${props.link}`
 })
 </script>
 
