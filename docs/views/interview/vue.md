@@ -1553,14 +1553,309 @@ new Vue({
 
 ## Vue3
 
-## 1、Vue2.0 和 Vue3.0 的区别
+## 1、Vue2.0 与 Vue3.0 的核心区别
 
-## 2、Vue3 带来了什么改变
+### 1、架构设计差异
 
-## 3、生命周期（vue2 和 vue3 的生命周期对比）有哪些
+| 特性                | Vue2.x                      | Vue3.x                      |
+|---------------------|----------------------------|----------------------------|
+| **响应式系统**       | 基于 Object.defineProperty | 基于 Proxy                  |
+| **虚拟DOM**         | 全量对比                   | 静态标记 + 动态对比         |
+| **代码组织**        | Options API                | Composition API             |
+| **TypeScript支持**  | 需要额外适配               | 原生支持                   |
+| **打包体积**        | 较大                       | 更小（Tree-shaking优化）   |
 
-## 4、Vue3.0 中的响应式原理与 vue2 的响应式原理区别
+### 2、核心改进详解
 
-## 5、vue3 的常用 Composition API 有哪些
+#### 1. 响应式系统重写
+**Vue2 实现**：
+```js
+// 基于Object.defineProperty
+Object.defineProperty(obj, key, {
+  get() { /*...*/ },
+  set(newVal) { /*...*/ }
+})
+```
+**局限性**：
+- 无法检测对象属性的添加/删除
+- 数组变异方法需要特殊处理
+- 性能开销较大
 
-## 6、Vue3 中的 ref 函数
+**Vue3 实现**：
+```js
+// 基于Proxy
+new Proxy(data, {
+  get(target, key) { /*...*/ },
+  set(target, key, value) { /*...*/ }
+})
+```
+**优势**：
+- 支持全对象操作（包括新增/删除属性）
+- 更好的性能表现
+- 无需特殊处理数组变化
+
+#### 2. Composition API
+**Vue2 Options API**：
+```js
+export default {
+  data() { return { count: 0 } },
+  methods: { increment() { this.count++ } },
+  mounted() { console.log(this.count) }
+}
+```
+
+**Vue3 Composition API**：
+```js
+import { ref, onMounted } from 'vue'
+
+export default {
+  setup() {
+    const count = ref(0)
+    const increment = () => count.value++
+    
+    onMounted(() => console.log(count.value))
+    
+    return { count, increment }
+  }
+}
+```
+**优势**：
+- 更好的逻辑复用（替代mixins）
+- 更灵活的代码组织
+- 更好的TypeScript支持
+
+#### 3. 性能优化
+**Vue3改进**：
+1. **编译时优化**：
+   - 静态节点提升（HoistStatic）
+   - 补丁标记（PatchFlag）
+   - 树结构拍平（Tree Flattening）
+
+2. **虚拟DOM重写**：
+   - 动态节点标记减少对比范围
+   - 事件缓存减少不必要的更新
+
+### 3、新增特性
+
+#### 1. Fragment（片段）
+```html
+<!-- Vue3支持多根节点 -->
+<template>
+  <header></header>
+  <main></main>
+  <footer></footer>
+</template>
+```
+
+#### 2. Teleport（传送）
+```html
+<teleport to="#modal-container">
+  <div class="modal">...</div>
+</teleport>
+```
+
+#### 3. Suspense（异步组件）
+```html
+<Suspense>
+  <template #default>
+    <AsyncComponent />
+  </template>
+  <template #fallback>
+    <LoadingSpinner />
+  </template>
+</Suspense>
+```
+
+### 4、生命周期对比
+
+| Vue2.x          | Vue3.x (Composition API) |
+|-----------------|-------------------------|
+| beforeCreate    | 使用 setup()            |
+| created         | 使用 setup()            |
+| beforeMount     | onBeforeMount           |
+| mounted         | onMounted               |
+| beforeUpdate    | onBeforeUpdate          |
+| updated         | onUpdated               |
+| beforeDestroy   | onBeforeUnmount         |
+| destroyed       | onUnmounted             |
+| errorCaptured   | onErrorCaptured         |
+| -               | onRenderTracked         |
+| -               | onRenderTriggered       |
+
+### 5、迁移注意事项
+
+1. **破坏性变更**：
+   - v-model 语法变更
+   - $children 移除
+   - 过滤器(filter)移除
+   - 事件API变更
+
+2. **兼容方案**：
+   - 提供兼容构建版本
+   - 逐步迁移策略
+
+### 6、面试回答要点
+
+1. **核心改进**：强调响应式系统和Composition API
+2. **性能优化**：说明编译时和运行时优化
+3. **新特性**：列举Fragment、Teleport等
+4. **迁移经验**：分享实际升级经验
+5. **生态对比**：提及周边库支持情况
+
+示例回答：
+"Vue3相比Vue2有三大核心改进：1) 响应式系统改用Proxy实现，解决了数组和对象属性的监听限制；2) 引入Composition API，提供更好的逻辑复用和代码组织；3) 通过编译优化和虚拟DOM重写大幅提升性能。此外还新增了Fragment、Teleport等特性，并优化了TypeScript支持。实际项目中升级需要注意破坏性变更，推荐逐步迁移策略。"
+
+## 2、vue3 的常用 Composition API 有哪些
+
+### 1、响应式 API
+
+#### 1. 基础响应式 API
+| API | 作用 | 示例 |
+|------|------|------|
+| `ref` | 创建响应式基本类型数据 | `const count = ref(0)` |
+| `reactive` | 创建响应式对象 | `const state = reactive({ count: 0 })` |
+| `toRef` | 将响应式对象的属性转为 ref | `const countRef = toRef(state, 'count')` |
+| `toRefs` | 解构响应式对象不丢失响应性 | `const { count } = toRefs(state)` |
+
+```js
+import { ref, reactive, toRefs } from 'vue'
+
+const count = ref(0) // 基本类型
+const state = reactive({ // 对象
+  name: 'Vue3',
+  version: '3.2'
+})
+
+// 解构保持响应性
+const { name, version } = toRefs(state)
+```
+
+#### 2. 计算属性
+| API | 作用 |
+|------|------|
+| `computed` | 创建计算属性 |
+
+```js
+const doubleCount = computed(() => count.value * 2)
+const plusCount = computed({
+  get: () => count.value + 1,
+  set: val => { count.value = val - 1 }
+})
+```
+
+### 2、生命周期钩子
+
+| Vue2 选项式 API | Vue3 Composition API |
+|----------------|---------------------|
+| beforeCreate  | 使用 setup() 替代   |
+| created       | 使用 setup() 替代   |
+| beforeMount   | onBeforeMount       |
+| mounted       | onMounted          |
+| beforeUpdate  | onBeforeUpdate     |
+| updated       | onUpdated          |
+| beforeUnmount | onBeforeUnmount    |
+| unmounted     | onUnmounted        |
+
+```js
+import { onMounted, onUpdated } from 'vue'
+
+setup() {
+  onMounted(() => console.log('组件挂载'))
+  onUpdated(() => console.log('组件更新'))
+}
+```
+
+### 3、依赖注入
+
+| API | 作用 |
+|------|------|
+| `provide` | 提供依赖 |
+| `inject` | 注入依赖 |
+
+```js
+// 父组件
+import { provide } from 'vue'
+setup() {
+  provide('theme', 'dark')
+}
+
+// 子组件
+import { inject } from 'vue'
+setup() {
+  const theme = inject('theme', 'light') // 默认值light
+}
+```
+
+### 4、工具函数
+
+#### 1. 响应式工具
+| API | 作用 |
+|------|------|
+| `isRef` | 检查是否为 ref |
+| `unref` | 解包 ref (val = isRef(val) ? val.value : val) |
+| `toRaw` | 返回 reactive 或 readonly 代理的原始对象 |
+
+#### 2. 副作用工具
+| API | 作用 |
+|------|------|
+| `watch` | 侦听响应式数据变化 |
+| `watchEffect` | 自动追踪依赖的副作用函数 |
+
+```js
+import { watch, watchEffect } from 'vue'
+
+// 侦听单个ref
+watch(count, (newVal, oldVal) => {})
+
+// 侦听多个源
+watch([count, name], ([newCount, newName]) => {})
+
+// 自动追踪依赖
+watchEffect(() => console.log(count.value))
+```
+
+### 5、组合式函数
+
+#### 1. 自定义 Hook 示例
+```js
+// useMouse.js
+import { ref, onMounted, onUnmounted } from 'vue'
+
+export function useMouse() {
+  const x = ref(0)
+  const y = ref(0)
+  
+  const update = e => {
+    x.value = e.pageX
+    y.value = e.pageY
+  }
+  
+  onMounted(() => window.addEventListener('mousemove', update))
+  onUnmounted(() => window.removeEventListener('mousemove', update))
+  
+  return { x, y }
+}
+
+// 组件中使用
+import { useMouse } from './useMouse'
+setup() {
+  const { x, y } = useMouse()
+  return { x, y }
+}
+```
+
+#### 2. 常用组合式函数模式
+1. **状态管理**：创建可复用的状态逻辑
+2. **副作用封装**：封装事件监听、定时器等
+3. **异步操作**：封装数据请求逻辑
+
+### 6、面试回答要点
+
+1. **核心API分类**：响应式、生命周期、工具函数等
+2. **重点API**：强调ref/reactive、computed、watch等
+3. **组合式优势**：逻辑复用、代码组织、TS支持
+4. **实践经验**：分享自定义Hook的使用经验
+5. **对比Options API**：说明两种风格的差异
+
+示例回答：
+"Vue3 Composition API主要包括：1) 响应式API如ref/reactive创建响应式数据；2) 生命周期钩子如onMounted/onUpdated；3) 计算属性computed和侦听器watch/watchEffect；4) 依赖注入provide/inject。这些API使逻辑关注点更集中，便于提取复用逻辑为自定义Hook，如封装鼠标位置跟踪、异步请求等。相比Options API，组合式API在复杂组件中能提供更好的代码组织和类型推断。"
