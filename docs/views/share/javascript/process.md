@@ -4,9 +4,9 @@ outline: [2, 3]
 
 # Javascript 数据处理
 
-## 数字
+## 一、Number 数字
 
-### 01-数字转换
+### 1、数字转换
 
 使用`parseInt()`、`parseFloat()`或`Number()`等方法将字符串转换为数字。
 
@@ -22,9 +22,18 @@ console.log(Number(floatStr)); // 3.14
 
 console.log(str * 1); // 123
 console.log(floatStr * 1); // 3.14
+
+// 使用 + 运算符进行隐式转换
+console.log(+"123"); // 123
+console.log(+"3.14"); // 3.14
+console.log(+null); // 0
+console.log(+""); // 0
+console.log(+true); // 1
+console.log(+false); // 0
+console.log(+undefined); // NaN
 ```
 
-### 02-数字格式化
+### 2、数字格式化
 
 使用`toFixed()`、`toPrecision()`、`toExponential()`等方法。
 
@@ -35,7 +44,7 @@ console.log(num.toPrecision(3)); // "3.14"
 console.log(num.toExponential(2)); // "3.14e+0"
 ```
 
-### 03-数学计算
+### 3、数学计算
 
 使用 Math 对象提供的方法，如 `​Math.round()`​（四舍五入）、`​Math.floor()`​（向下取整）、`​Math.ceil()`​（向上取整）、`​Math.abs()`​（绝对值）等。
 
@@ -47,18 +56,128 @@ console.log(Math.ceil(3.1)); // 4
 console.log(Math.abs(-4)); // 4
 ```
 
-## 字符串
+### 4、取整
 
-### 01-获取字符串长度
-
-使用字符串的 `length` 属性。
+> 代替正数的`Math.floor()`，代替负数的`Math.ceil()`
 
 ```js
-let str = "Hello World";
-console.log(str.length); // 11
+console.log(Math.trunc(3.14)); // 3
+console.log(Math.trunc(-3.14)); // -3
+console.log(~~3.14); // 3
+console.log(~~-3.14); // -3
+console.log(3.14 | 0); // 3
+console.log(-3.14 | 0); // -3
+console.log(3.14 >> 0); // 3
+console.log(-3.14 >> 0); // -3
 ```
 
-### 02-字符串连接
+### 5、补零
+
+```js
+function padZero(num, length) {
+  return num.toString().padStart(length, "0");
+}
+
+console.log(padZero(5, 3)); // "005"
+console.log(padZero(123, 5)); // "00123"
+```
+
+### 6、时间戳
+
+```js
+console.log(Date.now()); // 1672531200000
+console.log(new Date().getTime()); // 1672531200000
+console.log(+new Date()); // 1672531200000
+```
+
+### 7、判断奇偶
+
+```js
+function isEven(num) {
+  return num % 2 === 0;
+  // return num & 1 === 0; 效果一致
+}
+
+console.log(isEven(4)); // true
+console.log(isEven(5)); // false
+```
+
+### 8、取最小最大值
+
+```js
+const arr = [1, 2, 3, 4, 5]
+console.log(Math.min(...arr)); // 1
+console.log(Math.max(...arr)); // 5
+``` 
+
+### 9、生成范围内随机数
+
+```js
+
+// 生成 [min, max) 范围内的随机整数
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+console.log(getRandomInt(1, 10)); // 1-9
+
+// 生成 [min, max] 范围内的随机整数
+function getRandomIntInclusive(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+console.log(getRandomIntInclusive(1, 10)); // 1-10
+```
+
+## 二、Boolean 布尔值
+
+### 1、短路运算符
+
+使用`&&`、`||`、`??`等短路运算符。
+
+```js
+let a = 1;
+let b = true;
+let c = false;
+// 满足条件赋值：取假运算，从左到右依次判断，遇到假值返回假值，后面不再执行，否则返回最后一个真值
+console.log(a && b && c); // false
+console.log(c && b && a); // false
+// 默认赋值：取真运算，从左到右依次判断，遇到真值返回真值，后面不再执行，否则返回最后一个假值
+console.log(a || b || c); // 1
+console.log(c || b || a); // true
+
+// null 或 undefined 时，返回默认值
+console.log(null ?? 'default'); // 'default'
+console.log(undefined ?? 'default'); // 'default'
+console.log(0 ?? 'default'); // 0
+console.log(false ?? 'default'); // false
+console.log('' ?? 'default'); // ''
+console.log(NaN ?? 'default'); // NaN
+```
+
+### 2、判断数据类型
+
+> 可判断类型：`undefined`、`null`、`string`、`number`、`boolean`、`array`、`object`、`symbol`、`date`、`regexp`、`function`、`asyncfunction`、`arguments`、`set`、`map`、`weakset`、`weakmap`
+
+```js
+function DataType(tgt, type) {
+  const dataType = Object.prototype.toString
+    .call(tgt)
+    .replace(/\[object (\w+)\]/, "$1")
+    .toLowerCase();
+  return type ? dataType === type : dataType;
+}
+DataType("翠花"); // "string"
+DataType(20220608); // "number"
+DataType(true); // "boolean"
+DataType([], "array"); // true
+DataType([], "object"); // false
+DataType({}, "object"); // true
+DataType({}, "array"); // false
+DataType(null, "null"); // true
+```
+
+## 三、字符串
+
+### 1、字符串连接
 
 使用`+`运算符、`concat()`、`${}`方法。
 
@@ -81,7 +200,7 @@ let str2 = "World";
 console.log(`${str1} ${str2}`); // "Hello World"
 ```
 
-### 03-字符串截取
+### 2、字符串截取
 
 使用 `substring()`、`substr()`或 `slice()`方法。
 
@@ -126,7 +245,7 @@ console.log(str.slice(-5)); // "World"
 
 :::
 
-### 04-字符串查找
+### 3、字符串查找
 
 使用`indexOf()`、`lastIndexOf()`、`startsWith()`、`endsWith()`或`includes()`等方法。
 
@@ -148,7 +267,7 @@ console.log(str.includes("llo")); // true
 - **​includes(searchValue, startIndex):​** 检查字符串是否包含指定的字符或子字符串。返回布尔值。
   :::
 
-### 05-字符串替换
+### 4、字符串替换
 
 使用`replace()`或正则表达式的`replace()`方法。
 
@@ -178,7 +297,7 @@ console.log(str.replace(/o/g, "e")); // "Helle Werld"
 
 :::
 
-### 06-字符串分割
+### 5、字符串分割
 
 使用`split()`方法将字符串拆分成数组。
 
@@ -187,9 +306,17 @@ let str = "Hello,World";
 console.log(str.split(",")); // ["Hello", "World"]
 ```
 
+### 6、格式化 money 货币
+
+```js
+const ThousandNum = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const money = ThousandNum(685258980);
+console.log(money); // 685,258,980
+```
+
 ## 数组
 
-### 01-数组去重
+### 1、数组去重
 
 1、Array.from()叠加 new Set()方法
 
@@ -211,7 +338,7 @@ let uniqueArr = [...new Set(arr)];
 console.log(uniqueArr); // [1, 2, 3, 4, 5, 6]
 ```
 
-### 02-数组合并
+### 2、数组合并
 
 当然你会想到 concat()方法，但是哦，spread 操作符(...)也很香的，这也是扩展运算符的另一个应用。
 
@@ -221,7 +348,7 @@ let arr2 = [4, 5, 6, 7];
 console.log([...arr1, ...arr2]); // [1, 2, 4, 5, 4, 5, 6, 7]
 ```
 
-### 03-数组交集
+### 3、数组交集
 
 要求两个数组的交集，首先确保数组不重复，然后使用 filter()方法和 includes()方法。
 
@@ -232,7 +359,7 @@ let aloneArrs = [...new Set(arr1)].filter((item) => arr2.includes(item));
 console.log(aloneArrs); // [4, 5]
 ```
 
-### 04-数组并集
+### 4、数组并集
 
 ```js
 const arr1 = [1, 2, 3];
@@ -242,7 +369,7 @@ const unionArrs = [...new Set([...arr1, ...arr2])];
 console.log(unionArrs); // [1, 2, 3, 4, 5]
 ```
 
-### 05-数组置空
+### 5、数组置空
 
 如果要清空一个数组，将数组的长度设置为 0 即可，额，这个有点简单。
 
@@ -252,7 +379,7 @@ arr.length = 0;
 console.log(arr); // []
 ```
 
-### 06-数组填充数据
+### 6、数组填充数据
 
 如果我们需要用一些数据来填充数组，或者需要一个具有相同值的数据，我们可以用 fill()方法。
 
@@ -261,7 +388,7 @@ let nums = new Array(8).fill("8");
 console.log(nums); // ['8', '8', '8','8', '8', '8','8', '8']
 ```
 
-### 07-数组对象排序
+### 7、数组对象排序
 
 sort()方法
 
@@ -295,7 +422,7 @@ function compare(property) {
 console.log(arr.sort(compare("age")));
 ```
 
-### 08-替换数组的特定值
+### 8、替换数组的特定值
 
 splice() 方法向/从数组中添加/删除项目，然后返回被删除的项目。该方法会改变原始数组。特别需要注意插入值的位置！
 
@@ -307,7 +434,7 @@ console.log(arr); // [1, 2, 'https://ele-cat.github.io/', 4, 5, 6]
 console.log(result); // [3]
 ```
 
-### 09-数组映射
+### 9、数组映射
 
 我们先介绍一下 map 方法。map()方法返回一个新数组，数组中的元素为原始数组元素调用函数处理后的值，它会按照原始数组元素顺序依次处理元素。注意： map()不会改变原始数组，也不会对空数组进行检测。
 下面我们来实现一个没有 map 的数组映射：
@@ -319,7 +446,7 @@ let nums = Array.from(counts, ({ num }) => num);
 console.log(nums); // [1, 2, 4, 5]
 ```
 
-### 10-数组转换对象
+### 10、数组转换对象
 
 如果要将数组转换为对象，最快的方法莫过于 spread 运算符(...)。
 
@@ -329,7 +456,7 @@ let usersObj = { ...users };
 console.log(usersObj); // {0: '张三', 1: '李四', 2: '王五', 3: '赵四'}
 ```
 
-### 11-删除数组中的假值
+### 11、删除数组中的假值
 
 我们时常需要在处理数据的时候要去掉假值。在 Javascript 中，假值是 false, 0， " "， null, NaN, undefined。
 
@@ -339,7 +466,7 @@ let trueArr = users.filter(Boolean);
 console.log(trueArr); // ['张三', '李四', '王五', '赵四']
 ```
 
-### 12-获取数组中的随机值
+### 12、获取数组中的随机值
 
 我们可以根据数组长度获得一个随机索引号。
 
@@ -348,7 +475,7 @@ let users = ["张三", "李四", "王五", "赵四"];
 console.log(users[Math.floor(Math.random() * (users.length + 1))]);
 ```
 
-### 13-lastIndexOf()方法
+### 13、lastIndexOf()方法
 
 lastIndexOf()可以帮助我们查找元素最后一次出现的索引。
 
@@ -357,7 +484,7 @@ let users = ["张三", "李四", "王五", "赵四", "王五"];
 console.log(users.lastIndexOf("王五")); // 4
 ```
 
-### 14-数组所有值累加
+### 14、数组所有值累加
 
 reduce()方法接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终计算为一个值。
 
