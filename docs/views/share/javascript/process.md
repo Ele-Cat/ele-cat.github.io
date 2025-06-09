@@ -175,7 +175,7 @@ DataType({}, "array"); // false
 DataType(null, "null"); // true
 ```
 
-## 三、字符串
+## 三、String 字符串
 
 ### 1、字符串连接
 
@@ -314,7 +314,71 @@ const money = ThousandNum(685258980);
 console.log(money); // 685,258,980
 ```
 
-## 数组
+### 7、生成随机 ID
+
+```js
+function generateRandomId(len) {
+  return Math.random().toString(36).substr(3, len);
+}
+console.log(generateRandomId(8)); // "6fa54qec"
+console.log(generateRandomId(16)); // "rvxw4t67fa"
+```
+
+### 8、生成随机 HEX 色值
+
+```js
+function generateRandomHexColor() {
+  return "#" + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, "0");
+}
+console.log(generateRandomHexColor()); // "#6fa54q"
+```
+
+### 9、生成星级评分
+
+```js
+function generateStarRating(rating) {
+  return "★".repeat(rating) + "☆".repeat(5 - rating);
+}
+console.log(generateStarRating(3)); // "★★★☆☆"
+console.log(generateStarRating(5)); // "★★★★★"
+```
+
+### 10、字符串反转
+
+```js
+function reverseString(str) {
+  return str.split("").reverse().join("");
+}
+console.log(reverseString("Hello World")); // "dlroW olleH"
+```
+
+### 11、字符串首字母大写
+
+```js
+function capitalizeFirstLetter(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+console.log(capitalizeFirstLetter("hello world")); // "Hello world"
+```
+
+### 12、字符串去重
+
+```js
+function removeDuplicates(str) {
+  return [...new Set(str)].join("");
+}
+console.log(removeDuplicates("hello world")); // "helowrd"
+```
+
+### 13、操作 URL 查询参数
+
+```js
+const params = new URLSearchParams(location.search.replace(/\?/gi, "")); // location.search = "?name=cuihua&sex=male"
+params.has("name"); // true
+params.get("sex"); // "male"
+```
+
+## 四、Array 数组
 
 ### 1、数组去重
 
@@ -377,6 +441,10 @@ console.log(unionArrs); // [1, 2, 3, 4, 5]
 let arr = [1, 2, 3, 4, 5, 2, 6, 4];
 arr.length = 0;
 console.log(arr); // []
+
+let arr2 = [0, 1, 2]
+arr2.length = 2;
+console.log(arr2) // [0, 1]
 ```
 
 ### 6、数组填充数据
@@ -385,7 +453,7 @@ console.log(arr); // []
 
 ```js
 let nums = new Array(8).fill("8");
-console.log(nums); // ['8', '8', '8','8', '8', '8','8', '8']
+console.log(nums); // ['8', '8', '8','8', '8', '8', '8', '8']
 ```
 
 ### 7、数组对象排序
@@ -394,32 +462,17 @@ sort()方法
 
 ```js
 let arr = [
-  {
-    name: "张三",
-    age: 18,
-  },
-  {
-    name: "李四",
-    age: 120,
-  },
-  {
-    name: "王五",
-    age: 14,
-  },
-  {
-    name: "赵四",
-    age: 18,
-  },
+  { name: "张三", age: 18 },
+  { name: "李四", age: 120 },
+  { name: "王五", age: 14 },
+  { name: "赵四", age: 18 },
 ];
-function compare(property) {
-  return function (a, b) {
-    let value1 = a[property];
-    let value2 = b[property];
-    return value2 - value1;
-    // 降序
+function compare(property, order) {
+  return (a, b) => {
+    return order == "asc" ? a[property] - b[property] : b[property] - a[property];
   };
 }
-console.log(arr.sort(compare("age")));
+console.log(arr.sort(compare("age", "asc")));
 ```
 
 ### 8、替换数组的特定值
@@ -472,7 +525,7 @@ console.log(trueArr); // ['张三', '李四', '王五', '赵四']
 
 ```js
 let users = ["张三", "李四", "王五", "赵四"];
-console.log(users[Math.floor(Math.random() * (users.length + 1))]);
+console.log(users[Math.floor(Math.random() * users.length)]);
 ```
 
 ### 13、lastIndexOf()方法
@@ -495,10 +548,119 @@ let sum = nums.reduce((x, y) => x + y);
 console.log(sum); // 15
 ```
 
-## 对象
+### 15、数组首部插入成员
+
+```js
+let arr = [1, 2]; // 以下方法任选一种
+arr.unshift(0); // [0, 1, 2]
+arr = [0].concat(arr); // [0, 1, 2]
+arr = [0, ...arr]; // [0, 1, 2]
+arr.splice(0, 0, 0); // [0, 1, 2]
+```
+
+### 16、数组尾部插入成员
+
+```js
+let arr = [1, 2]; // 以下方法任选一种
+arr.push(3); // [1, 2, 3]
+arr = arr.concat(3); // [1, 2, 3]
+arr = [...arr, 3]; // [1, 2, 3]
+arr.splice(arr.length, 0, 3); // [1, 2, 3]
+arr[arr.length] = 3; // [1, 2, 3]
+```
+
+### 17、统计数组成员个数
+
+```js
+let arr = ["a", "b", "c", "a", "b", "a"];
+let obj = {};
+arr.forEach((item) => {
+  obj[item] = obj[item] ? obj[item] + 1 : 1;
+});
+console.log(obj); // {a: 3, b: 2, c: 1}
+```
+
+## 五、Object 对象
 
 > 对象是 Javascript 最常见的概念之一，它为我们提供了处理数据的许多可能性，熟悉对象的一些常用操作是很有必要的。
 
-### 对象操作
+### 1、合并对象
+
+```js
+let obj1 = { a: 1, b: 2 };
+let obj2 = { c: 3, d: 4 };
+let obj3 = { ...obj1, ...obj2 };
+console.log(obj3); // {a: 1, b: 2, c: 3, d: 4}
+```
+
+### 2、解构对象属性默认值
+
+```js
+const obj = { a: 0, b: 1, c: 2 };
+const { a, b = 2, d = 3 } = obj;
+console.log(a, b, d); // 0 1 3
+```
+
+### 3、对象属性重命名
+
+```js
+const obj = { a: 0, b: 1, c: 2 };
+const { a: newA, b: newB, c: newC } = obj;
+console.log(newA, newB, newC); // 0 1 2
+```
+
+## 六、Function 函数
+
+### 1、函数自执行（立即执行函数）
+
+```js
+const Func = (function () {})(); // 常用
+
+(function () {})(); // 常用
+[(function () {})()];
+
+
+// 以下方式，我们平时开发时写的少，在一些开源项目中和格式化插件中经常看到，要能理解和知道
++(function () {})();
+-(function () {})();
+~(function () {})();
+!(function () {})();
+
+new (function () {})();
+void (function () {})();
+typeof (function () {})();
+delete (function () {})();
+
+1, (function () {})();
+1 ^ (function () {})();
+1 > (function () {})();
+```
+
+## 七、DOM 实用技巧
+
+### 1、显示全部 DOM 边框
+
+> 调试页面元素边界时使用
+
+```js
+[].forEach.call($$("*"), (dom) => {
+  dom.style.outline =
+    "1px solid #" + (~~(Math.random() * (1 << 24))).toString(16);
+});
+```
+
+### 2、自适应页面
+
+> 移动端页面自适应
+
+```js
+function AutoResponse(width = 750) {
+  const target = document.documentElement;
+  target.clientWidth >= 600
+    ? (target.style.fontSize = "80px")
+    : (target.style.fontSize = (target.clientWidth / width) * 100 + "px");
+}
+```
+
 
 <Comment />

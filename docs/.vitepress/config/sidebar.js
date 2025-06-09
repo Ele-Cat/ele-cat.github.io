@@ -91,6 +91,7 @@ const sidebar = {
       text: "Javascript",
       collapsed: false,
       items: [
+        { text: "常用正则", link: "/views/share/javascript/regular" },
         { text: "ES6-ES12", link: "/views/share/javascript/skill" },
         { text: "数据处理", link: "/views/share/javascript/process" },
         { text: "工具函数", link: "/views/share/javascript/tool" },

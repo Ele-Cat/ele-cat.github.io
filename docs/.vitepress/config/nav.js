@@ -53,6 +53,7 @@ const nav = [
       {
         text: "Javascript",
         items: [
+          { text: "常用正则", link: "/views/share/javascript/regular" },
           { text: "ES6-ES12", link: "/views/share/javascript/skill" },
           { text: "数据处理", link: "/views/share/javascript/process" },
           { text: "工具函数", link: "/views/share/javascript/tool" },
@@ -132,6 +133,15 @@ const nav = [
           }
         ],
       },
+      {
+        text: "进阶",
+        items: [
+          {
+            text: "面试官系列",
+            link: "/views/interview/interviewer",
+          },  
+        ] 
+      }
     ]
   },
   { text: "关于", link: "/views/about/about" },
