@@ -44,15 +44,6 @@ const sidebar = {
   ],
   "/views/note/": [
     {
-      text: "工具",
-      collapsed: false,
-      items: [
-        { text: "Git", link: "/views/note/git" },
-        { text: "VuePress2", link: "/views/note/vuePress" },
-        { text: "VitePress", link: "/views/note/vitePress" },
-      ],
-    },
-    {
       text: "前端",
       collapsed: false,
       items: [
@@ -68,8 +59,18 @@ const sidebar = {
       text: "后端",
       collapsed: false,
       items: [
+        { text: "Java", link: "/views/note/java" },
         { text: "Node", link: "/views/note/node" },
         { text: "Python", link: "/views/note/python" },
+      ],
+    },
+    {
+      text: "工具",
+      collapsed: false,
+      items: [
+        { text: "Git", link: "/views/note/git" },
+        { text: "VuePress2", link: "/views/note/vuePress" },
+        { text: "VitePress", link: "/views/note/vitePress" },
       ],
     },
   ],

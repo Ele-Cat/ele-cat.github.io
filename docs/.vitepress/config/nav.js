@@ -6,14 +6,6 @@ const nav = [
     items: [
       { text: "博客", link: "/views/daily-notes/daily-notes", activeMatch: '^/views/daily-notes' },
       {
-        text: "工具",
-        items: [
-          { text: "Git", link: "/views/note/git" },
-          { text: "VuePress2", link: "/views/note/vuePress" },
-          { text: "VitePress", link: "/views/note/vitePress" },
-        ],
-      },
-      {
         text: "前端",
         items: [
           { text: "Sass", link: "/views/note/sass" },
@@ -28,6 +20,10 @@ const nav = [
         text: "后端",
         items: [
           {
+            text: "Java",
+            link: "/views/note/java",
+          },
+          {
             text: "Node",
             link: "/views/note/node",
           },
@@ -35,6 +31,14 @@ const nav = [
             text: "Python",
             link: "/views/note/python",
           },
+        ],
+      },
+      {
+        text: "工具",
+        items: [
+          { text: "Git", link: "/views/note/git" },
+          { text: "VuePress2", link: "/views/note/vuePress" },
+          { text: "VitePress", link: "/views/note/vitePress" },
         ],
       },
     ],
