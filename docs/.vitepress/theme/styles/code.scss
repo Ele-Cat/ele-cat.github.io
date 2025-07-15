@@ -358,6 +358,10 @@ li > div[class*='language-'] {
   overflow-x: auto;
 }
 
+pre {
+  line-height: 16px;
+}
+
 [class*='language-'] code {
   padding: 0;
   line-height: var(--code-line-height);
