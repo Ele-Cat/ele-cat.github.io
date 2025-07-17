@@ -1050,52 +1050,435 @@ boolean isTeenager = age > 6 && age < 18; // true
 
    1. 字符串连接
 
-   Java 的编译器对字符串做了特殊照顾，可以使用+连接任意字符串和其他数据类型，这样极大地方便了字符串的处理。例如：
+      Java 的编译器对字符串做了特殊照顾，可以使用+连接任意字符串和其他数据类型，这样极大地方便了字符串的处理。例如：
 
-   ```java
-   // 字符串连接
-   public class Main {
-     public static void main(String[] args) {
-       String s1 = "Hello";
-       String s2 = "world";
-       String s = s1 + " " + s2 + "!";
-       System.out.println(s); // Hello world!
-     }
-   }
-   ```
+      ```java
+      // 字符串连接
+      public class Main {
+        public static void main(String[] args) {
+          String s1 = "Hello";
+          String s2 = "world";
+          String s = s1 + " " + s2 + "!";
+          System.out.println(s); // Hello world!
+        }
+      }
+      ```
 
-   如果用+连接字符串和其他数据类型，会将其他数据类型先自动转型为字符串，再连接：
+      如果用+连接字符串和其他数据类型，会将其他数据类型先自动转型为字符串，再连接：
 
-   ```java
-   // 字符串连接
-   public class Main {
-     public static void main(String[] args) {
-       int age = 25;
-       String s = "age is " + age;
-       System.out.println(s); // age is 25
-     }
-   }
-   ```
+      ```java
+      // 字符串连接
+      public class Main {
+        public static void main(String[] args) {
+          int age = 25;
+          String s = "age is " + age;
+          System.out.println(s); // age is 25
+        }
+      }
+      ```
 
    2. 多行字符串
 
+      如果我们要表示多行字符串，使用`+`号连接会非常不方便：
+
+      ```java
+      String s = "first line \n"
+              + "second line \n"
+              + "end";
+      ```
+
+      从 Java 13 开始，字符串可以用`"""..."""`表示多行字符串（Text Blocks）了。举个例子：
+
+      ```java
+      // 多行字符串
+      public class Main {
+        public static void main(String[] args) {
+          String s = """
+                    SELECT * FROM
+                      users
+                    WHERE id > 100
+                    ORDER BY name DESC""";
+          System.out.println(s);
+        }
+      }
+      ```
+
    3. 不可变特性
+
+      Java 的字符串除了是一个引用类型外，还有个重要特点，就是字符串不可变。考察以下代码：
+
+      ```java
+      // 字符串不可变
+      public class Main {
+        public static void main(String[] args) {
+          String s = "hello";
+          System.out.println(s); // 显示 hello
+          s = "world";
+          System.out.println(s); // 显示 world
+        }
+      }
+      ```
+
+      观察执行结果，难道字符串`s`变了吗？其实变的不是字符串，而是变量`s`的“指向”。
+
+      执行`String s = "hello";`时，JVM 虚拟机先创建字符串`"hello"`，然后，把字符串变量`s`指向它：
+
+      <pre>
+            s
+            │
+            ▼
+      ┌───┬───────────┬───┐
+      │   │  "hello"  │   │
+      └───┴───────────┴───┘
+      </pre>
+
+      紧接着，执行`s = "world";时，JVM虚拟机先创建字符串`"world"，然后，把字符串变量`s`指向它：
+
+      <pre>
+            s ──────────────┐
+                            │
+                            ▼
+      ┌───┬───────────┬───┬───────────┬───┐
+      │   │  "hello"  │   │  "world"  │   │
+      └───┴───────────┴───┴───────────┴───┘
+      </pre>
+
+      原来的字符串`"hello"`还在，只是我们无法通过变量`s`访问它而已。因此，字符串的不可变是指字符串内容不可变。至于变量，可以一会指向字符串`"hello"`，一会指向字符串`"world"`。
+
+      理解了引用类型的“指向”后，试解释下面的代码输出：
+
+      ```java
+      // 字符串不可变
+      public class Main {
+        public static void main(String[] args) {
+          String s = "hello";
+          String t = s;
+          s = "world";
+          System.out.println(t); // t是"hello"还是"world"?
+        }
+      }
+      ```
 
    4. 空值 null
 
+      引用类型的变量可以指向一个空值`null`，它表示不存在，即该变量不指向任何对象。例如：
+
+      ```java
+      String s1 = null; // s1是null
+      String s2 = s1; // s2也是null
+      String s3 = ""; // s3指向空字符串，不是null
+      ```
+
+      注意要区分空值`null`和空字符串`""`，空字符串是一个有效的字符串对象，它不等于`null`。
+
    :::
 
-<!-- #### 2.3.8 数组类型
+#### 2.3.8 数组类型
+
+:::tip 引子
+如果我们有一组类型相同的变量，例如，5 位同学的成绩，可以这么写：
+
+```java
+public class Main {
+  public static void main(String[] args) {
+    // 5位同学的成绩:
+    int n1 = 68;
+    int n2 = 79;
+    int n3 = 91;
+    int n4 = 85;
+    int n5 = 62;
+  }
+}
+```
+
+但其实没有必要定义 5 个 int 变量。可以使用数组来表示“一组”int 类型。代码如下：
+
+```java
+// 数组
+public class Main {
+  public static void main(String[] args) {
+    // 5位同学的成绩:
+    int[] ns = new int[5];
+    ns[0] = 68;
+    ns[1] = 79;
+    ns[2] = 91;
+    ns[3] = 85;
+    ns[4] = 62;
+  }
+}
+```
+
+:::
+
+定义一个数组类型的变量，使用数组类型“类型[]”，例如：`int[]`。和单个基本类型变量不同，数组变量类型初始化必须使用`new int[5]`表示创建一个可容纳 5 个`int`元素的数组。
+
+Java 的数组有几个特点：
+
+- 数组所有元素初始化为默认值，整型都是`0`，浮点型是`0.0`，布尔型是`false`；
+- 数组一旦创建后，大小就不可改变。
+
+要访问数组中的某个元素，需要使用索引。数组索引从`0`开始，例如，5 个元素的数组，索引范围是`0`~`4`。
+
+可以修改数组中的某一个元素，使用赋值语句，例如，`ns[1] = 79;`。
+
+可以使用`数组变量.length`获取数组大小。
+
+```java
+// 数组
+public class Main {
+  public static void main(String[] args) {
+    // 5位同学的成绩:
+    int[] ns = new int[5];
+    System.out.println(ns.length); // 5
+  }
+}
+```
+
+数组是引用类型，在使用索引访问数组元素时，如果索引超出范围，运行时将报错：
+
+```java
+// 数组
+public class Main {
+  public static void main(String[] args) {
+    // 5位同学的成绩:
+    int[] ns = new int[5];
+    int n = 5;
+    System.out.println(ns[n]); // 索引n不能超出范围
+  }
+}
+```
+
+也可以在定义数组时直接指定初始化的元素，这样就不必写出数组大小，而是由编译器自动推算数组大小。例如：
+
+```java
+// 数组
+public class Main {
+  public static void main(String[] args) {
+    // 5位同学的成绩:
+    int[] ns = new int[] { 68, 79, 91, 85, 62 };
+    // int[] ns = { 68, 79, 91, 85, 62 }
+    System.out.println(ns.length); // 编译器自动推算数组大小为5
+  }
+}
+```
+
+:::details 字符串数组
+
+如果数组元素不是基本类型，而是一个引用类型，那么，修改数组元素会有哪些不同？
+
+字符串是引用类型，因此我们先定义一个字符串数组：
+
+```java
+String[] names = {
+  "ABC", "XYZ", "zoo"
+};
+```
+
+对于 String[]类型的数组变量 names，它实际上包含 3 个元素，但每个元素都指向某个字符串对象：
+
+<pre>
+          ┌─────────────────────────┐
+    names │   ┌─────────────────────┼───────────┐
+      │   │   │                     │           │
+      ▼   │   │                     ▼           ▼
+┌───┬───┬─┴─┬─┴─┬───┬───────┬───┬───────┬───┬───────┬───┐
+│   │░░░│░░░│░░░│   │ "ABC" │   │ "XYZ" │   │ "zoo" │   │
+└───┴─┬─┴───┴───┴───┴───────┴───┴───────┴───┴───────┴───┘
+      │                 ▲
+      └─────────────────┘
+</pre>
+
+对 names[1]进行赋值，例如 names[1] = "cat";，效果如下：
+
+<pre>
+          ┌─────────────────────────────────────────────────┐
+    names │   ┌─────────────────────────────────┐           │
+      │   │   │                                 │           │
+      ▼   │   │                                 ▼           ▼
+┌───┬───┬─┴─┬─┴─┬───┬───────┬───┬───────┬───┬───────┬───┬───────┬───┐
+│   │░░░│░░░│░░░│   │ "ABC" │   │ "XYZ" │   │ "zoo" │   │ "cat" │   │
+└───┴─┬─┴───┴───┴───┴───────┴───┴───────┴───┴───────┴───┴───────┴───┘
+      │                 ▲
+      └─────────────────┘
+</pre>
+
+这里注意到原来`names[1]`指向的字符串`"XYZ"`并没有改变，仅仅是将`names[1]`的引用从指向`"XYZ"`改成了指向`"cat"`，其结果是字符串`"XYZ"`再也无法通过`names[1]`访问到了。
+
+对“指向”有了更深入的理解后，试解释如下代码：
+
+```java
+// 数组
+public class Main {
+  public static void main(String[] args) {
+    String[] names = {"ABC", "XYZ", "zoo"};
+    String s = names[1];
+    names[1] = "cat";
+    System.out.println(s); // s是"XYZ"还是"cat"?
+  }
+}
+```
+
+:::
 
 ### 2.4 流程控制
 
+在 Java 程序中，JVM 默认总是顺序执行以分号`;`结束的语句。但是，在实际的代码中，程序经常需要做条件判断、循环，因此，需要有多种流程控制语句，来实现程序的跳转和循环等功能。
+
 #### 2.4.1 输入与输出
+
+1. 输出
+
+   在前面的代码中，我们总是使用`System.out.println()`来向屏幕输出一些内容。
+
+   `println`是 print line 的缩写，表示输出并换行。因此，如果输出后不想换行，可以用`print()`：
+
+   ```java
+   public class Main {
+     public static void main(String[] args) {
+       System.out.print("A,");
+       System.out.print("B,");
+       System.out.print("C.");
+       System.out.println();
+       System.out.println("END");
+       /**
+        * A,B,C.
+       * END
+       */
+     }
+   }
+   ```
+
+   :::details 格式化输出
+
+   Java 还提供了格式化输出的功能。为什么要格式化输出？因为计算机表示的数据不一定适合人来阅读：
+
+   ```java
+   // 格式化输出
+   public class Main {
+     public static void main(String[] args) {
+       double d = 12900000;
+       System.out.println(d); // 1.29E7
+     }
+   }
+   ```
+
+   如果要把数据显示成我们期望的格式，就需要使用格式化输出的功能。格式化输出使用`System.out.printf()`，通过使用占位符`%?`，`printf()`可以把后面的参数格式化成指定格式：
+
+   ```java
+   // 格式化输出
+   public class Main {
+     public static void main(String[] args) {
+       double d = 3.1415926;
+       System.out.printf("%.2f\n", d); // 显示两位小数3.14
+       System.out.printf("%.4f\n", d); // 显示4位小数3.1416
+     }
+   }
+   ```
+
+   Java 的格式化功能提供了多种占位符，可以把各种数据类型“格式化”成指定的字符串：
+
+   | 占位符 | 说明                             |
+   | :----- | :------------------------------- |
+   | %d     | 格式化输出整数                   |
+   | %x     | 格式化输出十六进制整数           |
+   | %f     | 格式化输出浮点数                 |
+   | %e     | 格式化输出科学计数法表示的浮点数 |
+   | %s     | 格式化字符串                     |
+
+   注意，由于`%`表示占位符，因此，连续两个`%%`表示一个`%`字符本身。
+
+   占位符本身还可以有更详细的格式化参数。下面的例子把一个整数格式化成十六进制，并用 0 补足 8 位：
+
+   ```java
+   // 格式化输出
+   public class Main {
+     public static void main(String[] args) {
+       int n = 12345000;
+       System.out.printf("n=%d, hex=%08x", n, n); // 注意，两个%占位符必须传入两个数
+     }
+   }
+   ```
+
+   详细的格式化参数请参考 JDK 文档[java.util.Formatter](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Formatter.html#syntax)
+
+   :::
+
+2. 输入
+
+   ```java
+   import java.util.Scanner;
+
+   public class Main {
+     public static void main(String[] args) {
+       Scanner scanner = new Scanner(System.in); // 创建Scanner对象
+       System.out.print("Input your name: "); // 打印提示
+       String name = scanner.nextLine(); // 读取一行输入并获取字符串
+       System.out.print("Input your age: "); // 打印提示
+       int age = scanner.nextInt(); // 读取一行输入并获取整数
+       System.out.printf("Hi, %s, you are %d\n", name, age); // 格式化输出
+     }
+   }
+   ```
+
+   :::details 解析
+
+   首先，我们通过`import`语句导入`java.util.Scanner`，`import`是导入某个类的语句，必须放到 Java 源代码的开头。
+
+   然后，创建`Scanner`对象并传入`System.in`。`System.out`代表标准输出流，而`System.in`代表标准输入流。直接使用`System.in`读取用户输入虽然是可以的，但需要更复杂的代码，而通过`Scanner`就可以简化后续的代码。
+
+   有了``Scanner`对象后，要读取用户输入的字符串，使用`scanner.nextLine()`，要读取用户输入的整数，使用`scanner.nextInt()`。`Scanner`会自动转换数据类型，因此不必手动转换。
+
+   编译成功后，执行：
+
+   ```bash
+   $ java Main
+   Input your name: Bob ◀── 输入 Bob
+   Input your age: 12   ◀── 输入 12
+   Hi, Bob, you are 12  ◀── 输出
+   ```
+
+   :::
 
 #### 2.4.2 if 条件判断
 
+在 Java 程序中，如果要根据条件来决定是否执行某一段代码，就需要`if`语句。if 语句的基本语法是：
+
+```java
+if (条件) {
+  // 条件满足时执行
+}
+```
+
+根据`if`的计算结果（`true`还是`false`），JVM 决定是否执行`if`语句块（即花括号{}包含的所有语句）。
+
+```java
+// 条件判断
+public class Main {
+  public static void main(String[] args) {
+    int n = 90;
+    if (n >= 90) {
+      System.out.println("优秀");
+    } else if (n >= 60) {
+      System.out.println("及格了");
+    } else {
+      System.out.println("挂科了");
+    }
+  }
+}
+```
+
+:::danger 注意点
+
+- 当且仅当`if`语句只有一行时，可以省略`{}`，不推荐；
+- 使用时注意条件顺序与条件边界；
+- 浮点数判断时不能直接使用`==`运算符；
+- 引用类型判断内容时要使用`equals()`，要注意避免`NullPointerException`。
+
+:::
+
 #### 2.4.3 switch 多重选择
 
-#### 2.4.4 while 循环
+<!-- #### 2.4.4 while 循环
 
 #### 2.4.5 do while 循环
 
