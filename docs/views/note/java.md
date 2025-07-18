@@ -1441,9 +1441,10 @@ public class Main {
 
 #### 2.4.2 if 条件判断
 
-在 Java 程序中，如果要根据条件来决定是否执行某一段代码，就需要`if`语句。if 语句的基本语法是：
+> 在 Java 程序中，如果要根据条件来决定是否执行某一段代码，就需要`if`语句。
 
 ```java
+// if 语句的基本语法是：
 if (条件) {
   // 条件满足时执行
 }
@@ -1478,22 +1479,569 @@ public class Main {
 
 #### 2.4.3 switch 多重选择
 
-<!-- #### 2.4.4 while 循环
+> `switch`语句根据`switch (表达式)`计算的结果，跳转到匹配的`case`结果，然后继续执行后续语句，直到遇到`break`结束执行。
+
+```java
+public class Main {
+  public static void main(String[] args) {
+    int option = 1;
+    switch (option) {
+      case 1:
+        System.out.println("Selected 1");
+        break;
+      case 2:
+        System.out.println("Selected 2");
+        break;
+      case 3:
+        System.out.println("Selected 3");
+        break;
+      default:
+        System.out.println("Selected other");
+        break;
+    }
+  }
+}
+```
+
+:::danger 注意点
+
+- 不要忘记`switch`语句中每个`case`语句后都要添加`break`语句；
+- 多个`case`语句执行同一组语句块，可以合并；
+  ```java
+  public class Main {
+    public static void main(String[] args) {
+      int i = 3;
+      switch (i) {
+        case 1:
+          System.out.println("Selected 1");
+          break;
+        case 2:
+        case 3:
+          System.out.println("Selected 2 or 3");
+          break;
+        default:
+          System.out.println("Selected other");
+          break;
+      }
+    }
+  }
+  ```
+- `switch`语句只要保证有`break`语句，`case`的顺序不影响程序逻辑；
+- `switch`中可以匹配字符串，同`equals`方法；
+- 不要忘记`default`语句；
+- 从 Java 12 开始，`switch`语句升级为更简洁的表达式语法，且不需要`break`语句；
+  ```java
+  public class Main {
+    public static void main(String[] args) {
+      int i = 1;
+      switch (i) {
+        case 1 -> System.out.println("Selected 1");
+        case 2,3 -> System.out.println("Selected 2 or 3");
+        default -> System.out.println("Selected other");
+      }
+    }
+  }
+  ```
+- 可以通过`yield`语句返回值；
+  :::
+
+#### 2.4.4 while 循环
+
+> 循环语句就是让计算机根据条件做循环计算，在条件满足时继续循环，条件不满足时退出循环。
+
+```java
+// 基本用法：
+while (条件表达式) {
+  // 循环语句
+}
+// 继续执行后续代码
+```
+
+例如计算从 1 到 100 的和：
+
+```bash
+1+2+3+...+99+100=??
+```
+
+可以通过`while`循环实现：
+
+```java
+public class Main {
+  public static void main(String[] args) {
+    int i = 100;
+    int sum = 0;
+    while (i > 0) {
+      sum += i;
+      i--;
+    }
+    System.out.println(sum); // 5050
+  }
+}
+```
+
+> `while`循环是**先判断循环条件，再执行循环**，因此可能出现一次循环都不执行的情况。
 
 #### 2.4.5 do while 循环
 
+> 在 Java 中，`while`循环是先判断循环条件，再执行循环。而另一种`do while`循环则是**先执行循环，再判断条件，条件满足时继续循环，条件不满足时退出**。`do while`循环至少会执行一次循环，它的用法是：
+
+```java
+do {
+    执行循环语句
+} while (条件表达式);
+```
+
+通过`do while`循环实现计算从 1 到 100 的和：
+
+```java
+public class Main {
+  public static void main(String[] args) {
+    int i = 100;
+    int sum = 0;
+    do {
+      sum += i;
+      i--;
+    } while (i > 0);
+    System.out.println(sum); // 5050
+  }
+}
+```
+
 #### 2.4.6 for 循环
 
+除了`while`和`do while`循环，Java 使用最广泛的是`for`循环。
+
+> `for`循环的功能非常强大，它使用计数器实现循环。`for`循环会先初始化计数器，然后，在每次循环前检测循环条件，在每次循环后更新计数器。计数器变量通常命名为`i`。
+
+我们把 1 到 100 求和用`for`循环改写一下：
+
+```java
+public class Main {
+  public static void main(String[] args) {
+    int sum = 0;
+    for (int i = 1; i <= 100; i++) {
+      sum = sum + i;
+    }
+    System.out.println(sum);
+  }
+}
+```
+
+:::details 解析
+
+在`for`循环执行前，会先执行初始化语句`int i=1`，它定义了计数器变量`i`并赋初始值为`1`，然后，循环前先检查循环条件`i<=100`，循环后自动执行`i++`，因此，和`while`循环相比，`for`循环把更新计数器的代码统一放到了一起。在`for`循环的循环体内部，不需要去更新变量`i`。
+
+:::
+
+:::details `for`循环的其他特性
+
+1. `for`循环支持对数组的循环：
+
+   ```java
+   public class Main {
+     public static void main(String[] args) {
+       int sum = 0;
+       int[] ns = {1, 4, 9, 16, 25};
+       for (int i = 0; i < ns.length; i++) {
+         sum += ns[i];
+       }
+       System.out.println(sum); // 55
+     }
+   }
+   ```
+
+   :::tip 解析
+
+   上面代码的循环条件是`i<ns.length`。因为`ns`数组的长度是`5`，因此，当循环`5`次后，`i`的值被更新为`5`，就不满足循环条件，因此`for`循环结束。
+
+   > 如果把`i < ns.length`改为`i <= ns.length`，会导致数组越界异常：`Index 5 out of bounds for length 5`
+
+   > 注意不要在循环体内修改计数器！
+
+2. `for`循环支持对字符串的循环：
+
+   ```java
+   public class Main {
+     public static void main(String[] args) {
+       String s = "Hello";
+       for (int i = 0; i < s.length(); i++) {
+         System.out.println(s.charAt(i));
+       }
+     }
+   }
+   ```
+
+3. 灵活使用 for 循环
+
+   `for`循环还可以缺少初始化语句、循环条件和每次循环更新语句，例如：
+
+   ```java
+   // 不设置结束条件:
+   for (int i = 0; ; i++) {
+     // ...
+   }
+
+   // 不设置结束条件和更新语句:
+   for (int i = 0; ;) {
+     // ...
+   }
+
+   // 什么都不设置:
+   for (;;) {
+     // ...
+   }
+   ```
+
+   通常不推荐这样写，但是，某些情况下，是可以省略`for`循环的某些语句的。
+
+4. for each 循环
+
+   可以通过简写方法遍历数组：
+
+   ```java
+   public class Main {
+     public static void main(String[] args) {
+       int[] ns = {1, 4, 9, 16, 25};
+       for (int n : ns) {
+         System.out.println(n);
+       }
+     }
+   }
+   ```
+
+   除了数组外，`for each`循环能够遍历所有“可迭代”的数据类型，包括`List`、`Map`等。
+
+:::
+
 #### 2.4.7 break 和 continue
+
+无论是`while`循环还是`for`循环，有两个特别的语句可以使用，就是`break`语句和`continue`语句。
+
+1. break
+
+   > `break`语句用于跳出循环，执行循环后面的语句。
+
+   ```java
+   public class Main {
+     public static void main(String[] args) {
+       int sum = 0;
+       for (int i = 0; ; i++) {
+         sum += i;
+         if (i == 100) break;
+       }
+       System.out.println(sum); // 5050
+     }
+   }
+   ```
+
+   :::danger 注意
+
+   `break`语句总是跳出并结束自己所在的那一层循环。
+
+   :::
+
+2. continue
+
+   > `continue`语句用于跳过当前循环，执行下一次循环。
+
+   ```java
+   public class Main {
+     public static void main(String[] args) {
+       for (int i = 1; i <= 10 ; i++) {
+         if (i % 2 == 0) {
+           continue;
+         }
+         System.out.println(i); // 1 3 5 7 9
+       }
+     }
+   }
+   ```
+
+   :::danger 注意
+
+   `continue`语句总是提前结束本次自己所在的循环。
+
+   :::
 
 ### 2.5 数组操作
 
 #### 2.5.1 遍历数组
 
+可以使用`for`循环或者`for each`循环遍历数组：
+
+```java
+public class Main {
+  public static void main(String[] args) {
+    int[] ns = {1, 4, 9, 16, 25};
+    // for (int i = 0; i < ns.length; i++) {
+    //   System.out.println(ns[i]);
+    // }
+    for (int n : ns) {
+      System.out.println(n);
+    }
+  }
+}
+```
+
+:::danger 注意
+
+使用`for each`循环更简洁，但在遍历数组时，无法获取元素索引。
+
+:::
+
+:::details 打印数组内容
+
+1. 想要直接打印数组变量，会得到数组的内存地址：
+
+   ```java
+   public class Main {
+     public static void main(String[] args) {
+       int[] ns = {1, 4, 9, 16, 25};
+       System.out.println(ns); // [I@37a71e93
+     }
+   }
+   ```
+
+   > `[I`表示这是一个`int`类型的数组，`@`后面的`37a71e93`是数组在内存中的地址。
+
+2. 使用`Arrays.toString()`可以快速打印数组内容：
+
+   ```java
+   import java.util.Arrays;
+
+   public class Main {
+     public static void main(String[] args) {
+       int[] ns = {1, 4, 9, 16, 25};
+       System.out.println(Arrays.toString(ns)); // [1, 4, 9, 16, 25]
+     }
+   }
+   ```
+
+:::
+
 #### 2.5.2 数组排序
+
+常用的数组排序算法有**冒泡排序**、**选择排序**、**插入排序**、**快速排序**、**归并排序**等。
+
+如何使用冒泡排序对数组进行从小到大排序，示例：
+
+```java
+import java.util.Arrays;
+
+public class Main {
+  public static void main(String[] args) {
+    int[] ns = { 28, 12, 89, 73, 65, 18, 96, 50, 8, 36 };
+    for (int i = 0; i < ns.length; i++) {
+      for (int j = 0; j < ns.length - i - 1; j++) {
+        if (ns[j] > ns[j + 1]) {
+          int temp = ns[j];
+          ns[j] = ns[j + 1];
+          ns[j + 1] = temp;
+        }
+      }
+    }
+    System.out.println(Arrays.toString(ns)); // [8, 12, 18, 28, 36, 50, 65, 73, 89, 96]
+  }
+}
+```
+
+Java 中内置了排序功能，可通过调用`Arrays.sort()`实现：
+
+```java
+import java.util.Arrays;
+
+public class Main {
+  public static void main(String[] args) {
+    int[] ns = { 28, 12, 89, 73, 65, 18, 96, 50, 8, 36 };
+    Arrays.sort(ns);
+    System.out.println(Arrays.toString(ns)); // [8, 12, 18, 28, 36, 50, 65, 73, 89, 96]
+  }
+}
+```
+
+:::details 注意，对数组排序实际上修改了数组本身
+
+例如，排序前的数组是：
+
+```java
+int[] ns = { 9, 3, 6, 5 };
+```
+
+在内存中，这个整型数组表示如下：
+
+<pre>
+      ┌───┬───┬───┬───┐
+ns───▶│ 9 │ 3 │ 6 │ 5 │
+      └───┴───┴───┴───┘
+</pre>
+
+当我们调用`Arrays.sort(ns);`后，这个整型数组在内存中变为：
+
+<pre>
+      ┌───┬───┬───┬───┐
+ns───▶│ 3 │ 5 │ 6 │ 9 │
+      └───┴───┴───┴───┘
+</pre>
+
+即变量`ns`指向的数组内容已经被改变了。
+
+如果对一个字符串数组进行排序，例如：
+
+```java
+String[] ns = { "banana", "apple", "pear" };
+```
+
+排序前，这个数组在内存中表示如下：
+
+<pre>
+                   ┌──────────────────────────────────┐
+               ┌───┼──────────────────────┐           │
+               │   │                      ▼           ▼
+         ┌───┬─┴─┬─┴─┬───┬────────┬───┬───────┬───┬──────┬───┐
+ns ─────▶│░░░│░░░│░░░│   │"banana"│   │"apple"│   │"pear"│   │
+         └─┬─┴───┴───┴───┴────────┴───┴───────┴───┴──────┴───┘
+           │                 ▲
+           └─────────────────┘
+</pre>
+
+调用`Arrays.sort(ns);`排序后，这个数组在内存中表示如下：
+
+<pre>
+                   ┌──────────────────────────────────┐
+               ┌───┼──────────┐                       │
+               │   │          ▼                       ▼
+         ┌───┬─┴─┬─┴─┬───┬────────┬───┬───────┬───┬──────┬───┐
+ns ─────▶│░░░│░░░│░░░│   │"banana"│   │"apple"│   │"pear"│   │
+         └─┬─┴───┴───┴───┴────────┴───┴───────┴───┴──────┴───┘
+           │                              ▲
+           └──────────────────────────────┘
+</pre>
+
+原来的 3 个字符串在内存中均没有任何变化，但是`ns`数组的每个元素指向变化了。
+
+:::
 
 #### 2.5.3 多维数组
 
-#### 2.5.4 命令行参数
+1. 二维数组
 
-## 03. 面向对象编程 -->
+   二维数组是一个特殊的一维数组，其每个元素都是一个一维数组。
+
+   例如，一个`3 * 4`的二维数组可以表示为：
+
+   ```java
+   int[][] ns = {
+     { 1, 2, 3, 4 },
+     { 5, 6, 7, 8 },
+     { 9, 10, 11, 12 }
+   };
+   ```
+
+   :::details 二维数组解析
+
+   在内存中，这个二维数组表示如下：
+
+   <pre>
+                       ┌───┬───┬───┬───┐
+           ┌───┐  ┌──▶│ 1 │ 2 │ 3 │ 4 │
+   ns ────▶│░░░│──┘   └───┴───┴───┴───┘
+           ├───┤      ┌───┬───┬───┬───┐
+           │░░░│─────▶│ 5 │ 6 │ 7 │ 8 │
+           ├───┤      └───┴───┴───┴───┘
+           │░░░│──┐   ┌───┬───┬───┬───┐
+           └───┘  └──▶│ 9 │10 │11 │12 │
+                       └───┴───┴───┴───┘
+   </pre>
+
+   1. 访问二维数组
+
+      可以使用`ns[i][j]`访问二维数组的第`i`行第`j`列的元素。例如：
+
+      ```java
+      int n = ns[1][2]; // 7
+      ```
+
+   2. 遍历二维数组
+
+      可以使用两层循环遍历二维数组。例如：
+
+      ```java
+      public class Main {
+        public static void main(String[] args) {
+          // 用二维数组表示的学生成绩:
+          int[][] ns = {
+            { 1, 2, 3, 4 },
+            { 5, 6, 7, 8 },
+            { 9, 10, 11, 12 }
+          };
+          for (int[] n : ns) {
+            for (int i : n) {
+              System.out.print(i + ",");
+            }
+            System.out.println();
+          }
+        }
+      }
+      ```
+
+      也可以通过`Arrays.deepToString()`来打印二维数组。例如：
+
+      ```java
+      System.out.println(Arrays.deepToString(ns)); // [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
+      ```
+
+   :::
+
+2. 三维数组
+
+   三维数组就是二维数组的数组。可以这么定义一个三维数组：
+
+   ```java
+   int[][][] ns = {
+     {
+       {1, 2, 3},
+       {4, 5, 6},
+       {7, 8, 9}
+     },
+     {
+       {10, 11},
+       {12, 13}
+     },
+     {
+       {14, 15, 16},
+       {17, 18}
+     }
+   };
+   ```
+
+   它在内存中的结构如下：
+
+   <pre>
+                                 ┌───┬───┬───┐
+                     ┌───┐  ┌──▶│ 1 │ 2 │ 3 │
+                 ┌──▶│░░░│──┘   └───┴───┴───┘
+                 │   ├───┤      ┌───┬───┬───┐
+                 │   │░░░│─────▶│ 4 │ 5 │ 6 │
+                 │   ├───┤      └───┴───┴───┘
+                 │   │░░░│──┐   ┌───┬───┬───┐
+           ┌───┐  │   └───┘  └──▶│ 7 │ 8 │ 9 │
+   ns ────▶│░░░│──┘              └───┴───┴───┘
+           ├───┤      ┌───┐      ┌───┬───┐
+           │░░░│─────▶│░░░│─────▶│10 │11 │
+           ├───┤      ├───┤      └───┴───┘
+           │░░░│──┐   │░░░│──┐   ┌───┬───┐
+           └───┘  │   └───┘  └──▶│12 │13 │
+                 │              └───┴───┘
+                 │   ┌───┐      ┌───┬───┬───┐
+                 └──▶│░░░│─────▶│14 │15 │16 │
+                     ├───┤      └───┴───┴───┘
+                     │░░░│──┐   ┌───┬───┐
+                     └───┘  └──▶│17 │18 │
+                                 └───┴───┘
+   </pre>
+
+   如果我们要访问三维数组的某个元素，例如，`ns[2][0][1]`，只需要顺着定位找到对应的最终元素`15`即可。
+
+   理论上，我们可以定义任意的 N 维数组。但在实际应用中，除了二维数组在某些时候还能用得上，更高维度的数组很少使用。
+
+## 03. 面向对象编程
