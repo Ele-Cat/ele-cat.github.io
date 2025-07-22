@@ -2045,3 +2045,693 @@ ns ─────▶│░░░│░░░│░░░│   │"banana"│   
    理论上，我们可以定义任意的 N 维数组。但在实际应用中，除了二维数组在某些时候还能用得上，更高维度的数组很少使用。
 
 ## 03. 面向对象编程
+
+### 3.1 面向对象基础
+
+> 面向对象编程，是一种通过对象的方式，把现实世界映射到计算机模型的一种编程方法。
+
+现实世界中，我们定义了“人”这种抽象概念，而具体的人则是“小明”、“小红”、“小军”等一个个具体的人。所以，“人”可以定义为一个类（class），而具体的人则是实例（instance）：
+
+| 现实世界 | 计算机模型  | Java 代码                  |
+| -------- | ----------- | -------------------------- |
+| 人       | 类 / class  | class Person { }           |
+| 小明     | 实例 / ming | Person ming = new Person() |
+| 小红     | 实例 / hong | Person hong = new Person() |
+| 小军     | 实例 / jun  | Person jun = new Person()  |
+
+同样的，“书”也是一种抽象的概念，所以它是类，而《Java 核心技术》、《Java 编程思想》、《Java 学习笔记》则是实例：
+
+| 现实世界      | 计算机模型   | Java 代码               |
+| ------------- | ------------ | ----------------------- |
+| 书            | 类 / class   | class Book { }          |
+| Java 核心技术 | 实例 / book1 | Book book1 = new Book() |
+| Java 编程思想 | 实例 / book2 | Book book2 = new Book() |
+| Java 学习笔记 | 实例 / book3 | Book book3 = new Book() |
+
+1. class 和 instance
+
+   - class 是一种对象模版，它定义了如何创建实例，因此，class 本身就是一种数据类型；
+   - instance 是对象实例，instance 是根据 class 创建的实例，可以创建多个 instance，每个 instance 类型相同，但各自属性可能不相同。
+
+2. 定义 class
+
+   在 Java 中，创建一个类，例如，给这个类命名为`Person`，就是定义一个`class`：
+
+   ```java
+   class Person {
+     public String name;
+     public int age;
+   }
+   ```
+
+   一个`class`可以包含多个字段（`field`），字段用来描述一个类的特征。上面的`Person`类，我们定义了两个字段，一个是`String`类型的字段，命名为`name`，一个是`int`类型的字段，命名为`age`。因此，通过`class`，把一组数据汇集到一个对象上，实现了数据封装。
+
+   `public`是用来修饰字段的，它表示这个字段可以被外部访问。
+
+3. 创建实例
+
+   定义了 class，只是定义了对象模版，而要根据对象模版创建出真正的对象实例，必须用 new 操作符。
+
+   new 操作符可以创建一个实例，然后，我们需要定义一个引用类型的变量来指向这个实例：
+
+   ```java
+   Person ming = new Person();
+   ```
+
+   上述代码创建了一个 Person 类型的实例，并通过变量`ming`指向它。
+
+   注意区分`Person ming`是定义`Person`类型的变量`ming`，而`new Person()`是创建`Person`实例。
+
+   有了指向这个实例的变量，我们就可以通过这个变量来操作实例。访问实例变量可以用`变量.字段`，例如：
+
+   ```java
+   ming.name = "Xiao Ming"; // 对字段name赋值
+   ming.age = 12; // 对字段age赋值
+   System.out.println(ming.name); // 访问字段name
+
+   Person hong = new Person();
+   hong.name = "Xiao Hong";
+   hong.age = 15;
+   ```
+
+   上述两个变量分别指向两个不同的实例，它们在内存中的结构如下：
+
+   <pre>
+               ┌──────────────────┐
+   ming ──────▶│Person instance   │
+               ├──────────────────┤
+               │name = "Xiao Ming"│
+               │age = 12          │
+               └──────────────────┘
+   </pre>
+   <pre>
+               ┌──────────────────┐
+   hong ──────▶│Person instance   │
+               ├──────────────────┤
+               │name = "Xiao Hong"│
+               │age = 15          │
+               └──────────────────┘
+   </pre>
+
+   两个`instance`拥有`class`定义的`name`和`age`字段，且各自都有一份独立的数据，互不干扰。
+
+#### 3.1.1 方法
+
+:::details 引子
+
+一个`class`可以包含多个`field`，例如，我们给`Person`类就定义了两个`field`：
+
+```java
+class Person {
+  public String name;
+  public int age;
+}
+```
+
+但是，直接把`field`用`public`暴露给外部可能会破坏封装性。比如，代码可以这样写：
+
+```java
+Person ming = new Person();
+ming.name = "Xiao Ming";
+ming.age = -99; // age设置为负数
+```
+
+显然，直接操作`field`，容易造成逻辑混乱。为了避免外部代码直接去访问`field`，我们可以用`private`修饰`field`，拒绝外部访问：
+
+```java
+class Person {
+  private String name;
+  private int age;
+}
+```
+
+试试`private`修饰的`field`有什么效果：
+
+```java
+// private field
+public class Main {
+  public static void main(String[] args) {
+    Person ming = new Person();
+    ming.name = "Xiao Ming"; // 对字段name赋值
+    ming.age = 12; // 对字段age赋值
+  }
+}
+
+class Person {
+  private String name;
+  private int age;
+}
+```
+
+是不是编译报错？把访问``field`的赋值语句去了就可以正常编译了。
+
+把`field`从`public`改成`private`，外部代码不能访问这些`field`，那我们定义这些`field`有什么用？怎么才能给它赋值？怎么才能读取它的值？
+
+所以我们需要使用方法（`method`）来让外部代码可以间接修改`field`：
+
+```java
+// private field
+public class Main {
+  public static void main(String[] args) {
+    Person ming = new Person();
+    ming.setName("Xiao Ming"); // 设置name
+    ming.setAge(12); // 设置age
+    System.out.println(ming.getName() + ", " + ming.getAge());
+  }
+}
+
+class Person {
+  private String name;
+  private int age;
+
+  public String getName() {
+    return this.name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public int getAge() {
+    return this.age;
+  }
+
+  public void setAge(int age) {
+    if (age < 0 || age > 100) {
+      throw new IllegalArgumentException("invalid age value");
+    }
+    this.age = age;
+  }
+}
+```
+
+虽然外部代码不能直接修改`private`字段，但是，外部代码可以调用方法`setName()`和`setAge()`来间接修改`private`字段。在方法内部，我们就有机会检查参数对不对。比如，`setAge()`就会检查传入的参数，参数超出了范围，直接报错。这样，外部代码就没有任何机会把`age`设置成不合理的值。
+
+对`setName()`方法同样可以做检查，例如，不允许传入`null`和空字符串：
+
+```java
+public void setName(String name) {
+  if (name == null || name.isBlank()) {
+    throw new IllegalArgumentException("invalid name");
+  }
+  this.name = name.strip(); // 去掉首尾空格
+}
+```
+
+同样，外部代码不能直接读取`private`字段，但可以通过`getName()`和`getAge()`间接获取`private`字段的值。
+
+所以，一个类通过定义方法，就可以给外部代码暴露一些操作的接口，同时，内部自己保证逻辑一致性。
+
+调用方法的语法是`实例变量.方法名(参数);`。一个方法调用就是一个语句，所以不要忘了在末尾加`;`。例如：`ming.setName("Xiao Ming");`。
+
+:::
+
+1. 定义方法
+
+   从上面的代码可以看出，定义方法的语法是：
+
+   ```java
+   修饰符 方法返回类型 方法名(方法参数列表) {
+     若干方法语句;
+     return 方法返回值;
+   }
+   ```
+
+   方法返回值通过`return`语句实现，如果没有返回值，返回类型设置为`void`，可以省略`return`。
+
+2. private 方法
+
+   有`public`方法，自然就有`private`方法。和`private`字段一样，`private`方法不允许外部调用，那我们定义`private`方法有什么用？
+
+   定义`private`方法的理由是内部方法是可以调用`private`方法的。例如：
+
+   ```java
+   // private method
+   public class Main {
+     public static void main(String[] args) {
+       Person ming = new Person();
+       ming.setBirth(2008);
+       System.out.println(ming.getAge());
+     }
+   }
+
+   class Person {
+     private String name;
+     private int birth;
+
+     public void setBirth(int birth) {
+       this.birth = birth;
+     }
+
+     public int getAge() {
+       return calcAge(2019); // 调用private方法
+     }
+
+     // private方法:
+     private int calcAge(int currentYear) {
+       return currentYear - this.birth;
+     }
+   }
+   ```
+
+   观察上述代码，`calcAge()`是一个`private`方法，外部代码无法调用，但是，内部方法`getAge()`可以调用它。
+
+   此外，我们还注意到，这个`Person`类只定义了`birth`字段，没有定义`age`字段，获取`age`时，通过方法`getAge()`返回的是一个实时计算的值，并非存储在某个字段的值。这说明方法可以封装一个类的对外接口，调用方不需要知道也不关心`Person`实例在内部到底有没有`age`字段。
+
+3. this 变量
+
+   在方法内部，可以使用一个隐含的变量`this`，它始终指向当前实例。因此，通过`this.field`就可以访问当前实例的字段。
+
+   如果没有命名冲突，可以省略`this`。例如：
+
+   ```java
+   class Person {
+     private String name;
+
+     public String getName() {
+       return name; // 相当于this.name
+     }
+   }
+   ```
+
+   但是，如果有局部变量和字段重名，那么局部变量优先级更高，就必须加上 this：
+
+   ```java
+   class Person {
+     private String name;
+
+     public void setName(String name) {
+       this.name = name; // 前面的this不可少，少了就变成局部变量name了
+     }
+   }
+   ```
+
+4. 方法参数
+
+   方法可以包含 0 个或任意个参数。方法参数用于接收传递给方法的变量值。调用方法时，必须严格按照参数的定义一一传递。例如：
+
+   ```java
+   public class Main {
+     public static void main(String[] args) {
+       Person ming = new Person();
+       ming.setNameAndAge("Xiao Ming", 12); // 设置name
+       System.out.println(ming.getNameAndAge());
+     }
+   }
+
+   class Person {
+     private String name;
+     private int age;
+
+     public String getNameAndAge() {
+       return name + "," + age;
+     }
+
+     public void setNameAndAge(String name, int age) {
+       if (name ==null || name.isBlank()) {
+         throw new IllegalArgumentException("name is null or empty");
+       }
+       if (age < 0 || age > 100) {
+         throw new IllegalArgumentException("age is negative");
+       }
+       this.name = name.strip();
+       this.age = age;
+     }
+   }
+   ```
+
+   调用这个`setNameAndAge()`方法时，必须有两个参数，且第一个参数必须为`String`，第二个参数必须为`int`：
+
+   ```java
+   Person ming = new Person();
+   ming.setNameAndAge("Xiao Ming"); // 编译错误：参数个数不对
+   ming.setNameAndAge(12, "Xiao Ming"); // 编译错误：参数类型不对
+   ```
+
+5. 可变参数
+
+   可变参数用`类型...`定义，可变参数相当于数组类型：
+
+   ```java
+   class Group {
+     private String[] names;
+
+     public void setNames(String... names) {
+       this.names = names;
+     }
+   }
+   ```
+
+   上面的`setNames()`就定义了一个可变参数。调用时，可以这么写：
+
+   ```java
+   Group g = new Group();
+   g.setNames("Xiao Ming", "Xiao Hong", "Xiao Jun"); // 传入3个String
+   g.setNames("Xiao Ming", "Xiao Hong"); // 传入2个String
+   g.setNames("Xiao Ming"); // 传入1个String
+   g.setNames(); // 传入0个String
+   ```
+
+   完全可以把可变参数改写为 String[]类型：
+
+   ```java
+   class Group {
+     private String[] names;
+
+     public void setNames(String[] names) {
+       this.names = names;
+     }
+   }
+   ```
+
+   但是，调用方需要自己先构造`String[]`，比较麻烦。例如：
+
+   ```java
+   Group g = new Group();
+   g.setNames(new String[] {"Xiao Ming", "Xiao Hong", "Xiao Jun"}); // 传入1个String[]
+   ```
+
+   另一个问题是，调用方可以传入 null：
+
+   ```
+   Group g = new Group();
+   g.setNames(null);
+   ```
+
+   而可变参数可以保证无法传入`null`，因为传入 0 个参数时，接收到的实际值是一个空数组而不是`null`。
+
+6. 参数绑定
+
+   调用方把参数传递给实例方法时，调用时传递的值会按参数位置一一绑定。
+
+   那什么是参数绑定？
+
+   我们先观察一个基本类型参数的传递：
+
+   ```java
+   // 基本类型参数绑定
+   public class Main {
+     public static void main(String[] args) {
+       Person p = new Person();
+       int n = 15; // n的值为15
+       p.setAge(n); // 传入n的值
+       System.out.println(p.getAge()); // 15
+       n = 20; // n的值改为20
+       System.out.println(p.getAge()); // 15还是20?
+     }
+   }
+
+   class Person {
+     private int age;
+
+     public int getAge() {
+       return this.age;
+     }
+
+     public void setAge(int age) {
+       this.age = age;
+     }
+   }
+   ```
+
+   运行代码，从结果可知，修改外部的局部变量`n`，不影响实例`p`的`age`字段，原因是`setAge()`方法获得的参数，复制了`n`的值，因此，`p.age`和局部变量`n`互不影响。
+
+   > 结论：基本类型参数的传递，是调用方值的复制。双方各自的后续修改，互不影响。
+
+   传递引用参数的例子：
+
+   ```java
+   // 引用类型参数绑定
+   public class Main {
+     public static void main(String[] args) {
+       Person p = new Person();
+       String[] fullname = new String[] { "Homer", "Simpson" };
+       p.setName(fullname); // 传入fullname数组
+       System.out.println(p.getName()); // "Homer Simpson"
+       fullname[0] = "Bart"; // fullname数组的第一个元素修改为"Bart"
+       System.out.println(p.getName()); // "Homer Simpson"还是"Bart Simpson"?
+     }
+   }
+
+   class Person {
+     private String[] name;
+
+     public String getName() {
+       return this.name[0] + " " + this.name[1];
+     }
+
+     public void setName(String[] name) {
+       this.name = name;
+     }
+   }
+   ```
+
+   注意到`setName()`的参数现在是一个数组。一开始，把`fullname`数组传进去，然后，修改`fullname`数组的内容，结果发现，实例`p`的字段`p.name`也被修改了！
+
+   > 引用类型参数的传递，调用方的变量，和接收方的参数变量，指向的是同一个对象。双方任意一方对这个对象的修改，都会影响对方（因为指向同一个对象嘛）。
+
+   有了上面的结论，我们再看一个例子：
+
+   ```java
+   // 引用类型参数绑定
+   public class Main {
+     public static void main(String[] args) {
+       Person p = new Person();
+       String bob = "Bob";
+       p.setName(bob); // 传入bob变量
+       System.out.println(p.getName()); // "Bob"
+       bob = "Alice"; // bob改名为Alice
+       System.out.println(p.getName()); // "Bob"还是"Alice"?
+     }
+   }
+
+   class Person {
+     private String name;
+
+     public String getName() {
+       return this.name;
+     }
+
+     public void setName(String name) {
+       this.name = name;
+     }
+   }
+   ```
+
+   不要怀疑引用参数绑定的机制，试解释为什么上面的代码两次输出都是`"Bob"`。
+
+#### 3.1.2 构造方法
+
+创建实例的时候，我们经常需要同时初始化这个实例的字段，例如：
+
+```java
+Person ming = new Person();
+ming.setName("小明");
+ming.setAge(12);
+```
+
+初始化对象实例需要 3 行代码，而且，如果忘了调用`setName()`或者`setAge()`，这个实例内部的状态就是不正确的。
+
+能否在创建对象实例时就把内部字段全部初始化为合适的值？完全可以。
+
+这时，我们就需要构造方法。
+
+创建实例的时候，实际上是通过构造方法来初始化实例的。我们先来定义一个构造方法，能在创建`Person`实例的时候，一次性传入`name`和`age`，完成初始化：
+
+```java
+// 构造方法
+public class Main {
+  public static void main(String[] args) {
+    Person p = new Person("Xiao Ming", 15);
+    System.out.println(p.getName());
+    System.out.println(p.getAge());
+  }
+}
+
+class Person {
+  private String name;
+  private int age;
+
+  public Person(String name, int age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+
+  public int getAge() {
+    return this.age;
+  }
+}
+```
+
+由于构造方法是如此特殊，所以构造方法的名称就是类名。构造方法的参数没有限制，在方法内部，也可以编写任意语句。但是，和普通方法相比，构造方法没有返回值（也没有`void`），调用构造方法，必须用`new`操作符。
+
+1. 默认构造方法
+
+   任何 class 都有构造方法！
+
+   那前面我们并没有为 Person 类编写构造方法，为什么可以调用`new Person()`？
+
+   原因是如果一个类没有定义构造方法，编译器会自动为我们生成一个默认构造方法，它没有参数，也没有执行语句，类似这样：
+
+   ```java
+   class Person {
+     public Person() {
+     }
+   }
+   ```
+
+   - 如果我们自定义了一个构造方法，那么，编译器就不再自动创建默认构造方法;
+   - 如果既要能使用带参数的构造方法，又想保留不带参数的构造方法，那么只能把两个构造方法都定义出来;
+   - 没有在构造方法中初始化字段时，引用类型的字段默认是`null`，数值类型的字段用默认值，`int`类型默认值是`0`，布尔类型默认值是`false`;
+   - 也可以对字段直接进行初始化，初始化后，无参数的构造方法可以直接读取或覆盖初始值；带参构造方法会直接覆盖初始值。
+
+2. 多个构造方法
+
+   可以定义多个构造方法，在通过 new 操作符调用的时候，编译器通过构造方法的参数数量、位置和类型自动区分：
+
+   ```java
+   class Person {
+     private String name = "Someone";
+     private int age = 18;
+
+     public Person(String name, int age) {
+       this.name = name;
+       this.age = age;
+     }
+
+     public Person(String name) {
+       this.name = name;
+     }
+
+     public Person() {
+     }
+   }
+   ```
+
+   如果调用`new Person("Xiao Ming", 20);`，会自动匹配到构造方法`public Person(String, int)`。
+
+   如果调用`new Person("Xiao Ming");`，会自动匹配到构造方法`public Person(String)`。
+
+   如果调用`new Person();`，会自动匹配到构造方法`public Person()`。
+
+   一个构造方法可以调用其他构造方法，这样做的目的是便于代码复用。调用其他构造方法的语法是`this(…)`：
+
+   ```java
+   class Person {
+     private String name;
+     private int age;
+
+     public Person(String name, int age) {
+       this.name = name;
+       this.age = age;
+     }
+
+     public Person(String name) {
+       this(name, 18); // 调用另一个构造方法Person(String, int)
+     }
+
+     public Person() {
+       this("Someone"); // 调用另一个构造方法Person(String)
+     }
+   }
+   ```
+
+#### 3.1.3 方法重载
+
+在一个类中，我们可以定义多个方法。如果有一系列方法，它们的功能都是类似的，只有参数有所不同，那么，可以把这一组方法名做成*同名*方法。例如，在`Hello`类中，定义多个`hello()`方法：
+
+```java
+class Hello {
+  public void hello() {
+    System.out.println("Hello, world!");
+  }
+
+  public void hello(String name) {
+    System.out.println("Hello, " + name + "!");
+  }
+
+  public void hello(String name, int age) {
+    if (age < 18) {
+      System.out.println("Hi, " + name + "!");
+    } else {
+      System.out.println("Hello, " + name + "!");
+    }
+  }
+}
+```
+
+> 这种方法名相同，但各自的参数不同，称为方法重载（`Overload`）。
+
+注意：方法重载的返回值类型通常都是相同的。
+
+方法重载的目的是，功能类似的方法使用同一名字，更容易记住，因此，调用起来更简单。
+
+举个例子，`String`类提供了多个重载方法`indexOf()`，可以查找子串：
+
+- `int indexOf(int ch)`：根据字符的 Unicode 码查找；
+- `int indexOf(String str)`：根据字符串查找；
+- `int indexOf(int ch, int fromIndex)`：根据字符查找，但指定起始位置；
+- `int indexOf(String str, int fromIndex)`：根据字符串查找，但指定起始位置。
+
+```java
+// String.indexOf()
+public class Main {
+  public static void main(String[] args) {
+    String s = "Test string";
+    int n1 = s.indexOf('t');
+    int n2 = s.indexOf("st");
+    int n3 = s.indexOf("st", 4);
+    System.out.println(n1); // 3
+    System.out.println(n2); // 2
+    System.out.println(n3); // 5
+  }
+}
+```
+
+#### 3.1.4 继承
+
+#### 3.1.5 多态
+
+#### 3.1.6 抽象类
+
+#### 3.1.7 接口
+
+#### 3.1.8 静态字段和静态方法
+
+#### 3.1.9 包
+
+#### 3.1.10 作用域
+
+#### 3.1.11 内部类
+
+#### 3.1.12 classpath 和 jar
+
+#### 3.1.13 class 版本
+
+#### 3.1.14 模块
+
+### 3.2 Java 核心类
+
+#### 3.2.1 字符串和编码
+
+#### 3.2.2 StringBuilder
+
+#### 3.2.3 StringJoiner
+
+#### 3.2.4 包装类型
+
+#### 3.2.5 JavaBean
+
+#### 3.2.6 枚举类
+
+#### 3.2.7 记录类
+
+#### 3.2.8 BigInteger
+
+#### 3.2.9 BigDecimal
+
+#### 3.2.10 常用工具类

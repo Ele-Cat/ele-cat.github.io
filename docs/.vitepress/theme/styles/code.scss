@@ -360,6 +360,7 @@ li > div[class*='language-'] {
 
 pre {
   line-height: 16px;
+  overflow-y: hidden !important;
 }
 
 [class*='language-'] code {
