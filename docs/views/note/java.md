@@ -3388,9 +3388,441 @@ class Student extends Person {
 
 #### 3.1.6 抽象类
 
+:::tip 引子
+
+由于多态的存在，每个子类都可以覆写父类的方法，例如：
+
+```java
+class Person {
+  public void run() { … }
+}
+
+class Student extends Person {
+  @Override
+  public void run() { … }
+}
+
+class Teacher extends Person {
+  @Override
+  public void run() { … }
+}
+```
+
+从`Person`类派生的`Student`和`Teacher`都可以覆写`run()`方法。
+
+如果父类`Person`的`run()`方法没有实际意义，能否去掉方法的执行语句？
+
+```java
+class Person {
+  public void run(); // Compile Error!
+}
+```
+
+答案是不行，会导致编译错误，因为定义方法的时候，必须实现方法的语句。
+
+能不能去掉父类的`run()`方法？
+
+答案还是不行，因为去掉父类的`run()`方法，就失去了多态的特性。例如，`runTwice()`就无法编译：
+
+```java
+public void runTwice(Person p) {
+  p.run(); // Person没有run()方法，会导致编译错误
+  p.run();
+}
+```
+
+:::
+
+**如果父类的方法本身不需要实现任何功能，仅仅是为了定义方法签名，目的是让子类去覆写它，那么，可以把父类的方法声明为抽象方法**：
+
+```java
+class Person {
+  public abstract void run();
+}
+```
+
+把一个方法声明为`abstract`，表示它是一个抽象方法，本身没有实现任何方法语句。因为这个抽象方法本身是无法执行的，所以，`Person`类也无法被实例化。编译器会告诉我们，无法编译`Person`类，因为它包含抽象方法。
+
+必须把`Person`类本身也声明为`abstract`，才能正确编译它：
+
+```java
+abstract class Person {
+  public abstract void run();
+}
+```
+
+1. 抽象类
+
+   如果一个`class`定义了方法，但没有具体执行代码，这个方法就是抽象方法，抽象方法用`abstract`修饰。
+
+   因为无法执行抽象方法，因此这个类也必须申明为抽象类（abstract class）。
+
+   使用`abstract`修饰的类就是抽象类。我们无法实例化一个抽象类：
+
+   ```java
+   Person p = new Person(); // 编译错误
+   ```
+
+   无法实例化的抽象类有什么用？
+
+   因为抽象类本身被设计成只能用于被继承，因此，抽象类可以强迫子类实现其定义的抽象方法，否则编译会报错。因此，抽象方法实际上相当于定义了“规范”。
+
+   例如，`Person`类定义了抽象方法`run()`，那么，在实现子类`Student`的时候，就必须覆写`run()`方法：
+
+   ```java
+   // abstract class
+   public class Main {
+     public static void main(String[] args) {
+       Person p = new Student();
+       p.run();
+     }
+   }
+
+   abstract class Person {
+     public abstract void run();
+   }
+
+   class Student extends Person {
+     @Override
+     public void run() {
+       System.out.println("Student.run");
+     }
+   }
+   ```
+
+2. 面向抽象编程
+
+   当我们定义了抽象类`Person`，以及具体的`Student`、`Teacher`子类的时候，我们可以通过抽象类`Person`类型去引用具体的子类的实例：
+
+   ```java
+   Person s = new Student();
+   Person t = new Teacher();
+   ```
+
+   这种引用抽象类的好处在于，我们对其进行方法调用，并不关心`Person`类型变量的具体子类型：
+
+   ```java
+   // 不关心Person变量的具体子类型:
+   s.run();
+   t.run();
+   ```
+
+   同样的代码，如果引用的是一个新的子类，我们仍然不关心具体类型：
+
+   ```java
+   // 同样不关心新的子类是如何实现run()方法的：
+   Person e = new Employee();
+   e.run();
+   ```
+
+   这种尽量引用高层类型，避免引用实际子类型的方式，称之为面向抽象编程。
+
+   面向抽象编程的本质就是：
+
+   - 上层代码只定义规范（例如：abstract class Person）；
+   - 不需要子类就可以实现业务逻辑（正常编译）；
+   - 具体的业务逻辑由不同的子类实现，调用者并不关心。
+
 #### 3.1.7 接口
 
+在抽象类中，抽象方法本质上是定义接口规范：**即规定高层类的接口，从而保证所有子类都有相同的接口实现**，这样，多态就能发挥出威力。
+
+如果一个抽象类没有字段，所有方法全部都是抽象方法：
+
+```java
+abstract class Person {
+  public abstract void run();
+  public abstract String getName();
+}
+```
+
+就可以把该抽象类改写为接口：`interface`。
+
+在 Java 中，使用`interface`可以声明一个接口：
+
+```java
+interface Person {
+  void run();
+  String getName();
+}
+```
+
+所谓`interface`，就是比抽象类还要抽象的纯抽象接口，因为它连字段都不能有。因为接口定义的所有方法默认都是`public abstract`的，所以这两个修饰符不需要写出来（写不写效果都一样）。
+
+当一个具体的`class`去实现一个`interface`时，需要使用`implements`关键字。举个例子：
+
+```java
+class Student implements Person {
+  private String name;
+
+  public Student(String name) {
+    this.name = name;
+  }
+
+  @Override
+  public void run() {
+    System.out.println(this.name + " run");
+  }
+
+  @Override
+  public String getName() {
+    return this.name;
+  }
+}
+```
+
+我们知道，在 Java 中，一个类只能继承自另一个类，不能从多个类继承。但是，一个类可以实现多个`interface`，例如：
+
+```java
+class Student implements Person, Hello { // 实现了两个interface
+  ...
+}
+```
+
+1. 术语
+
+   注意区分术语：
+
+   Java 的接口特指`interface`的定义，表示一个接口类型和一组方法签名，而编程接口泛指接口规范，如方法签名，数据格式，网络协议等。
+
+   抽象类和接口的对比如下：
+
+   |            | abstract class （抽象类） | interface （接口）             |
+   | ---------- | ------------------------- | ------------------------------ |
+   | 继承       | 只能 extends 一个 class   | 可以 implements 多个 interface |
+   | 字段       | 可以定义实例字段          | 不能定义实例字段               |
+   | 抽象方法   | 可以定义抽象方法          | 可以定义抽象方法               |
+   | 非抽象方法 | 可以定义非抽象方法        | 可以定义 default 方法          |
+
+2. 接口继承
+
+   一个`interface`可以继承自另一个`interface`。`interface`继承自`interface`使用`extends`，它相当于扩展了接口的方法。例如：
+
+   ```java
+   interface Hello {
+     void hello();
+   }
+
+   interface Person extends Hello {
+       void run();
+       String getName();
+   }
+   ```
+
+   此时，`Person`接口继承自`Hello`接口，因此，`Person`接口现在实际上有 3 个抽象方法签名，其中一个来自继承的`Hello`接口。
+
+3. 继承关系
+
+   合理设计`interface`和`abstract class`的继承关系，可以充分复用代码。一般来说，公共逻辑适合放在`abstract class`中，具体逻辑放到各个子类，而接口层次代表抽象程度。可以参考`Java`的集合类定义的一组接口、抽象类以及具体子类的继承关系：
+
+   <pre>
+   ┌───────────────┐
+   │   Iterable    │
+   └───────────────┘
+           ▲                ┌───────────────────┐
+           │                │      Object       │
+   ┌───────────────┐        └───────────────────┘
+   │  Collection   │                  ▲
+   └───────────────┘                  │
+           ▲     ▲          ┌───────────────────┐
+           │     └──────────│AbstractCollection │
+   ┌───────────────┐        └───────────────────┘
+   │     List      │                  ▲
+   └───────────────┘                  │
+                 ▲          ┌───────────────────┐
+                 └──────────│   AbstractList    │
+                            └───────────────────┘
+                                   ▲     ▲
+                                   │     │
+                                   │     │
+                       ┌────────────┐ ┌────────────┐
+                       │ ArrayList  │ │ LinkedList │
+                       └────────────┘ └────────────┘
+   </pre>
+
+   在使用的时候，实例化的对象永远只能是某个具体的子类，但总是通过接口去引用它，因为接口比抽象类更抽象：
+
+   ```java
+   List list = new ArrayList(); // 用List接口引用具体子类的实例
+   Collection coll = list; // 向上转型为Collection接口
+   Iterable it = coll; // 向上转型为Iterable接口
+   ```
+
+4. default 方法
+
+   在接口中，可以定义`default`方法。例如，把`Person`接口的`run()`方法改为`default`方法：
+
+   ```java
+   // interface
+   public class Main {
+     public static void main(String[] args) {
+       Person p = new Student("Xiao Ming");
+       p.run();
+     }
+   }
+
+   interface Person {
+     String getName();
+     default void run() {
+       System.out.println(getName() + " run");
+     }
+   }
+
+   class Student implements Person {
+     private String name;
+
+     public Student(String name) {
+       this.name = name;
+     }
+
+     public String getName() {
+       return this.name;
+     }
+   }
+   ```
+
+   实现类可以不必覆写`default`方法。`default`方法的目的是，当我们需要给接口新增一个方法时，会涉及到修改全部子类。如果新增的是`default`方法，那么子类就不必全部修改，只需要在需要覆写的地方去覆写新增方法。
+
+   `default`方法和抽象类的普通方法是有所不同的。因为`interface`没有字段，`default`方法无法访问字段，而抽象类的普通方法可以访问实例字段。
+
 #### 3.1.8 静态字段和静态方法
+
+1. 静态字段
+
+   在一个`class`中定义的字段，我们称之为实例字段。实例字段的特点是，每个实例都有独立的字段，各个实例的同名字段互不影响。
+
+   还有一种字段，是用`static`修饰的字段，称为静态字段：`static field`。
+
+   实例字段在每个实例中都有自己的一个独立“空间”，但是静态字段只有一个共享“空间”，所有实例都会共享该字段。举个例子：
+
+   ```java
+   class Person {
+     public String name;
+     public int age;
+     // 定义静态字段number:
+     public static int number;
+   }
+   ```
+
+   我们来看看下面的代码：
+
+   ```java
+   // static field
+   public class Main {
+     public static void main(String[] args) {
+       Person ming = new Person("Xiao Ming", 12);
+       Person hong = new Person("Xiao Hong", 15);
+       ming.number = 88;
+       System.out.println(hong.number);
+       hong.number = 99;
+       System.out.println(ming.number);
+     }
+   }
+
+   class Person {
+     public String name;
+     public int age;
+
+     public static int number;
+
+     public Person(String name, int age) {
+       this.name = name;
+       this.age = age;
+     }
+   }
+   ```
+
+   对于静态字段，无论修改哪个实例的静态字段，效果都是一样的：所有实例的静态字段都被修改了，原因是静态字段并不属于实例：
+
+   <pre>
+           ┌──────────────────┐
+   ming ──▶│Person instance   │
+           ├──────────────────┤
+           │name = "Xiao Ming"│
+           │age = 12          │
+           │number ───────────┼──┐    ┌─────────────┐
+           └──────────────────┘  │    │Person class │
+                                 │    ├─────────────┤
+                                 ├───▶│number = 99  │
+           ┌──────────────────┐  │    └─────────────┘
+   hong ──▶│Person instance   │  │
+           ├──────────────────┤  │
+           │name = "Xiao Hong"│  │
+           │age = 15          │  │
+           │number ───────────┼──┘
+           └──────────────────┘
+   </pre>
+
+   虽然实例可以访问静态字段，但是它们指向的其实都是`Person class`的静态字段。所以，所有实例共享一个静态字段。
+
+   因此，不推荐用`实例变量.静态字段`去访问静态字段，因为在 Java 程序中，实例对象并没有静态字段。在代码中，实例对象能访问静态字段只是因为编译器可以根据实例类型自动转换为`类名.静态字段`来访问静态对象。
+
+   推荐用类名来访问静态字段。可以把静态字段理解为描述`class`本身的字段。对于上面的代码，更好的写法是：
+
+   ```java
+   Person.number = 99;
+   System.out.println(Person.number);
+   ```
+
+2. 静态方法
+
+   有静态字段，就有静态方法。用`static`修饰的方法称为静态方法。
+
+   调用实例方法必须通过一个实例变量，而调用静态方法则不需要实例变量，通过类名就可以调用。静态方法类似其它编程语言的函数。例如：
+
+   ```java
+   // static method
+   public class Main {
+     public static void main(String[] args) {
+       Person.setNumber(99);
+       System.out.println(Person.number);
+     }
+   }
+
+   class Person {
+     public static int number;
+
+     public static void setNumber(int value) {
+       number = value;
+     }
+   }
+   ```
+
+   因为静态方法属于`class`而不属于实例，因此，静态方法内部，无法访问`this`变量，也无法访问实例字段，它只能访问静态字段。
+
+   通过实例变量也可以调用静态方法，但这只是编译器自动帮我们把实例改写成类名而已。
+
+   通常情况下，通过实例变量访问静态字段和静态方法，会得到一个编译警告。
+
+   静态方法经常用于工具类。例如：
+
+   - Arrays.sort()
+   - Math.random()
+
+   静态方法也经常用于辅助方法。注意到 Java 程序的入口`main()`也是静态方法。
+
+3. 接口的静态字段
+
+   因为`interface`是一个纯抽象类，所以它不能定义实例字段。但是，interface 是可以有静态字段的，并且静态字段必须为 final 类型：
+
+   ```java
+   public interface Person {
+     public static final int MALE = 1;
+     public static final int FEMALE = 2;
+   }
+   ```
+
+   实际上，因为 interface 的字段只能是`public static final`类型，所以我们可以把这些修饰符都去掉，上述代码可以简写为：
+
+   ```java
+   public interface Person {
+     // 编译器会自动加上public static final:
+     int MALE = 1;
+     int FEMALE = 2;
+   }
+   ```
+
+   编译器会自动把该字段变为`public static final`类型。
 
 #### 3.1.9 包
 
