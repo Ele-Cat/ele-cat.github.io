@@ -3826,15 +3826,186 @@ class Student implements Person, Hello { // 实现了两个interface
 
 #### 3.1.9 包
 
+Java 定义了一种名字空间，称之为包：`package`。
+
+1. 包作用域
+
+   位于同一个包的类，可以访问包作用域的字段和方法。不用`public`、`protected`、`private`修饰的字段和方法就是包作用域。例如，`Person`类定义在`hello`包下面：
+
+   ```java
+   package hello;
+
+   public class Person {
+     // 包作用域:
+     void hello() {
+       System.out.println("Hello!");
+     }
+   }
+   ```
+
+   `Main`类也定义在`hello`包下面：
+
+   ```java
+   package hello;
+
+   public class Main {
+     public static void main(String[] args) {
+       Person p = new Person();
+       p.hello(); // 可以调用，因为Main和Person在同一个包
+     }
+   }
+   ```
+
+2. import
+
+   在一个`class`中，我们可以用`import`语句导入其他类，然后直接使用导入的类名。例如：
+
+   ```java
+   import java.util.Scanner;
+
+   public class Main {
+     public static void main(String[] args) {
+       Scanner sc = new Scanner(System.in);
+       int i = sc.nextInt();
+       System.out.println(i);
+     }
+   }
+   ```
+
+   `import`语句的作用是导入指定类的完整路径，这样在代码中就可以直接使用导入的类名，而不需要写完整路径。
+
+3. 编译查找完整类名
+
+   Java 编译器最终编译出的`.class`文件只使用完整类名，因此，在代码中，当编译器遇到一个`class`名称时：
+
+   - 如果是完整类名，就直接根据完整类名查找这个`class`；
+   - 如果是简单类名，按下面的顺序依次查找：
+     - 查找当前`package`是否存在这个`class`；
+     - 查找`import`的包是否包含这个`class`；
+     - 查找`java.lang`包是否包含这个`class`。
+
+   如果按照上面的规则还无法确定类名，则编译报错。
+
+   我们来看一个例子：
+
+   ```java
+   // Main.java
+   package test;
+
+   import java.text.Format;
+
+   public class Main {
+     public static void main(String[] args) {
+       java.util.List list; // ok，使用完整类名 -> java.util.List
+       Format format = null; // ok，使用import的类 -> java.text.Format
+       String s = "hi"; // ok，使用java.lang包的String -> java.lang.String
+       System.out.println(s); // ok，使用java.lang包的System -> java.lang.System
+       MessageFormat mf = null; // 编译错误：无法找到MessageFormat: MessageFormat cannot be resolved to a type
+     }
+   }
+   ```
+
+   因此，编写`class`的时候，编译器会自动帮我们做两个`import`动作：
+
+   - 默认自动 import 当前 package 的其他 class；
+   - 默认自动 import java.lang.\*。
+
+   :::danger 注意
+
+   - 自动导入的是 java.lang 包，但类似 java.lang.reflect 这些包仍需要手动导入。
+   - 如果有两个 class 名称相同，例如，mr.jun.Arrays 和 java.util.Arrays，那么只能 import 其中一个，另一个必须写完整类名。
+
+   :::
+
 #### 3.1.10 作用域
+
+1. 访问作用域
+
+   > 在 Java 中，我们经常看到`public`、`protected`、`private`这些修饰符。在 Java 中，这些修饰符可以用来限定访问作用域。
+
+   - `public`：表示公共的，在任何地方都可以访问。
+   - `protected`：表示受保护的，在当前类、子类和同包类中可以访问。
+   - `private`：表示私有的，只有当前类可以访问。
+
+2. 包作用域`package`
+
+   包作用域是指一个类允许访问同一个`package`的没有`public`、`private`修饰的`class`，以及没有`public`、`protected`、`private`修饰的字段和方法。只要在同一个包，就可以访问`package`权限的`class`、`field`和`method`。
+
+3. 局部变量
+
+   在方法内部定义的变量称为局部变量，局部变量作用域从变量声明处开始到对应的块结束。方法参数也是局部变量。
+
+4. final 修饰符
+
+   Java 还提供了一个`final`修饰符。`final`与访问权限不冲突，它有很多作用。
+
+   用`final`修饰`class`可以**阻止被继承**：
+
+   ```java
+   package abc;
+
+   // 无法被继承:
+   public final class Hello {
+     private int n = 0;
+     protected void hi(int t) {
+       long i = t;
+     }
+   }
+   ```
+
+   用`final`修饰`method`可以**阻止被子类覆写**：
+
+   ```java
+   package abc;
+
+   public class Hello {
+     // 无法被覆写:
+     protected final void hi() {
+     }
+   }
+   ```
+
+   用`final`修饰`field`可以**阻止被重新赋值**：
+
+   ```java
+   package abc;
+
+   public class Hello {
+     private final int n = 0;
+     protected void hi() {
+       this.n = 1; // error!
+     }
+   }
+   ```
+
+   用`final`修饰局部变量可以**阻止被重新赋值**：
+
+   ```java
+   package abc;
+
+   public class Hello {
+     protected void hi(final int t) {
+       t = 1; // error!
+     }
+   }
+   ```
+
+:::tip 总结
+
+- `public` 任何位置都可以
+- `protected` 在同类、同包、不同包子类
+- `package` 在同类，同包
+- `private` 在同类
+
+:::
 
 #### 3.1.11 内部类
 
-#### 3.1.12 classpath 和 jar
+[java 内部类的四大作用](https://blog.csdn.net/u013728021/article/details/87358517)
 
-#### 3.1.13 class 版本
-
-#### 3.1.14 模块
+- Java 的内部类可分为`Inner Class`、`Anonymous Class`和`Static Nested Class`三种；
+- Inner Class 和 Anonymous Class 本质上是相同的，都必须依附于 Outer Class 的实例，即隐含地持有`Outer.this`实例，并拥有 Outer Class 的`private`访问权限；
+- Static Nested Class 是独立类，但拥有 Outer Class 的`private`访问权限。
 
 ### 3.2 Java 核心类
 
