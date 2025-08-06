@@ -153,7 +153,7 @@ Python 作为一种高级编程语言，在全球范围内广泛应用于网站�
 3. 打印多个项：`print()`函数可以接收多个参数，使用逗号`,`分隔，它们会依次打印，参数之间默认以空格分隔。
 
    ```python
-   name = "Alice"
+   name = "Jim"
    age = 30
    print(name, "is", age, "years old.")
    ```
@@ -200,7 +200,7 @@ Python 作为一种高级编程语言，在全球范围内广泛应用于网站�
    - 使用%操作符：
 
    ```python
-   name = "Alice"
+   name = "Jim"
    age = 30
    print("%s is %d years old." % (name, age))
    ```

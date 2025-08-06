@@ -1426,7 +1426,7 @@ public class Main {
 
    然后，创建`Scanner`对象并传入`System.in`。`System.out`代表标准输出流，而`System.in`代表标准输入流。直接使用`System.in`读取用户输入虽然是可以的，但需要更复杂的代码，而通过`Scanner`就可以简化后续的代码。
 
-   有了``Scanner`对象后，要读取用户输入的字符串，使用`scanner.nextLine()`，要读取用户输入的整数，使用`scanner.nextInt()`。`Scanner`会自动转换数据类型，因此不必手动转换。
+   有了`Scanner`对象后，要读取用户输入的字符串，使用`scanner.nextLine()`，要读取用户输入的整数，使用`scanner.nextInt()`。`Scanner`会自动转换数据类型，因此不必手动转换。
 
    编译成功后，执行：
 
@@ -2183,7 +2183,7 @@ class Person {
 }
 ```
 
-是不是编译报错？把访问``field`的赋值语句去了就可以正常编译了。
+是不是编译报错？把访问`field`的赋值语句去了就可以正常编译了。
 
 把`field`从`public`改成`private`，外部代码不能访问这些`field`，那我们定义这些`field`有什么用？怎么才能给它赋值？怎么才能读取它的值？
 
@@ -2284,7 +2284,7 @@ public void setName(String name) {
      }
 
      public int getAge() {
-       return calcAge(2019); // 调用private方法
+       return calcAge(2025); // 调用private方法
      }
 
      // private方法:

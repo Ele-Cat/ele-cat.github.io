@@ -13,22 +13,34 @@ const sidebar = {
       text: "2021",
       collapsed: false,
       items: [
-        { text: "禁止右键、审查元素、复制功能", link: "/views/daily-notes/2021/001.md" },
+        {
+          text: "禁止右键、审查元素、复制功能",
+          link: "/views/daily-notes/2021/001.md",
+        },
       ],
     },
     {
       text: "2020",
       collapsed: false,
       items: [
-        { text: "VSCode 编辑器插件整理", link: "/views/daily-notes/2020/002.md" },
-        { text: "设定浏览器滚动条样式", link: "/views/daily-notes/2020/001.md" },
+        {
+          text: "VSCode 编辑器插件整理",
+          link: "/views/daily-notes/2020/002.md",
+        },
+        {
+          text: "设定浏览器滚动条样式",
+          link: "/views/daily-notes/2020/001.md",
+        },
       ],
     },
     {
       text: "2019",
       collapsed: false,
       items: [
-        { text: "纯 JS 实现 3D 心形+图片旋转", link: "/views/daily-notes/2019/001.md" },
+        {
+          text: "纯 JS 实现 3D 心形+图片旋转",
+          link: "/views/daily-notes/2019/001.md",
+        },
       ],
     },
     {
@@ -36,9 +48,15 @@ const sidebar = {
       collapsed: false,
       items: [
         { text: "Vue 打包后本地预览", link: "/views/daily-notes/2018/004.md" },
-        { text: "CSS 实现单行、多行文本溢出显示省略号", link: "/views/daily-notes/2018/003.md" },
+        {
+          text: "CSS 实现单行、多行文本溢出显示省略号",
+          link: "/views/daily-notes/2018/003.md",
+        },
         { text: "常用正则表达式", link: "/views/daily-notes/2018/002.md" },
-        { text: "原生 js 去掉所有的 html 标签", link: "/views/daily-notes/2018/001.md" },
+        {
+          text: "原生 js 去掉所有的 html 标签",
+          link: "/views/daily-notes/2018/001.md",
+        },
       ],
     },
   ],
@@ -62,6 +80,7 @@ const sidebar = {
         { text: "Java", link: "/views/note/java" },
         { text: "Node", link: "/views/note/node" },
         { text: "Python", link: "/views/note/python" },
+        { text: "MySQL", link: "/views/note/mysql" },
       ],
     },
     {
@@ -105,60 +124,24 @@ const sidebar = {
       text: "Css知识点",
       collapsed: false,
       items: [
-        {
-          text: "Flex 详解",
-          link: "/views/share/css/flex",
-        },
-        {
-          text: "Grid 详解",
-          link: "/views/share/css/grid",
-        },
-      ]
+        { text: "Flex 详解", link: "/views/share/css/flex" },
+        { text: "Grid 详解", link: "/views/share/css/grid" },
+      ],
     },
     {
       text: "Css效果",
       collapsed: false,
       items: [
-        {
-          text: "工具",
-          link: "/views/share/css/generate",
-        },
-        {
-          text: "样式重置",
-          link: "/views/share/css/reset",
-        },
-        {
-          text: "文字",
-          link: "/views/share/css/text",
-        },
-        {
-          text: "视觉动效",
-          link: "/views/share/css/effect",
-        },
-        {
-          text: "阴影",
-          link: "/views/share/css/shadow",
-        },
-        {
-          text: "边框&背景",
-          link: "/views/share/css/background",
-        },
-        {
-          text: "用户体验",
-          link: "/views/share/css/experience",
-        },
-        {
-          text: "Loading",
-          link: "/views/share/css/loading",
-        },
-        {
-          text: "3D",
-          link: "/views/share/css/3d",
-        },
-        {
-          text: "其他",
-          link: "/views/share/css/other",
-        },
+        { text: "工具", link: "/views/share/css/generate" },
+        { text: "样式重置", link: "/views/share/css/reset" },
+        { text: "文字", link: "/views/share/css/text" },
+        { text: "视觉动效", link: "/views/share/css/effect" },
+        { text: "阴影", link: "/views/share/css/shadow" },
+        { text: "边框&背景", link: "/views/share/css/background" },
+        { text: "用户体验", link: "/views/share/css/experience" },
+        { text: "Loading", link: "/views/share/css/loading" },
+        { text: "3D", link: "/views/share/css/3d" },
+        { text: "其他", link: "/views/share/css/other" },
       ],
     },
   ],
