@@ -519,10 +519,64 @@ SELECT id, class_id, name, score FROM students WHERE class_id = 1 ORDER BY score
 
 :::
 
-
-
-
 ### 4.5 分页查询
+
+**分页查询** SQL 语句：
+
+```sql
+SELECT <列名> FROM <表名> LIMIT <N> OFFSET <M>;
+```
+
+:::tip 解析
+
+语句中，`LIMIT`表示限制，`N`表示限制返回的行数，`OFFSET`表示偏移，`M`表示偏移量。
+
+:::
+
+如要查询`students`表中按`score`降序排列的第`1`页，每页`3`条数据，则查询语句为：
+
+```sql
+SELECT id, name, score FROM students ORDER BY score DESC LIMIT 3 OFFSET 0;
+```
+
+如要查询`students`表中按`score`降序排列的第`2`页，每页`3`条数据，则查询语句为：
+
+```sql
+SELECT id, name, score FROM students ORDER BY score DESC LIMIT 3 OFFSET 3;
+```
+
+如要查询`students`表中按`score`降序排列的第`4`页，每页`3`条数据，则查询语句为：
+
+```sql
+SELECT id, name, score FROM students ORDER BY score DESC LIMIT 3 OFFSET 9;
+```
+
+会发现只返回了一条数据，这是因为`students`表中只有`10`条数据，第`4`页只剩了一条数据。
+
+当我们查询第`5`页，每页`3`条数据，则查询语句为：
+
+```sql
+SELECT id, name, score FROM students ORDER BY score DESC LIMIT 3 OFFSET 12;
+```
+
+会发现返回了`0`条数据，这是因为`students`表中只有`10`条数据，第`5`页已经没有数据可返回。
+
+规律：
+
+| 限制 LIMIT | 条数 ROW | 偏移量 OFFSET |
+| ---------- | -------- | ------------- |
+| 1          | 3        | 0             |
+| 2          | 3        | 3             |
+| 3          | 3        | 6             |
+| 4          | 3        | 9             |
+| 5          | 3        | 12            |
+
+根据上表，可推断`OFFSET = (LIMIT - 1) * ROW`，即`LIMIT = pageSize`，`OFFSET = (pageNo - 1) * pageSize`。
+
+:::tip 其他
+
+
+:::
 
 ### 4.6 聚合查询
 
