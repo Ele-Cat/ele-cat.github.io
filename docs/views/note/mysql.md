@@ -6,6 +6,21 @@ outline: [2]
 
 Java 学累了，学学 MySQL
 
+:::details CRUD整理
+
+1. 查询
+
+```sql
+SELECT s.id, s.name, s.gender, s.class_id, c.name AS class_name, s.score
+FROM students AS s
+INNER JOIN classes AS c ON s.class_id = c.id
+WHERE s.class_id <> 3
+ORDER BY score DESC
+LIMIT 6 OFFSET 0;
+```
+
+:::
+
 ## 01. 简介
 
 ### 1.1 什么是 MySQL
