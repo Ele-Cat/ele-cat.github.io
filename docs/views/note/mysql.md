@@ -735,10 +735,59 @@ INNER JOIN classes AS c ON s.class_id = c.id;
 1. 先确定主表，仍然使用`FROM <表1>`的语法；
 2. 再确定需要连接的表，使用`INNER JOIN <表2>`的语法；
 3. 然后确定连接条件，使用`ON <条件...>`，这里的条件是`s.class_id = c.id`，表示`students`表的`class_id`列与`classes`表的`id`列相同的行需要连接；
-4. 可选：加上`WHERE`子句、`ORDER BY`等子句。
+4. 使用别名不是必须的，但是可以简化查询语句；
+5. 可选：加上`WHERE`子句、`ORDER BY`等子句。
 
 :::
 
+**外连接查询**
+
+把`INNER JOIN`改成`LEFT JOIN`或`RIGHT JOIN`，就变成了外连接查询。
+
+```sql
+SELECT
+	s.id,
+	s.name,
+	s.gender,
+	s.class_id,
+	c.name AS class_name,
+	s.score
+FROM
+	students AS s
+RIGHT JOIN classes AS c ON s.class_id = c.id;
+```
+
+执行上述`RIGHT OUTER JOIN`可以看到，和`INNER JOIN`相比，`RIGHT OUTER JOIN`多了一行，多出来的一行是“四班”，但是，学生相关的列如`name`、`gender`、`score`都为`NULL`。
+
+:::tip 连接区别
+
+1. `INNER JOIN`只返回同时存在于两张表的行数据，由于`students`表的`class_id`包含`1`，`2`，`3`，`classes`表的`id`包含`1`，`2`，`3`，`4`，所以，`INNER JOIN`根据条件`s.class_id = c.id`返回的结果集仅包含`1`，`2`，`3`。
+2. `RIGHT OUTER JOIN`返回右表都存在的行。如果某一行仅在右表存在，那么结果集就会以`NULL`填充剩下的字段。
+3. `LEFT OUTER JOIN`则返回左表都存在的行。如果某一行仅在左表存在，那么结果集就会以`NULL`填充剩下的字段。
+4. `FULL OUTER JOIN`返回左表和右表都存在的行。如果某一行仅在左表或右表存在，那么结果集就会以`NULL`填充剩下的字段。
+
+:::
+
+:::warning 注意
+
+如何选择JOIN查询方法：
+
+```sql
+SELECT <字段> FROM <表1> <连接类型> JOIN <表2> ON 表1.字段N = 表2.字段M;
+```
+
+可以把`表1`看做左表，把`表2`看做右表。
+
+1. 那么INNER JOIN是选出两张表都存在的记录：
+![INNER JOIN](https://liaoxuefeng.com/books/sql/query/join/inner-join.jpg)
+2. LEFT OUTER JOIN是选出左表存在的记录：
+![LEFT OUTER JOIN](https://liaoxuefeng.com/books/sql/query/join/left-outer-join.jpg)
+3. RIGHT OUTER JOIN是选出右表存在的记录：
+![RIGHT OUTER JOIN](https://liaoxuefeng.com/books/sql/query/join/right-outer-join.jpg)
+4. FULL OUTER JOIN是选出两张表都存在的记录，或者说，就是并集：
+![FULL OUTER JOIN](https://liaoxuefeng.com/books/sql/query/join/full-outer-join.jpg)
+
+:::
 
 ## 05. 修改数据
 
