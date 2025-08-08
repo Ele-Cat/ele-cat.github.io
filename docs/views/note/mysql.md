@@ -573,16 +573,172 @@ SELECT id, name, score FROM students ORDER BY score DESC LIMIT 3 OFFSET 12;
 
 根据上表，可推断`OFFSET = (LIMIT - 1) * ROW`，即`LIMIT = pageSize`，`OFFSET = (pageNo - 1) * pageSize`。
 
-:::tip 其他
+:::tip 小结
 
+1. 分页查询的`LIMIT`和`OFFSET`参数都必须是**非负整数**。
+2. 分页查询的`LIMIT`参数可以**省略**，默认返回所有行。
+3. 分页查询的`OFFSET`参数可以**省略**，默认从第`0`行开始。
+4. 分页查询的`LIMIT`参数和`OFFSET`参数的乘积超过行数时，返回空的结果集。
+5. `LIMIT 10 OFFSET 20`也可以写成`LIMIT 20, 10`。
+6. 随着数据量的增加，分页查询的效率会降低。
 
 :::
 
 ### 4.6 聚合查询
 
-### 4.7 多表查询
+**聚合查询** SQL 语句：
 
-### 4.8 连接查询
+```sql
+SELECT <聚合函数> FROM <表名>;
+```
+
+例如，查询`students`表的行数：
+
+```sql
+SELECT COUNT(*) FROM students;
+```
+
+也可以给聚合函数起别名，例如：
+
+```sql
+SELECT COUNT(*) AS total FROM students;
+```
+
+也可以进行聚合函数的条件查询，例如查询`class_id`为`1`的学生人数：
+
+```sql
+SELECT COUNT(*) AS total FROM students WHERE class_id = 1;
+```
+
+除了`COUNT()`外，其他聚合函数有：
+
+| 函数  | 说明                                   |
+| ----- | -------------------------------------- |
+| SUM() | 计算某一列的总和，该列必须为数值类型   |
+| AVG() | 计算某一列的平均值，该列必须为数值类型 |
+| MAX() | 计算某一列的最大值                     |
+| MIN() | 计算某一列的最小值                     |
+
+例如，查询`students`表的性别为`M`的`score`列的平均数：
+
+```sql
+SELECT AVG(score) as avg_score FROM students WHERE gender = 'M';
+```
+
+:::warning 注意
+
+如果聚合查询的`WHERE`条件没有匹配到任何行，`COUNT()`会返回`0`，而 SUM()、AVG()、MAX()和 MIN()会返回`NULL`。
+
+:::
+
+### 4.7 分组查询
+
+**分组查询** SQL 语句：
+
+```sql
+SELECT <列名>, <聚合函数> FROM <表名> GROUP BY <列名>;
+```
+
+例如，查询`students`表的各班的人数：
+
+```sql
+SELECT class_id, COUNT(*) as count FROM students GROUP BY class_id;
+```
+
+例如，查询`students`表的各班平均分：
+
+```sql
+SELECT class_id, AVG(score) as class_avg_score FROM students GROUP BY class_id;
+```
+
+例如，查询`students`表的各班的男生和女生人数：
+
+```sql
+SELECT class_id, gender, COUNT(*) as count FROM students GROUP BY class_id, gender;
+```
+
+### 4.8 多表查询
+
+**多表查询** SQL 语句：
+
+```sql
+SELECT <列名> FROM <表名1>, <表名2>;
+```
+
+例如：
+
+```sql
+SELECT * FROM students, classes;
+```
+
+:::tip 解析
+
+语句中，`FROM`子句后面跟着的是**多个表名**，多个表名之间用**逗号**隔开。
+
+这种一次查询两个表的数据，查询的结果也是一个二维表，它是`students`表和`classes`表的“乘积”，即`students`表的每一行与`classes`表的每一行都两两拼在一起返回。结果集的列数是`students`表和`classes`表的列数之和，行数是`students`表和`classes`表的行数之积。
+
+这种多表查询又称笛卡尔查询，使用笛卡尔查询时要非常小心，由于结果集是目标表的行数乘积，对两个各自有 100 行记录的表进行笛卡尔查询将返回 1 万条记录，对两个各自有 1 万行记录的表进行笛卡尔查询将返回 1 亿条记录。
+
+:::
+
+可以给查询的列起别名，例如：
+
+```sql
+SELECT
+  students.id sid,
+  students.name,
+  students.gender,
+  students.score,
+  classes.id cid,
+  classes.name cname
+FROM students, classes;
+```
+
+也可以给表起别名，例如：
+
+```sql
+SELECT
+  s.id sid,
+  s.name,
+  s.gender,
+  s.score,
+  c.id cid,
+  c.name cname
+FROM students s, classes c;
+```
+
+### 4.9 连表查询
+
+**连表查询** SQL 语句：
+
+```sql
+SELECT <列名> FROM <表名1> <连接类型> JOIN <表名2> ON <连接条件>;
+```
+
+例如，将`students`表和`classes`表连接起来，查询每个学生的姓名、班级名称：
+
+```sql
+SELECT
+	s.id,
+	s.name,
+	s.gender,
+	s.class_id,
+	c.name AS class_name,
+	s.score
+FROM
+	students AS s
+INNER JOIN classes AS c ON s.class_id = c.id;
+```
+
+:::tip 解析
+
+1. 先确定主表，仍然使用`FROM <表1>`的语法；
+2. 再确定需要连接的表，使用`INNER JOIN <表2>`的语法；
+3. 然后确定连接条件，使用`ON <条件...>`，这里的条件是`s.class_id = c.id`，表示`students`表的`class_id`列与`classes`表的`id`列相同的行需要连接；
+4. 可选：加上`WHERE`子句、`ORDER BY`等子句。
+
+:::
+
 
 ## 05. 修改数据
 
