@@ -10,14 +10,52 @@ Java 学累了，学学 MySQL
 
 1. 查询
 
-```sql
-SELECT s.id, s.name, s.gender, s.class_id, c.name AS class_name, s.score
-FROM students AS s
-INNER JOIN classes AS c ON s.class_id = c.id
-WHERE s.class_id <> 3
-ORDER BY score DESC
-LIMIT 6 OFFSET 0;
-```
+    ```sql
+    SELECT
+      s.id,
+      s.name,
+      s.gender,
+      s.class_id,
+      c.name AS class_name,
+      s.score
+    FROM
+      students AS s
+      INNER JOIN classes AS c ON s.class_id = c.id
+    WHERE
+      s.class_id <> 3
+    ORDER BY
+      score DESC
+      LIMIT 6 OFFSET 0;
+    ```
+2. 插入
+
+    ```sql
+    INSERT INTO students (NAME, gender, class_id, score)
+    VALUES
+    ('张三', '男', 1, 90),
+    ('李四', '女', 2, 80),
+    ('王五', '男', 3, 70);
+    ```
+3. 更新
+
+    ```sql
+    UPDATE students
+    SET
+    score = 80,
+    name = "张三"
+    WHERE
+      id = 1;
+    ```
+
+4. 删除
+
+    ```sql
+    DELETE
+    FROM
+      students
+    WHERE
+      id = 1;
+    ```
 
 :::
 
@@ -734,14 +772,14 @@ SELECT <列名> FROM <表名1> <连接类型> JOIN <表名2> ON <连接条件>;
 
 ```sql
 SELECT
-	s.id,
-	s.name,
-	s.gender,
-	s.class_id,
-	c.name AS class_name,
-	s.score
+ s.id,
+ s.name,
+ s.gender,
+ s.class_id,
+ c.name AS class_name,
+ s.score
 FROM
-	students AS s
+ students AS s
 INNER JOIN classes AS c ON s.class_id = c.id;
 ```
 
@@ -761,14 +799,14 @@ INNER JOIN classes AS c ON s.class_id = c.id;
 
 ```sql
 SELECT
-	s.id,
-	s.name,
-	s.gender,
-	s.class_id,
-	c.name AS class_name,
-	s.score
+ s.id,
+ s.name,
+ s.gender,
+ s.class_id,
+ c.name AS class_name,
+ s.score
 FROM
-	students AS s
+ students AS s
 RIGHT JOIN classes AS c ON s.class_id = c.id;
 ```
 
@@ -806,6 +844,151 @@ SELECT <字段> FROM <表1> <连接类型> JOIN <表2> ON 表1.字段N = 表2.�
 
 ## 05. 修改数据
 
-## 06. MYSQL
+关系数据库的基本操作就是增删改查，即CRUD：Create、Retrieve、Update、Delete。
 
-## 07. 事务
+### 5.1 插入数据
+
+**插入数据** SQL 语句：
+
+```sql
+INSERT INTO <表名> (<字段1>, <字段2>, ...) VALUES (<值1>, <值2>, ...);
+```
+
+向`students`表插入数据：
+
+```sql
+INSERT INTO students (name, gender, class_id, score)
+VALUES
+('张三', 'M', 1, 80);
+```
+
+或同时插入多条数据：
+
+```sql
+INSERT INTO students (name, gender, class_id, score)
+VALUES
+('张三', 'M', 1, 80),
+('李四', 'F', 2, 90),
+('王五', 'M', 3, 85);
+```
+
+### 5.2 更新数据
+
+**更新数据** SQL 语句：
+
+```sql
+UPDATE <表名> SET <字段1>=<值1>, <字段2>=<值2>, ... WHERE <条件>;
+```
+
+例如，将`students`表中`id`为`1`的行的`score`更新为`90`，`name`更新为`'张三'`：
+
+```sql
+UPDATE students
+SET
+score = 90,
+name = '张三'
+WHERE
+id = 1;
+```
+
+可以一次更新多条数据，例如，将`students`表中`class_id`为`1`的行的`score`更新为`90`：
+
+```sql
+UPDATE students
+SET
+score = 90
+WHERE
+class_id = 1;
+```
+
+更新数据可以使用表达式，例如，将`students`表中`class_id`为`1`的行的`score`减`10`分：
+
+```sql
+UPDATE students
+SET
+score = score - 10
+WHERE
+class_id = 1;
+```
+
+:::tip 小提示
+
+1. 如果`WHERE`子句为空，则会更新表中的所有行；
+2. 如果`WHERE`字句没有匹配到任何行，则不会更新任何行；
+
+:::
+
+:::warning 注意
+
+在使用MySQL这类真正的关系数据库时，`UPDATE`语句会返回更新的行数以及`WHERE`条件匹配的行数。
+
+例如，更新`id=1`的记录时：
+
+```bash
+mysql> UPDATE students SET name='大宝' WHERE id=1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+```
+
+MySQL会返回`1`，可以从打印的结果`Rows matched: 1 Changed: 1`看到。
+
+当更新`id=999`的记录时：
+
+```bash
+mysql> UPDATE students SET name='大宝' WHERE id=999;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+```
+
+MySQL会返回`0`，可以从打印的结果`Rows matched: 0 Changed: 0`看到。
+
+:::
+
+### 5.3 删除数据
+
+**删除数据** SQL 语句：
+
+```sql
+DELETE FROM <表名> WHERE <条件>;
+```
+
+例如，删除`students`表中`id`为`1`的行：
+
+```sql
+DELETE FROM students WHERE id=1;
+```
+
+可以一次删除多条数据，例如，删除`students`表中`id`为`5`、`6`、`7`的行：
+
+```sql
+DELETE FROM students WHERE id IN(5, 6, 7);
+```
+
+可以使用`DELETE FROM`语句删除表中的所有数据：
+
+```sql
+DELETE FROM students;
+```
+
+:::tip 小提示
+
+1. 如果`WHERE`子句为空，则会删除表中的所有行；
+2. 如果`WHERE`字句没有匹配到任何行，则不会删除任何行；
+
+:::
+
+:::warning 注意
+
+在使用MySQL这类真正的关系数据库时，`DELETE`语句也会返回删除的行数以及`WHERE`条件匹配的行数。
+
+例如，分别执行删除`id=1`和`id=999`的记录：
+
+```bash
+mysql> DELETE FROM students WHERE id=1;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> DELETE FROM students WHERE id=999;
+Query OK, 0 rows affected (0.01 sec)
+```
+
+:::
