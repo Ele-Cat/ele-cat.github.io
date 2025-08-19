@@ -2,6 +2,13 @@ const sidebar = {
   "/views/daily-notes/": [
     { text: "返回目录", link: "/views/daily-notes/daily-notes" },
     {
+      text: "2025",
+      collapsed: false,
+      items: [
+        { text: "开发环境搭建", link: "/views/daily-notes/2025/001" },
+      ],
+    },
+    {
       text: "2024",
       collapsed: false,
       items: [
