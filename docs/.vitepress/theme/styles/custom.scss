@@ -176,15 +176,15 @@ $menu-gap: 6px;
   .VPSidebar, .curtain {
     background-color: var(--vp-c-bg);
   }
-  .VPDoc {
-    background-image: linear-gradient(
-      90deg,rgba(159,219,252,.15) 3%,transparent 0),linear-gradient(
-      1turn,rgba(159,219,252,.15) 3%,transparent 0);
-    background-size: 20px 20px;
-    background-position: 50%;
-    background-attachment: fixed;
-    min-height: calc(100vh - 48px);
-  }
+  // .VPDoc {
+  //   background-image: linear-gradient(
+  //     90deg,rgba(159,219,252,.15) 3%,transparent 0),linear-gradient(
+  //     1turn,rgba(159,219,252,.15) 3%,transparent 0);
+  //   background-size: 20px 20px;
+  //   background-position: 50%;
+  //   background-attachment: fixed;
+  //   min-height: calc(100vh - 48px);
+  // }
   .VPDocFooter {
     margin-top: 36px;
   }
@@ -198,6 +198,13 @@ $menu-gap: 6px;
 
 
 .VPContent {
+  background-image: linear-gradient(
+    90deg,rgba(159,219,252,.15) 3%,transparent 0),linear-gradient(
+    1turn,rgba(159,219,252,.15) 3%,transparent 0);
+  background-size: 20px 20px;
+  background-position: 50%;
+  background-attachment: fixed;
+  min-height: calc(100vh - 48px);
   button, input, optgroup, select, textarea {
     border: 1px solid var(--vp-c-divider);
   }
