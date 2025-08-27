@@ -7612,11 +7612,10 @@ Maven 另一个常用的生命周期是`clean`，它会执行 3 个 phase：
 
 执行一个 phase 又会触发一个或多个 goal：
 
-| 执行的 Phase  | 对应执行的 Goal      |
-| ------------- | -------------------- |
-| compile       | compiler:compile     |
-| test          | compiler:testCompile |
-| surefire:test | surefire:test        |
+| 执行的 Phase | 对应执行的 Goal                         |
+| ------------ | --------------------------------------- |
+| compile      | compiler:compile                        |
+| test         | compiler:testCompile<br />surefire:test |
 
 goal 的命名总是·abc:xyz·这种形式。
 
