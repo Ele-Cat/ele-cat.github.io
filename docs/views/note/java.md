@@ -6982,6 +6982,8 @@ System.out.println(p.getFirst());
 System.out.println(p.getSecond());
 ```
 
+> 泛型类型`<T>`不能用于静态方法。
+
 ### 7.4 擦拭法
 
 :::tip
@@ -7165,8 +7167,490 @@ Pair<String> pair = new Pair<>(String.class);
 
 :::
 
-### 7.5 extends 通配符
+泛型继承
 
-### 7.6 super 通配符
+一个类可以继承自一个泛型类。例如：父类的类型是`Pair<Integer>`，子类的类型是`IntPair`，可以这么继承：
 
-### 7.7 泛型与反射
+```java
+public class IntPair extends Pair<Integer> {
+}
+```
+
+使用的时候，因为子类`IntPair`并没有泛型类型，所以，正常使用即可：
+
+```java
+IntPair ip = new IntPair(1, 2);
+```
+
+由于无法获取`Pair<T>`的`T`类型，即给定一个变量`Pair<Integer> p`，无法从`p`中获取到`Integer`类型。
+
+但是，在父类是泛型类型的情况下，编译器就必须把类型`T`（对`IntPair`来说，也就是`Integer`类型）保存到子类的`class`文件中，不然编译器就不知道`IntPair`只能存取`Integer`这种类型。
+
+在继承了泛型类型的情况下，子类可以获取父类的泛型类型。例如：`IntPair`可以获取到父类的泛型类型`Integer`。获取父类的泛型类型代码比较复杂：
+
+```java
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+
+public class Main {
+  public static void main(String[] args) {
+    Class<IntPair> clazz = IntPair.class;
+    Type t = clazz.getGenericSuperclass();
+    if (t instanceof ParameterizedType) {
+      ParameterizedType pt = (ParameterizedType) t;
+      Type[] types = pt.getActualTypeArguments(); // 可能有多个泛型类型
+      Type firstType = types[0]; // 取第一个泛型类型
+      Class<?> typeClass = (Class<?>) firstType;
+      System.out.println(typeClass); // Integer
+    }
+  }
+}
+
+class Pair<T> {
+  private T first;
+  private T last;
+  public Pair(T first, T last) {
+    this.first = first;
+    this.last = last;
+  }
+  public T getFirst() {
+    return first;
+  }
+  public T getLast() {
+    return last;
+  }
+}
+
+class IntPair extends Pair<Integer> {
+  public IntPair(Integer first, Integer last) {
+    super(first, last);
+  }
+}
+```
+
+因为 Java 引入了泛型，所以，只用 Class 来标识类型已经不够了。实际上，Java 的类型系统结构如下：
+
+<pre>
+                      ┌────┐
+                      │Type│
+                      └────┘
+                         ▲
+                         │
+   ┌────────────┬────────┴─────────┬───────────────┐
+   │            │                  │               │
+┌─────┐┌─────────────────┐┌────────────────┐┌────────────┐
+│Class││ParameterizedType││GenericArrayType││WildcardType│
+└─────┘└─────────────────┘└────────────────┘└────────────┘
+</pre>
+
+### [通配符后面再补](https://liaoxuefeng.com/books/java/generics/extends/index.html)
+
+## 08. 集合
+
+### 8.1 Java 集合简介
+
+:::tip 为什么需要集合类
+
+Java 中已经提供了数组这种数据类型，为何还需要其他类型的集合类呢？这是因为数组有如下限制：
+
+- 数组初始化后大小不可变；
+- 数组只能按索引顺序存取。
+
+因此我们需要各种不同类型的集合类来处理不同的数据，例如：
+
+- 可变大小的顺序链表；
+- 保证无重复元素的集合；
+- ...
+
+:::
+
+Java 标准库自带的`java.util`包提供了集合类：`Collection`，它是除`Map`外所有其他集合类的根接口。Java 的`java.util`包主要提供了以下三种类型的集合：
+
+- `List`：一种有序列表的集合，例如，按索引排列的`Student`的`List`；
+- `Set`：一种保证没有重复元素的集合，例如，所有无重复名称的`Student`的`Set`；
+- `Map`：一种通过键值（key-value）查找的映射表集合，例如，根据`Student`的 name 查找对应`Student`的`Map`。
+
+Java 集合的设计有几个特点：一是实现了接口和实现类相分离，例如，有序表的接口是`List`，具体的实现类有`ArrayList`，`LinkedList`等，二是支持泛型，我们可以限制在一个集合中只能放入同一种数据类型的元素，例如：
+
+```java
+List<String> list = new ArrayList<>(); // 只能放入String类型
+```
+
+最后，Java 访问集合总是通过统一的方式——迭代器（Iterator）来实现，它最明显的好处在于无需知道集合内部元素是按什么方式存储的。
+
+## 09. IO
+
+## 10. 日期与时间
+
+## 11. 单元测试
+
+## 12. 正则表达式
+
+## 13. 加密与安全
+
+## 14. 多线程
+
+## 15. Maven 基础
+
+### 15.1 Maven 简介
+
+Maven 就是是专门为 Java 项目打造的管理和构建工具，它的主要功能有：
+
+- 提供了一套标准化的项目结构；
+- 提供了一套标准化的构建流程（编译，测试，打包，发布……）；
+- 提供了一套依赖管理机制。
+
+#### 15.1.1 安装 Maven
+
+要安装 Maven，可以从[Maven 官网](https://maven.apache.org/download.cgi)下载最新的 Maven 3.9.x，然后在本地解压，设置几个环境变量：
+
+```bash
+M2_HOME=/path/to/maven-3.9.x
+PATH=$PATH:$M2_HOME/bin
+```
+
+Windows 可以把`%M2_HOME%\bin`添加到系统 Path 变量中。
+
+然后，打开命令行窗口，输入`mvn -version`，应该看到 Maven 的版本信息：
+
+<pre>
+┌─────────────────────────────────────────────────────────┐
+│Windows PowerShell                                 - □ x │
+├─────────────────────────────────────────────────────────┤
+│Windows PowerShell                                       │
+│Copyright (C) Microsoft Corporation. All rights reserved.│
+│                                                         │
+│PS C:\Users\liaoxuefeng> mvn -version                    │
+│Apache Maven 3.9.x ...                                   │
+│Maven home: D:\apache-maven-3.9.x                        │
+│Java version: ...                                        │
+│...                                                      │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+</pre>
+
+如果提示命令未找到，说明系统 PATH 路径有误，需要修复后再运行。
+
+#### 15.1.2 配置 Maven
+
+修改 settings 文件，位置：`MAVEN_HOME/conf/settings.xml`
+
+1. 本地仓库位置
+
+   ```XML
+   <settings>
+     <localRepository>MAVEN_HOME/MavenRepository</localRepository>
+   </settings>
+   ```
+
+2. 镜像配置（推荐使用阿里云镜像加速下载）：
+
+   ```XML
+   <settings>
+     <mirrors>
+       <mirror>
+         <id>aliyunmaven</id>
+         <mirrorOf>*</mirrorOf>
+         <name>阿里云公共仓库</name>
+         <url>https://maven.aliyun.com/repository/public</url>
+       </mirror>
+     </mirrors>
+   </settings>
+   ```
+
+3. 完成配置后验证：
+
+   ```bash
+   mvn help:effective-settings
+   ```
+
+#### 15.1.3 Maven 项目结构
+
+一个使用 Maven 管理的普通的 Java 项目，它的目录结构默认如下：
+
+<pre>
+a-maven-project
+├── pom.xml
+├── src
+│   ├── main
+│   │   ├── java
+│   │   └── resources
+│   └── test
+│       ├── java
+│       └── resources
+└── target
+</pre>
+
+项目的根目录`a-maven-project`是项目名，它有一个项目描述文件`pom.xml`，存放 Java 源码的目录是`src/main/java`，存放资源文件的目录是`src/main/resources`，存放测试源码的目录是`src/test/java`，存放测试资源的目录是`src/test/resources`，最后，所有编译、打包生成的文件都放在`target`目录里。这些就是一个 Maven 项目的标准目录结构。
+
+根目录下的`pom.xml`文件是项目的配置文件，它定义了项目的基本信息、依赖、插件等。
+
+```xml
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.example</groupId>
+  <artifactId>a-maven-project</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+  <properties>
+    <java.version>17</java.version>
+  </properties>
+  <dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
+```
+
+其中，`groupId`类似于 Java 的包名，通常是公司或组织名称，`artifactId`类似于 Java 的类名，通常是项目名称，再加上`version`，一个 Maven 工程就是由`groupId`，`artifactId`和`version`作为唯一标识。
+
+### 15.2 依赖管理
+
+Maven 解决了依赖管理问题。例如，我们的项目依赖`abc`这个 jar 包，而`abc`又依赖`xyz`这个 jar 包：
+
+<pre>
+┌──────────────┐
+│Sample Project│
+└──────────────┘
+        │
+        ▼
+┌──────────────┐
+│     abc      │
+└──────────────┘
+        │
+        ▼
+┌──────────────┐
+│     xyz      │
+└──────────────┘
+</pre>
+
+当我们声明了`abc`的依赖时，Maven 自动把`abc`和`xyz`都加入了我们的项目依赖，不需要我们自己去研究`abc`是否需要依赖`xyz`。
+
+因此，Maven 的第一个作用就是解决依赖管理。我们声明了自己的项目需要`abc`，Maven 会自动导入`abc`的 jar 包，再判断出`abc`需要`xyz`，又会自动导入`xyz`的 jar 包，这样，最终我们的项目会依赖`abc`和`xyz`两个 jar 包。
+
+我们来看一个复杂依赖示例：
+
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-web</artifactId>
+  <version>1.4.2.RELEASE</version>
+</dependency>
+```
+
+当我们声明一个`spring-boot-starter-web`依赖时，Maven 会自动解析并判断最终需要大概二三十个其他依赖：
+
+<pre>
+spring-boot-starter-web
+  spring-boot-starter
+    spring-boot
+    sprint-boot-autoconfigure
+    spring-boot-starter-logging
+      logback-classic
+        logback-core
+        slf4j-api
+      jcl-over-slf4j
+        slf4j-api
+      jul-to-slf4j
+        slf4j-api
+      log4j-over-slf4j
+        slf4j-api
+    spring-core
+    snakeyaml
+  spring-boot-starter-tomcat
+    tomcat-embed-core
+    tomcat-embed-el
+    tomcat-embed-websocket
+      tomcat-embed-core
+  jackson-databind
+  ...
+</pre>
+
+如果我们自己去手动管理这些依赖是非常费时费力的，而且出错的概率很大。
+
+Maven 定义了几种依赖关系，分别是`compile`、`test`、`runtime`和`provided`：
+
+| scope    | 说明                                            | 示例            |
+| -------- | ----------------------------------------------- | --------------- |
+| compile  | 编译时需要用到该 jar 包（默认）                 | commons-logging |
+| test     | 编译 Test 时需要用到该 jar 包                   | junit           |
+| runtime  | 编译时不需要，但运行时需要用到                  | mysql           |
+| provided | 编译时需要用到，但运行时由 JDK 或某个服务器提供 | servlet-api     |
+
+其中，默认的`compile`是最常用的，Maven 会把这种类型的依赖直接放入 classpath。
+
+`test`依赖表示仅在测试时使用，正常运行时并不需要。最常用的`test`依赖就是 JUnit：
+
+```xml
+<dependency>
+  <groupId>org.junit.jupiter</groupId>
+  <artifactId>junit-jupiter-api</artifactId>
+  <version>5.3.2</version>
+  <scope>test</scope>
+</dependency>
+```
+
+`runtime`依赖表示编译时不需要，但运行时需要。最典型的`runtime`依赖是 JDBC 驱动，例如 MySQL 驱动：
+
+```xml
+<dependency>
+  <groupId>mysql</groupId>
+  <artifactId>mysql-connector-java</artifactId>
+  <version>5.1.48</version>
+  <scope>runtime</scope>
+</dependency>
+```
+
+`provided`依赖表示编译时需要，但运行时不需要。最典型的`provided`依赖是 Servlet API，编译的时候需要，但是运行时，Servlet 服务器内置了相关的 jar，所以运行期不需要：
+
+```xml
+<dependency>
+  <groupId>jakarta.servlet</groupId>
+  <artifactId>jakarta.servlet-api</artifactId>
+  <version>4.0.0</version>
+  <scope>provided</scope>
+</dependency>
+```
+
+Maven 并不会每次都从中央仓库下载 jar 包。一个 jar 包一旦被下载过，就会被 Maven 自动缓存在本地目录（用户主目录的`.m2`目录），所以，除了第一次编译时因为下载需要时间会比较慢，后续过程因为有本地缓存，并不会重复下载相同的 jar 包。
+
+> 如果我们要引用一个第三方组件，比如 okhttp，如何确切地获得它的 groupId、artifactId 和 version？方法是通过[search.maven.org](https://central.sonatype.com/search)搜索关键字，找到对应的组件后，直接复制：
+
+### 15.3 构建流程
+
+> Maven 不但有标准化的项目结构，而且还有一套标准化的构建流程，可以自动化实现编译，打包，发布，等等。
+
+#### 15.3.1 Lifecycle 和 Phase
+
+使用 Maven 时，我们首先要了解什么是 Maven 的生命周期（lifecycle）。
+
+Maven 的生命周期由一系列阶段（phase）构成，以内置的生命周期`default`为例，它包含以下 phase：
+
+| 阶段名称                | 说明                                                     |
+| ----------------------- | -------------------------------------------------------- |
+| validate                | 验证项目是否正确，所有需要的资源是否可用                 |
+| initialize              | 初始化构建状态，例如设置属性值，创建必要的目录等         |
+| generate-sources        | 生成项目的源代码，例如根据数据库模式生成 Java 类         |
+| process-sources         | 处理项目的源代码，例如编译 Java 类                       |
+| compile                 | 编译项目的源代码                                         |
+| process-classes         | 处理编译后的类文件，例如执行字节码增强或转换             |
+| generate-test-sources   | 生成测试源代码                                           |
+| process-test-sources    | 处理测试源代码                                           |
+| generate-test-resources | 生成测试资源                                             |
+| process-test-resources  | 处理测试资源                                             |
+| test-compile            | 编译测试源代码                                           |
+| process-test-classes    | 处理测试类文件                                           |
+| test                    | 使用合适的单元测试框架运行测试。默认的测试框架是 JUnit。 |
+| prepare-package         | 准备打包，例如设置打包的目录结构                         |
+| package                 | 把编译后的代码打包成可发布的格式，例如 JAR、WAR 或 EAR。 |
+| pre-integration-test    | 运行集成测试之前的准备工作                               |
+| integration-test        | 运行集成测试                                             |
+| post-integration-test   | 运行集成测试之后的清理工作                               |
+| verify                  | 运行检查，验证包是否有效                                 |
+| install                 | 安装包到本地 Maven 仓库，使其他项目可以使用              |
+| deploy                  | 把最终的包复制到远程仓库，使其他开发人员或项目可以使用   |
+
+如果我们运行`mvn package`，Maven 就会执行`default`生命周期，它会从开始一直运行到`package`这个 phase 为止：
+
+- validate
+- initialize
+- ...
+- prepare-package
+- package
+
+如果我们运行`mvn compile`，Maven 也会执行`default`生命周期，但这次它只会运行到`compile`，即以下几个 phase：
+
+- validate
+- initialize
+- ...
+- process-resources
+- compile
+
+Maven 另一个常用的生命周期是`clean`，它会执行 3 个 phase：
+
+- pre-clean
+- clean （注意这个 clean 不是 lifecycle 而是 phase）
+- post-clean
+
+所以，我们使用`mvn`命令时，后面的参数是 phase，Maven 自动根据生命周期运行到指定的 phase。
+
+更复杂的例子是指定多个 phase，例如，运行`mvn clean package`，Maven 先执行`clean`生命周期并运行到`clean`这个 phase，然后执行`default`生命周期并运行到`package`这个 phase，实际执行的 phase 如下：
+
+- pre-clean
+- clean （注意这个 clean 是 phase）
+- post-clean
+- validate （开始执行 default 生命周期的第一个 phase）
+- initialize
+- ...
+- prepare-package
+- package
+
+在实际开发过程中，经常使用的命令有：
+
+- `mvn clean`：清理所有生成的 class 和 jar；
+- `mvn clean compile`：先清理，再执行到`compile`；
+- `mvn clean test`：先清理，再执行到`test`，因为执行`test`前必须执行`compile`，所以这里不必指定`compile`；
+- `mvn clean package`：先清理，再执行到`package`。
+
+大多数 phase 在执行过程中，因为我们通常没有在`pom.xml`中配置相关的设置，所以这些 phase 什么事情都不做。
+
+经常用到的 phase 其实只有几个：
+
+- clean：清理
+- compile：编译
+- test：运行测试
+- package：打包
+
+#### 15.3.2 Goal
+
+执行一个 phase 又会触发一个或多个 goal：
+
+| 执行的 Phase  | 对应执行的 Goal      |
+| ------------- | -------------------- |
+| compile       | compiler:compile     |
+| test          | compiler:testCompile |
+| surefire:test | surefire:test        |
+
+goal 的命名总是·abc:xyz·这种形式。
+
+- lifecycle 相当于 Java 的 package，它包含一个或多个 phase；
+- phase 相当于 Java 的 class，它包含一个或多个 goal；
+- goal 相当于 class 的 method，它其实才是真正干活的。
+  大多数情况，我们只要指定 phase，就默认执行这些 phase 默认绑定的 goal，只有少数情况，我们可以直接指定运行一个 goal，例如，启动 Tomcat 服务器：
+
+```bash
+$ mvn tomcat:run
+```
+
+### 15.4 使用插件
+
+### 15.5 模块管理
+
+### 15.6 使用 mvnw
+
+### 15.7 发布 Artifact
+
+## 16. 网络编程
+
+## 17. XML 与 JSON
+
+## 18. JDBC 编程
+
+## 19. 函数式编程
+
+## 20. 设计模式
+
+## 21. Web 开发
+
+## 22. Spring 开发
+
+## 23. Spring Boot 开发
+
+## 24. Spring Cloud 开发
