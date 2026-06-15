@@ -5,7 +5,7 @@ import { onMounted, watch, nextTick } from 'vue';
 import { useRoute } from 'vitepress';
 import mediumZoom from 'medium-zoom';
 
-import Antd from 'ant-design-vue';
+import { Tooltip, message } from 'ant-design-vue';
 import './styles/index.scss';
 import 'ant-design-vue/dist/reset.css';
 
@@ -16,7 +16,8 @@ import Comment from './components/Comment.vue'
 export default {
   ...DefaultTheme,
   enhanceApp({ app, router }) {
-    app.use(Antd)
+    app.use(Tooltip)
+    app.config.globalProperties.$message = message
 
     app.component('Demo', VPDemo)
     app.component('Example', VPExample)
@@ -24,9 +25,10 @@ export default {
   },
   setup() {
     const route = useRoute();
+    let zoom
     const initZoom = () => {
-      mediumZoom('[data-zoomable]', { background: 'var(--vp-c-bg-opacity)' }); 
-      // mediumZoom('.main img', { background: 'var(--vp-c-bg)' });
+      zoom && zoom.detach()
+      zoom = mediumZoom('[data-zoomable]', { background: 'var(--vp-c-bg-opacity)' })
     };
     onMounted(() => {
       initZoom();

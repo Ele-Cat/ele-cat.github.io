@@ -24,10 +24,10 @@
             </div>
           </a-tooltip>
         </div>
-        <ElCollapseTransition>
+        <Transition name="fade">
           <SourceCode v-show="sourceVisible" :source="source" />
-        </ElCollapseTransition>
-        <Transition name="el-fade-in-linear">
+        </Transition>
+        <Transition name="fade">
           <div v-show="sourceVisible" class="example-float-control" @click="toggleSourceVisible(false)">
             <svg class="icon" width="1em" height="1em" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4218"><path d="M512 320c-8.288 0-15.776 3.232-21.456 8.4l-0.064-0.08-352 320 0.08 0.08C132.112 654.256 128 662.608 128 672a32 32 0 0 0 32 32c8.288 0 15.76-3.232 21.456-8.4l0.08 0.08L512 395.248 842.464 695.68l0.08-0.08A31.776 31.776 0 0 0 864 704a32 32 0 0 0 32-32c0-9.376-4.112-17.744-10.544-23.6l0.08-0.08-352-320-0.08 0.08c-5.68-5.168-13.168-8.4-21.456-8.4z" p-id="4219"></path></svg>
             <span>收起代码</span>

@@ -17,7 +17,7 @@ npx vitepress init
 
 ```
 npm i vitepress -D
-npm run serve
+npm run dev
 ```
 
 ## Pack

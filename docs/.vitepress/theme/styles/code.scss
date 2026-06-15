@@ -238,6 +238,14 @@ span[class~='language-css']:before {
 :root {
   --el-fill-color-light: #f5f7fa;
   --el-fill-color-lighter: #fafafa;
+  --el-color-primary-light-3: #79bbff;
+  --el-color-primary: #409eff;
+  --el-color-danger: #f56c6c;
+  --el-color-warning: #e6a23c;
+  --el-overlay-color-lighter: #0000000d;
+  --el-transition-duration: 0.3s;
+  --el-transition-duration-fast: 0.2s;
+  --el-font-size-extra-small: 12px;
   --prism-marker-opacity: 0.6;
   --prism-marker-color: var(--code-text-color);
   --prism-line-height: var(--code-line-height);
@@ -497,41 +505,6 @@ div[class*='language-'].line-numbers-mode {
 
 .appearance + .social-links {
   margin-left: 12px;
-}
-
-* {
-  scrollbar-color: var(--el-scrollbar-bg-color) var(--el-fill-color-light);
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar:horizontal {
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #0003;
-  border-radius: 10px;
-  transition: all 0.2s ease-in-out;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  cursor: pointer;
-  background-color: #0000004d;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background-color: #fff3;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background-color: #fff6;
 }
 
 .sub-nav {
