@@ -7,6 +7,7 @@ import { mdPlugin } from "./config/plugins";
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   base: "/", // 部署到github pages时需要配置
+  ignoreDeadLinks: true,
   title: "可樂の學習站點", // 网站标题
   description: "A VitePress Blog", // 网站描述
   markdown: {

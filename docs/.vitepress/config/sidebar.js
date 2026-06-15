@@ -152,21 +152,311 @@ const sidebar = {
       ],
     },
   ],
-  "/views/interview": [
-    { text: "Html", link: "/views/interview/html" },
-    { text: "Css", link: "/views/interview/css" },
-    { text: "Javascript", link: "/views/interview/javascript" },
-    { text: "Vue", link: "/views/interview/vue" },
-    { text: "React", link: "/views/interview/react" },
-    { text: "Node", link: "/views/interview/node" },
-    { text: "Git", link: "/views/interview/git" },
-    { text: "Webpack", link: "/views/interview/webpack" },
-    { text: "Vite", link: "/views/interview/vite" },
-    { text: "Typescript", link: "/views/interview/typescript" },
-    { text: "Http", link: "/views/interview/http" },
-    { text: "微信小程序", link: "/views/interview/weapp" },
-    { text: "算法与数据结构", link: "/views/interview/algorithm" },
-    { text: "设计模式", link: "/views/interview/design-pattern" },
+  "/views/interview/": [
+    {
+      text: "前端框架",
+      collapsed: false,
+      items: [
+        { text: "React", link: "/views/interview/frontend/react/" },
+        { text: "Vue", link: "/views/interview/frontend/vue/" },
+        { text: "Angular", link: "/views/interview/frontend/angular/" },
+      ],
+    },
+    {
+      text: "前端基础",
+      collapsed: false,
+      items: [
+        { text: "JS/TS", link: "/views/interview/frontend/js/" },
+        { text: "CSS", link: "/views/interview/frontend/css/" },
+        { text: "HTML", link: "/views/interview/frontend/html/" },
+        { text: "构建工具", link: "/views/interview/frontend/build-tools/" },
+        { text: "跨平台/小程序", link: "/views/interview/frontend/cross-platform/" },
+      ],
+    },
+    {
+      text: "后端 & DevOps",
+      collapsed: false,
+      items: [
+        { text: "总览", link: "/views/interview/backend/" },
+        { text: "Node.js", link: "/views/interview/backend/node/" },
+        { text: "DevOps", link: "/views/interview/backend/devops/" },
+      ],
+    },
+    {
+      text: "网络协议",
+      collapsed: false,
+      items: [
+        { text: "HTTP", link: "/views/interview/network/http/" },
+      ],
+    },
+    {
+      text: "AI & 系统设计",
+      collapsed: false,
+      items: [
+        { text: "AI 总览", link: "/views/interview/ai/" },
+        { text: "系统设计", link: "/views/interview/ai/system-design/" },
+      ],
+    },
+    {
+      text: "算法与数据结构",
+      collapsed: false,
+      items: [
+        { text: "总览", link: "/views/interview/algorithm/" },
+      ],
+    },
+    {
+      text: "设计模式",
+      collapsed: false,
+      items: [
+        { text: "总览", link: "/views/interview/design-pattern/" },
+      ],
+    },
+    {
+      text: "框架对比",
+      collapsed: false,
+      items: [
+        { text: "React vs Vue vs Angular", link: "/views/interview/comparisons/framework-comparison" },
+      ],
+    },
+    {
+      text: "进阶",
+      collapsed: false,
+      items: [
+        { text: "面试官系列", link: "/views/interview/interviewer" },
+      ],
+    },
+  ],
+  "/views/interview/frontend/react/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "React 面试题",
+      items: [
+        { text: "总览", link: "/views/interview/frontend/react/" },
+        { text: "基础篇", link: "/views/interview/frontend/react/foundation" },
+        { text: "进阶篇", link: "/views/interview/frontend/react/advanced" },
+        { text: "生态篇", link: "/views/interview/frontend/react/ecosystem" },
+        { text: "Fiber 架构", link: "/views/interview/frontend/react/fiber" },
+        { text: "Hooks 原理", link: "/views/interview/frontend/react/hooks" },
+        { text: "Concurrent Mode", link: "/views/interview/frontend/react/concurrent" },
+        { text: "Server Components", link: "/views/interview/frontend/react/rsc" },
+        { text: "术语速查", link: "/views/interview/frontend/react/glossary" },
+      ],
+    },
+  ],
+  "/views/interview/frontend/vue/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "Vue 面试题",
+      items: [
+        { text: "总览", link: "/views/interview/frontend/vue/" },
+        { text: "基础篇", link: "/views/interview/frontend/vue/foundation" },
+        { text: "进阶篇", link: "/views/interview/frontend/vue/advanced" },
+        { text: "生态篇", link: "/views/interview/frontend/vue/ecosystem" },
+        { text: "版本对比", link: "/views/interview/frontend/vue/versions" },
+        { text: "响应式原理", link: "/views/interview/frontend/vue/reactivity" },
+        { text: "编译器优化", link: "/views/interview/frontend/vue/compiler" },
+        { text: "Vapor Mode", link: "/views/interview/frontend/vue/vapor" },
+        { text: "Composition API", link: "/views/interview/frontend/vue/composition" },
+        { text: "术语速查", link: "/views/interview/frontend/vue/glossary" },
+      ],
+    },
+  ],
+  "/views/interview/frontend/angular/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "Angular 面试题",
+      items: [
+        { text: "总览", link: "/views/interview/frontend/angular/" },
+        { text: "基础篇", link: "/views/interview/frontend/angular/foundation" },
+        { text: "进阶篇", link: "/views/interview/frontend/angular/advanced" },
+        { text: "实战篇", link: "/views/interview/frontend/angular/practice" },
+        { text: "DI 原理", link: "/views/interview/frontend/angular/di" },
+        { text: "Zone.js", link: "/views/interview/frontend/angular/zone" },
+        { text: "RxJS vs Signals", link: "/views/interview/frontend/angular/rxjs-signals" },
+        { text: "术语速查", link: "/views/interview/frontend/angular/glossary" },
+      ],
+    },
+  ],
+  "/views/interview/frontend/js/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "JS/TS 面试题",
+      items: [
+        { text: "总览", link: "/views/interview/frontend/js/" },
+        { text: "基础篇", link: "/views/interview/frontend/js/foundation" },
+        { text: "进阶篇", link: "/views/interview/frontend/js/advanced" },
+        { text: "TypeScript 篇", link: "/views/interview/frontend/js/typescript" },
+      ],
+    },
+  ],
+  "/views/interview/frontend/css/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "CSS 面试题",
+      items: [
+        { text: "总览", link: "/views/interview/frontend/css/" },
+        { text: "基础篇", link: "/views/interview/frontend/css/foundation" },
+        { text: "进阶篇", link: "/views/interview/frontend/css/advanced" },
+        { text: "扩展篇", link: "/views/interview/frontend/css/extra" },
+      ],
+    },
+  ],
+  "/views/interview/frontend/html/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "HTML 面试题",
+      items: [
+        { text: "总览", link: "/views/interview/frontend/html/" },
+        { text: "基础篇", link: "/views/interview/frontend/html/foundation" },
+      ],
+    },
+  ],
+  "/views/interview/frontend/build-tools/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "构建工具",
+      items: [
+        { text: "总览", link: "/views/interview/frontend/build-tools/" },
+        { text: "Webpack", link: "/views/interview/frontend/build-tools/webpack" },
+      ],
+    },
+  ],
+  "/views/interview/frontend/cross-platform/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "跨端面试题",
+      items: [
+        { text: "总览", link: "/views/interview/frontend/cross-platform/" },
+        { text: "基础篇", link: "/views/interview/frontend/cross-platform/foundation" },
+        { text: "微信小程序", link: "/views/interview/frontend/cross-platform/weapp" },
+      ],
+    },
+  ],
+  "/views/interview/backend/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "后端 & DevOps",
+      items: [
+        { text: "总览", link: "/views/interview/backend/" },
+        { text: "Node.js", link: "/views/interview/backend/node/" },
+        { text: "DevOps", link: "/views/interview/backend/devops/" },
+      ],
+    },
+  ],
+  "/views/interview/backend/node/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "Node.js",
+      items: [
+        { text: "总览", link: "/views/interview/backend/node/" },
+      ],
+    },
+  ],
+  "/views/interview/backend/devops/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "DevOps",
+      items: [
+        { text: "总览", link: "/views/interview/backend/devops/" },
+        { text: "Git", link: "/views/interview/backend/devops/git" },
+      ],
+    },
+  ],
+  "/views/interview/ai/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "AI & 系统设计",
+      items: [
+        { text: "总览", link: "/views/interview/ai/" },
+        { text: "系统设计", link: "/views/interview/ai/system-design/" },
+      ],
+    },
+  ],
+  "/views/interview/network/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "网络协议",
+      items: [
+        { text: "概览", link: "/views/interview/network/" },
+        { text: "HTTP", link: "/views/interview/network/http/" },
+      ],
+    },
+  ],
+  "/views/interview/algorithm/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "算法与数据结构",
+      items: [
+        { text: "总览", link: "/views/interview/algorithm/" },
+      ],
+    },
+  ],
+  "/views/interview/design-pattern/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "设计模式",
+      items: [
+        { text: "总览", link: "/views/interview/design-pattern/" },
+      ],
+    },
+  ],
+  "/views/interview/comparisons/": [
+    {
+      text: "← 面试总览",
+      link: "/views/interview/",
+    },
+    {
+      text: "资料",
+      items: [
+        { text: "总览", link: "/views/interview/comparisons/" },
+        { text: "前端框架对比", link: "/views/interview/comparisons/framework-comparison" },
+      ],
+    },
   ],
 };
 

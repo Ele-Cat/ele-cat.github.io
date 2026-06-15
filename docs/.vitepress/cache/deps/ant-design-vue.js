@@ -1,4 +1,7 @@
 import {
+  require_dayjs_min
+} from "./chunk-VC7FK6AZ.js";
+import {
   ArrowLeftOutlined_default,
   ArrowRightOutlined_default,
   BarsOutlined_default,
@@ -59,10 +62,7 @@ import {
   generate,
   gold,
   presetPrimaryColors
-} from "./chunk-GBFKRGUX.js";
-import {
-  require_dayjs_min
-} from "./chunk-VC7FK6AZ.js";
+} from "./chunk-C23MYFJR.js";
 import {
   Comment,
   Fragment,
