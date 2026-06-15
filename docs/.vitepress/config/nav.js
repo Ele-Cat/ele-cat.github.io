@@ -79,16 +79,11 @@ const nav = [
     text: "面试",
     items: [
       {
-        text: "前端框架",
+        text: "前端",
         items: [
-          { text: "React", link: "/views/interview/frontend/react/" },
           { text: "Vue", link: "/views/interview/frontend/vue/" },
+          { text: "React", link: "/views/interview/frontend/react/" },
           { text: "Angular", link: "/views/interview/frontend/angular/" },
-        ],
-      },
-      {
-        text: "前端基础",
-        items: [
           { text: "JS/TS", link: "/views/interview/frontend/js/" },
           { text: "CSS", link: "/views/interview/frontend/css/" },
           { text: "HTML", link: "/views/interview/frontend/html/" },

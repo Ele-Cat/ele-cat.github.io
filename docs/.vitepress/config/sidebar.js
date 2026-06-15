@@ -154,18 +154,12 @@ const sidebar = {
   ],
   "/views/interview/": [
     {
-      text: "前端框架",
+      text: "前端",
       collapsed: false,
       items: [
-        { text: "React", link: "/views/interview/frontend/react/" },
         { text: "Vue", link: "/views/interview/frontend/vue/" },
+        { text: "React", link: "/views/interview/frontend/react/" },
         { text: "Angular", link: "/views/interview/frontend/angular/" },
-      ],
-    },
-    {
-      text: "前端基础",
-      collapsed: false,
-      items: [
         { text: "JS/TS", link: "/views/interview/frontend/js/" },
         { text: "CSS", link: "/views/interview/frontend/css/" },
         { text: "HTML", link: "/views/interview/frontend/html/" },
