@@ -1,8 +1,6 @@
 # 后端面试题
 
-- [Go 基础](./go)
-- [Python / FastAPI](./python)
-- [Java / Spring Boot](./java)
-- [数据库 (PostgreSQL / Prisma)](./database)
+- [Node.js](./node/)
+- [DevOps](./devops/)
 
-> 内容整理中...
+> 后端面试题持续更新中...
