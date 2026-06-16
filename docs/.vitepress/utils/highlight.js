@@ -11,7 +11,7 @@ import consola from "consola";
 // const loadLanguages = require('prismjs/components/index')
 import loadLanguages from "prismjs/components/index";
 // required to make embedded highlighting work...
-loadLanguages(["markup", "css", "javascript"]);
+loadLanguages(["markup", "css", "javascript", "ls"]);
 
 function wrap(code, lang) {
   if (lang === "text") {
