@@ -174,7 +174,7 @@ router.forward()                 // 前进
   <!-- 声明式导航 -->
   <router-link to="/users/1">User 1</router-link>
   <router-link :to="{ name: 'user', params: { id: user.id } }">
-    &#123;&#123; user.name &#125;&#125;
+    {{ user.name }}
   </router-link>
 
   <!-- 路由出口 -->
@@ -264,7 +264,7 @@ const route = useRoute()
 const { data: user } = await useFetch(`/api/users/${route.params.id}`)
 </script>
 <template>
-  <div>&#123;&#123; user.name &#125;&#125;</div>
+  <div>{{ user.name }}</div>
 </template>
 ```
 
@@ -411,8 +411,8 @@ components/ → 展示组件，接收 props + emit
 <li v-for="item in visibleList" :key="item.id">
 
 <!-- 3. 用计算属性代替方法调用 -->
-<p>&#123;&#123; fullName &#125;&#125;</p>       <!-- computed，缓存 -->
-<p>&#123;&#123; getFullName() &#125;&#125;</p>  <!-- methods，每次渲染都执行 -->
+<p>{{ fullName }}</p>       <!-- computed，缓存 -->
+<p>{{ getFullName() }}</p>  <!-- methods，每次渲染都执行 -->
 
 <!-- 4. v-once——静态内容只渲染一次 -->
 <div v-once>
@@ -475,7 +475,7 @@ const Heavy = defineAsyncComponent(() => import('./Heavy.vue'))
   key-field="id"
   v-slot="{ item }"
 >
-  <div class="item">&#123;&#123; item.text &#125;&#125;</div>
+  <div class="item">{{ item.text }}</div>
 </RecycleScroller>
 ```
 
@@ -722,7 +722,7 @@ const { data, total } = await useFetch(`/api/items?page=${page.value}&size=${pag
   key-field="id"
   v-slot="{ item }"
 >
-  <div class="item">&#123;&#123; item.text &#125;&#125;</div>
+  <div class="item">{{ item.text }}</div>
 </RecycleScroller>
 
 <!-- 方案 3：分批渲染（IntersectionObserver） -->
@@ -750,7 +750,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div v-for="item in visibleItems" :key="item.id">&#123;&#123; item.text &#125;&#125;</div>
+  <div v-for="item in visibleItems" :key="item.id">{{ item.text }}</div>
   <div ref="sentinelRef" class="sentinel" />
 </template>
 
@@ -1014,12 +1014,12 @@ Transition 包裹的内容必须满足以下条件之一才会触发动画：
 ```html
 <!-- out-in：先离开再进入（默认是同时） -->
 <Transition name="fade" mode="out-in">
-  <p :key="currentView">&#123;&#123; currentView &#125;&#125;</p>
+  <p :key="currentView">{{ currentView }}</p>
 </Transition>
 
 <!-- in-out：先进去再离开 -->
 <Transition name="fade" mode="in-out">
-  <p :key="currentView">&#123;&#123; currentView &#125;&#125;</p>
+  <p :key="currentView">{{ currentView }}</p>
 </Transition>
 ```
 
@@ -1059,7 +1059,7 @@ function onLeave(el, done) {
 <!-- 列表动画 -->
 <TransitionGroup name="list" tag="ul">
   <li v-for="item in items" :key="item.id" class="list-item">
-    &#123;&#123; item.text &#125;&#125;
+    {{ item.text }}
     <button @click="remove(item.id)">x</button>
   </li>
 </TransitionGroup>

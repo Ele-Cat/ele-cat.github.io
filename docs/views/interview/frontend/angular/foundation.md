@@ -10,7 +10,7 @@
 // 基础组件
 @Component({
   selector: 'app-user-card',
-  template: `<h2>&#123;&#123; user.name &#125;&#125;</h2><p>&#123;&#123; user.email &#125;&#125;</p>`,
+  template: `<h2>{{ user.name }}</h2><p>{{ user.email }}</p>`,
   styles: [`h2 { color: navy; }`]
 })
 export class UserCardComponent {
@@ -23,7 +23,7 @@ export class UserCardComponent {
 @Component({
   selector: 'app-clock',
   standalone: true,
-  template: `<p>&#123;&#123; currentTime | date:'HH:mm:ss' &#125;&#125;</p>`
+  template: `<p>{{ currentTime | date:'HH:mm:ss' }}</p>`
 })
 export class ClockComponent implements OnInit, OnDestroy {
   currentTime = new Date();
@@ -55,7 +55,7 @@ Angular 提供四种数据绑定方式，实现模板与组件类的数据同步
 
 | 绑定类型 | 语法 | 方向 | 用途 |
 |---------|------|------|------|
-| 插值 | `&#123;&#123; value &#125;&#125;` | 类 -> 模板 | 显示文本/表达式结果 |
+| 插值 | &#123;&#123; value &#125;&#125; | 类 -> 模板 | 显示文本/表达式结果 |
 | 属性绑定 | `[property]="value"` | 类 -> 模板 | 设置 DOM/组件属性 |
 | 事件绑定 | `(event)="handler()"` | 模板 -> 类 | 响应用户操作 |
 | 双向绑定 | `[(ngModel)]="value"` | 双向同步 | 表单输入 |
@@ -76,7 +76,7 @@ export class BindingDemoComponent {
 
 ```html
 <!-- 插值：显示数据 -->
-<p>Hello, &#123;&#123; name.toUpperCase() &#125;&#125;!</p>
+<p>Hello, {{ name.toUpperCase() }}!</p>
 
 <!-- 属性绑定：动态控制 -->
 <button [disabled]="isDisabled">Submit</button>

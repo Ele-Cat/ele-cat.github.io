@@ -31,7 +31,7 @@ Vapor 组件和传统组件可以 **在同一个组件树里混合**，不是全
 
 ## 为什么 Vue 能做 Vapor 但 React 很难？
 
-同一个原因：**模板给了编译器完整信息**。Vue 知道 `{{ count }}` 就绑定在这个 `<p>` 上，可以直接生成 `p.textContent = count`。
+同一个原因：**模板给了编译器完整信息**。Vue 知道 &#123;&#123; count &#125;&#125; 就绑定在这个 `<p>` 上，可以直接生成 `p.textContent = count`。
 
 React 的 JSX 就是 JS，编译器不确定 `{count}` 最终渲染到哪个 DOM 节点。
 

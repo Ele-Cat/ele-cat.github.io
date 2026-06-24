@@ -152,7 +152,7 @@ class RefImpl<T> {
 ```ts
 // 1. 模板中自动解包（编译时处理）
 const count = ref(0)
-// 模板中直接用 &#123;&#123; count &#125;&#125;，不需要 &#123;&#123; count.value &#125;&#125;
+// 模板中直接用 {{ count }}，不需要 {{ count.value }}
 
 // 2. reactive 中嵌套 ref 自动解包
 const state = reactive({
@@ -314,7 +314,7 @@ user.profile = { age: 35 } // user.profile 被替换，新对象也会被代理
 // 编译前
 <div>
   <span>static</span>
-  <p>&#123;&#123; msg &#125;&#125;</p>
+  <p>{{ msg }}</p>
 </div>
 
 // 编译后——静态节点提升到 render 外，只创建一次
@@ -351,7 +351,7 @@ enum PatchFlags {
 ```html
 <!-- 每个动态节点都有 patchFlag -->
 <div :class="active">       <!-- patchFlag: 2 → CLASS -->
-<p>&#123;&#123; msg &#125;&#125;</p>             <!-- patchFlag: 1 → TEXT -->
+<p>{{ msg }}</p>             <!-- patchFlag: 1 → TEXT -->
 <img :src="url" :alt="text"> <!-- patchFlag: 8 → PROPS -->
 ```
 
@@ -361,9 +361,9 @@ enum PatchFlags {
 <!-- 模板 -->
 <div>
   <span>static</span>
-  <p>&#123;&#123; msg &#125;&#125;</p>
+  <p>{{ msg }}</p>
   <div v-if="ok">
-    <span>&#123;&#123; dynamic &#125;&#125;</span>
+    <span>{{ dynamic }}</span>
   </div>
 </div>
 
@@ -770,8 +770,8 @@ const debounce = {
 <!-- 父组件：接收插槽数据 -->
 <List :items="items">
   <template #default="{ item, index, isLast }">
-    <span>&#123;&#123; index &#125;&#125;.</span>
-    <span>&#123;&#123; item.name &#125;&#125;</span>
+    <span>{{ index }}.</span>
+    <span>{{ item.name }}</span>
     <span v-if="isLast">(last)</span>
   </template>
 </List>
@@ -804,7 +804,7 @@ const debounce = {
 <slot :user="user" :status="status" />
 <!-- 父：重命名 + 默认值 -->
 <template #default="{ user: person, status = 'unknown' }">
-  &#123;&#123; person.name &#125;&#125; - &#123;&#123; status &#125;&#125;
+  {{ person.name }} - {{ status }}
 </template>
 ```
 
@@ -859,7 +859,7 @@ const tabs = [
 
 <template>
   <button v-for="tab in tabs" :key="tab.name" @click="currentComponent = tab.comp">
-    &#123;&#123; tab.name &#125;&#125;
+    {{ tab.name }}
   </button>
   <keep-alive>
     <component :is="currentComponent" />
@@ -1197,7 +1197,7 @@ onMounted(() => {
 ```html
 <template>
   <li v-for="item in list" :key="item.id" :ref="setItemRef">
-    &#123;&#123; item.name &#125;&#125;
+    {{ item.name }}
   </li>
 </template>
 

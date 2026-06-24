@@ -47,7 +47,7 @@ class App extends StatelessWidget {
 <!-- uni-app — 写一次，多端运行 -->
 <template>
   <view>
-    <text>&#123;&#123; count &#125;&#125;</text>
+    <text>{{ count }}</text>
     <button @click="add">+</button>
   </view>
 </template>
@@ -480,7 +480,7 @@ function App() {
 
 // 编译后微信小程序 wxml
 // <view>
-//   <text wx:for="&#123;&#123;list&#125;&#125;" wx:key="id">&#123;&#123;item.name&#125;&#125;</text>
+//   <text wx:for="{{list}}" wx:key="id">{{item.name}}</text>
 // </view>
 
 // 编译后 H5

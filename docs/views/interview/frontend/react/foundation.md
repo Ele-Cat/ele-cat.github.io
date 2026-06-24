@@ -27,7 +27,7 @@ const element = React.createElement('h1', { className: 'title' }, 'Hello, ', nam
 const items = data.filter(Boolean).map(item => <li key={item.id}>{item.name}</li>)
 
 // 模板引擎通常需要专用语法
-// &#123;&#123;#each items&#125;&#125; <li>&#123;&#123;name&#125;&#125;</li> &#123;&#123;/each&#125;&#125;
+// {{#each items}} <li>{{name}}</li> {{/each}}
 ```
 
 **性能提示：** JSX 本身无运行时开销（编译后就是 createElement 调用）。但大 JSX 树会创建大量虚拟 DOM 节点，可用 `React.Fragment` 减少层级。

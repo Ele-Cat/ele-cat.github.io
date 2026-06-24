@@ -148,7 +148,7 @@ function RequireAuth({ children }: { children: ReactNode }) {
 
   if (!auth.user) {
     // 重定向到登录，保存当前路径以便登录后跳回
-    return <Navigate to="/login" state=&#123;&#123; from: location &#125;&#125; replace />
+    return <Navigate to="/login" state={{ from: location }} replace />
   }
 
   return <>{children}</>
